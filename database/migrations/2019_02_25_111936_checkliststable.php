@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Boards extends Migration
+class Checkliststable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,15 @@ class Boards extends Migration
      */
     public function up()
     {
-        Schema::create('boards', function (Blueprint $table) {
+        Schema::create('check_lists', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('trello_user_id');
-            $table->integer('user_id');
+            $table->unsignedInteger('card_id');            
+            $table->string('trello_card_id',50);  
+            $table->string('trello_check_list_id',50); 
             $table->string('name');
-            $table->string('image');
-            $table->string('trello_board_id',50);
-            $table->text('members'); // stroe in json .
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
@@ -33,6 +30,6 @@ class Boards extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('boards');
+        Schema::dropIfExists('check_lists');
     }
 }
