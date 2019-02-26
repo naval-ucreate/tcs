@@ -21,3 +21,5 @@ Route::get('/','LoginController@trelloLogin' );
 Route::post('/login','LoginController@checkTrelloLogin' )->name('check-trello-login');
 Route::post('/ajax_login','LoginController@ajax_login' );
 
+//dashboard
+Route::get('/dashboard','DashboardController@mainDashboard' )->name('main-dashboard');

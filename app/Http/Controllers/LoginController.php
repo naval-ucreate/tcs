@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \GuzzleHttp\Client as Httpclient;
-
+use GuzzleHttp\Client;
 class LoginController extends Controller
 {
-    
+    public function trelloLogin()
+    {
+        return view('login/login');
+    }
     function toSendJsonRequest($url)
     {
-        $client     = new Httpclient();
+        $client     = new Client();
         $response   = $client->request('GET',$url);
         if($response->getStatusCode()==200)
         {
@@ -19,9 +21,6 @@ class LoginController extends Controller
         // return to login page with error
     }
 
-    public function trelloLogin(){
-        return view('login.login');
-    }
 
 
     public function ajax_login(){
