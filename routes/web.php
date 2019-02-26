@@ -11,9 +11,9 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/game', function () {
+    dd(config("app.trello_api_end_point"));
+});
 
 
 
