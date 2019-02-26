@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+Route::get('/login','LoginController@trelloLogin' )->name('trello-login');
+Route::post('/login','LoginController@checkTrelloLogin' )->name('check-trello-login');
