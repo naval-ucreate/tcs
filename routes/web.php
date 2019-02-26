@@ -11,11 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
 
-Route::get('/login','LoginController@trelloLogin' )->name('trello-login');
+Route::get('/','LoginController@trelloLogin' );
 Route::post('/login','LoginController@checkTrelloLogin' )->name('check-trello-login');
+Route::post('/ajax_login','LoginController@ajax_login' );
+
