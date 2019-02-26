@@ -19,3 +19,5 @@ Route::get('/', function () {
 
 Route::get('/login','LoginController@trelloLogin' )->name('trello-login');
 Route::post('/login','LoginController@checkTrelloLogin' )->name('check-trello-login');
+//dashboard
+Route::get('/dashboard','DashboardController@mainDashboard' )->name('main-dashboard');
