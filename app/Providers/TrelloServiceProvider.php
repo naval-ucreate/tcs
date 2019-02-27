@@ -24,7 +24,7 @@ class TrelloServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app()->singleton('trello',function(){
+        $this->app->singleton('trello',function(){
             return new TrelloApi(config('app.trello_key'));
         });
     }

@@ -12,7 +12,7 @@ class TrelloApi {
         $this->api_key=$api_key;
     }
 
-    public function userInfo(String $token){
+    public function getUserInfo(String $token){
         $client     = new Client();
         $url        = config("app.trello_api_end_point").'members/me?key='.$this->api_key.'&token='.$token;
         $response   = $client->request('GET',$url);

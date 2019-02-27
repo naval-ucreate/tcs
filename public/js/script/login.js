@@ -26,8 +26,10 @@ window.addEventListener('load',function(){
                 trello_token: oauth_token,
                 _token :_cross_token
             } ,
-            success:  (response) => {
-             //   window.location.href="dashboard";
+            success:  (login_data) => {
+                if(login_data.hasOwnProperty('success') && login_data.success==true){
+                    window.location.href="dashboard";
+                }
             },
             error: (jqXHR, textStatus, errorThrown) =>  {
     

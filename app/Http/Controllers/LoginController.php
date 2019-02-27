@@ -14,20 +14,34 @@ class LoginController extends Controller
     public function ajax_login(){
         $requestdata = request()->validate(
             [
-               'token' => 'required' 
+               'trello_token' => 'required' 
             ]
         );
-        $authUser=User::where('token',$requestdata['trello_token'])->first()->toArray();
-        if(count($authUser)){
-
+        $authUser=User::where('token',$requestdata['trello_token'])->first();
+        if($authUser){
+            Session::put('userinfo', $authUser);
+            return [
+                'success' => true,
+                'message' => 'login successfully'
+            ];
         }
-        $this->store($requestdata['trello_token']);
+        if($this->store($requestdata['trello_token'])){
+            return [
+                'success' => true,
+                'message' => 'login successfully'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Error to login'
+        ];
 
     }
 
     public function store(String $token){
         $return_data=app('trello')->getUserInfo($token);
-        if($return_data){
+        if(count($return_data)){
             $insert_data=[
                 'name' => $return_data['fullName'],
                 'username' => $return_data['username'],
@@ -36,14 +50,14 @@ class LoginController extends Controller
                 'trello_url' => $return_data['url'],
                 'confirmed' => $return_data['confirmed'],
                 'memberType' => $return_data['memberType'],
-                'email' => $return_data['email']
+                'email' => $return_data['email'],
+                'token' => $token
             ];
             if(User::create($insert_data)){
-
                 Session::put('userinfo', $insert_data);
-                
+                return true;
             }
-
+            return false;
         }
     }
 
@@ -62,7 +76,7 @@ class LoginController extends Controller
             'memberType' => 'xxx',
            
         ];
-        Session::put('userinfo', $insert_data);
+        
     }
 
     public function logout(Request $request){
