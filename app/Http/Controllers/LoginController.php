@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use App\User
+use App\User;
 class LoginController extends Controller
 {
     public function trelloLogin(){
@@ -31,7 +31,7 @@ class LoginController extends Controller
         );
 
         $authUser=User::where('token',$requestdata['trello_token'])->first()->toArray();
-        if(count($authUser){
+        if(count($authUser)){
 
         }
         $this->getUserInfo($requestdata['trello_token']);
@@ -40,7 +40,7 @@ class LoginController extends Controller
 
     public function getUserInfo(String $token){
         $client     = new Client();
-        $url = config("app.trello_api_end_point").'members/me?key='.config(app.trello_key).'&token='.$token
+        $url = config("app.trello_api_end_point").'members/me?key='.config(app.trello_key).'&token='.$token;
         $response   = $client->request('GET',$url);
         if($response->getStatusCode()==200){
             $return_data=json_decode($response->getBody(), true);
