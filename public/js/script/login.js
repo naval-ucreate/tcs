@@ -16,27 +16,27 @@ window.addEventListener('load',function(){
                },
         });
     }
-    console.log(window.location.href);
-    let on_done=()=> {
-        var oauth_token         = Trello.token();
-        var laravel_token       = '{{ csrf_token()}}';
-        var send_to_url =   '{{ route(check-trello-login) }}';
-        var values      =  'oAuthToken='+oauth_token+'&_token='+laravel_token;
+    let on_done = () => {
+        let oauth_token         = Trello.token();
+        let _cross_token = $('meta[name="_token"]').attr('content');
         $.ajax({
             url: window.location.href+'ajax_login',
             type: "post",
-            data: values ,
-            success: function (response) {
-                // you will get response from your php page (what you echo or print)                 
-
+            data: {
+                trello_token: oauth_token,
+                _token :_cross_token
+            } ,
+            success:  (response) => {
+             //   window.location.href="dashboard";
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus, errorThrown);
+            error: (jqXHR, textStatus, errorThrown) =>  {
+    
             }
         });
+
     }
 
-    var  on_error= () => {
+    let on_error= () => {
     
     }
 });

@@ -226,4 +226,15 @@ return [
 
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Trello Api Base path
+    |--------------------------------------------------------------------------
+    |
+    | Configration the Trello 
+    |
+    */
+
+    'trello_api_end_point' => env('TRELLO_LINK',''),
+    'trello_key' => env('TRELLO_API_KEY',''),
 ];
