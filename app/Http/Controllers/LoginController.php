@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Session;
 class LoginController extends Controller
 {
     public function trelloLogin(){
@@ -16,7 +17,6 @@ class LoginController extends Controller
                'token' => 'required' 
             ]
         );
-
         $authUser=User::where('token',$requestdata['trello_token'])->first()->toArray();
         if(count($authUser)){
 
@@ -39,10 +39,35 @@ class LoginController extends Controller
                 'email' => $return_data['email']
             ];
             if(User::create($insert_data)){
+
+                Session::put('userinfo', $insert_data);
                 
             }
 
         }
+    }
+
+
+
+    public function addSession(){
+        $insert_data=[
+            'name' => 'naval kishor',
+            'email' => 'naval@gmail.com',
+            'username' => 'naval66',
+            'token' => 'naval66',
+            'image' => 'xxx',
+            'trello_id' => 'xxx',
+            'trello_url' => 'xxx',
+            'confirmed' => 'xxx',
+            'memberType' => 'xxx',
+           
+        ];
+        Session::put('userinfo', $insert_data);
+    }
+
+    public function logout(Request $request){
+        $request->session()->forget('userinfo');
+        return redirect()->route('login');
     }
 
 
