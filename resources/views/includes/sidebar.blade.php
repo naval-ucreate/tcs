@@ -30,6 +30,10 @@
                                 <i class="fas fa-chart-bar"></i>Charts</a>
                         </li>
                         <li>
+                            <a href="{{ route('show-board') }}">
+                                <i class="fas fa-chart-bar"></i>Boards</a>
+                        </li>
+                        <li>
                             <a href="table.html">
                                 <i class="fas fa-table"></i>Tables</a>
                         </li>

@@ -23,3 +23,21 @@ Route::post('/ajax_login','LoginController@ajax_login' );
 
 //dashboard
 Route::get('/dashboard','DashboardController@mainDashboard' )->name('main-dashboard');
+
+//boards
+Route::get('/boards','BoardsController@showBoards' )->name('show-board');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Route::get('/save-boards','BoardsController@saveBoards' )->name('save-board');
