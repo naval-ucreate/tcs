@@ -18,7 +18,7 @@ class Boards extends Migration
             $table->string('trello_user_id');
             $table->integer('user_id');
             $table->string('name');
-            $table->string('image');
+            $table->string('image')->nullable();;
             $table->string('trello_board_id',50);
             $table->text('members'); // stroe in json .
             $table->timestamps();
