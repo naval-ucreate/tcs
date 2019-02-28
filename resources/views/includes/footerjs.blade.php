@@ -1,25 +1,46 @@
-   <!-- Jquery JS-->
-   <script src="{{ URL::asset('cooladmin/vendor/jquery-3.2.1.min.js') }}"></script>
-    <!-- Bootstrap JS-->
-    <script src="{{ URL::asset('cooladmin/vendor/bootstrap-4.1/popper.min.js') }}"></script>
-    <script src="{{ URL::asset('cooladmin/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
-    <!-- Vendor JS       -->
-    <script src="{{ URL::asset('cooladmin/vendor/slick/slick.min.js') }}">
-    </script>
-    <script src="{{ URL::asset('cooladmin/vendor/wow/wow.min.js') }}"></script>
-    <script src="{{ URL::asset('cooladmin/vendor/animsition/animsition.min.js') }}"></script>
-    <script src="{{ URL::asset('cooladmin/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js') }}">
-    </script>
-    <script src="{{ URL::asset('vendor/counter-up/jquery.waypoints.min.js') }}"></script>
-    <script src="{{ URL::asset('cooladmin/vendor/counter-up/jquery.counterup.min.js') }}">
-    </script>
-    <script src="{{ URL::asset('cooladmin/vendor/circle-progress/circle-progress.min.js') }}"></script>
-    <script src="{{ URL::asset('cooladmin/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-    <script src="{{ URL::asset('cooladmin/vendor/chartjs/Chart.bundle.min.js') }}"></script>
-    <script src="{{ URL::asset('cooladmin/vendor/select2/select2.min.js') }}">
-    </script>
+<!-- START PRELOADS -->
+<audio id="audio-alert" src="{{ URL::asset('jolly/audio/alert.mp3') }}" preload="auto"></audio>
+<audio id="audio-fail" src="{{ URL::asset('jolly/audio/fail.mp3') }}" preload="auto"></audio>
+<!-- END PRELOADS -->                  
 
+<<<<<<< HEAD
     <!-- Main JS-->
     <script src="{{ URL::asset('cooladmin/js/main.js') }}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   
+=======
+<!-- START SCRIPTS -->
+<!-- START PLUGINS -->
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/jquery/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/jquery/jquery-ui.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/bootstrap/bootstrap.min.js') }}"></script>        
+<!-- END PLUGINS -->
+
+<!-- START THIS PAGE PLUGINS-->        
+<script type='text/javascript' src="{{ URL::asset('jolly/js/plugins/icheck/icheck.min.js') }}"></script>        
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/scrolltotop/scrolltopcontrol.js') }}"></script>
+
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/morris/raphael-min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/morris/morris.min.js') }}"></script>       
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/rickshaw/d3.v3.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/rickshaw/rickshaw.min.js') }}"></script>
+<script type='text/javascript' src="{{ URL::asset('jolly/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
+<script type='text/javascript' src="{{ URL::asset('jolly/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>                
+<script type='text/javascript' src="{{ URL::asset('jolly/js/plugins/bootstrap/bootstrap-datepicker.js') }}"></script>                
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/owl/owl.carousel.min.js') }}"></script>                 
+
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/moment.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/daterangepicker/daterangepicker.js') }}"></script>
+<!-- END THIS PAGE PLUGINS-->        
+
+<!-- START TEMPLATE -->
+<script type="text/javascript" src="{{ URL::asset('jolly/js/settings.js') }}"></script>
+
+<script type="text/javascript" src="{{ URL::asset('jolly/js/plugins.js') }}"></script>        
+<script type="text/javascript" src="{{ URL::asset('jolly/js/actions.js') }}"></script>
+
+<script type="text/javascript" src="{{ URL::asset('jolly/js/demo_dashboard.js') }}"></script>
+<!-- END TEMPLATE -->
+<!-- END SCRIPTS -->  
+>>>>>>> e9611a762f61108bd464bf5f22ad3871bb740c11

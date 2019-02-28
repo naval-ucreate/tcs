@@ -1,530 +1,355 @@
 @extends('layouts.dashboard')
+@section('pageTitle', 'Boards')
 @section('content')
+<div class="page-content-wrap">
 <div class="row">
-    <div class="col-md-12">
-          <div class="overview-wrap">
-            <h2 class="title-1">overview</h2>
-            <button class="au-btn au-btn-icon au-btn--blue">
-                <i class="zmdi zmdi-plus"></i>add item</button>
-        </div>
-    </div>
-</div>
-<div class="row m-t-25">
-    <div class="col-sm-6 col-lg-3">
-        <div class="overview-item overview-item--c1">
-            <div class="overview__inner">
-                <div class="overview-box clearfix">
-                    <div class="icon">
-                        <i class="zmdi zmdi-account-o"></i>
-                    </div>
-                    <div class="text">
-                        <h2>10368</h2>
-                        <span>members online</span>
-                    </div>
-                </div>
-                <div class="overview-chart">
-                    <canvas id="widgetChart1"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-lg-3">
-        <div class="overview-item overview-item--c2">
-            <div class="overview__inner">
-                <div class="overview-box clearfix">
-                    <div class="icon">
-                        <i class="zmdi zmdi-shopping-cart"></i>
-                    </div>
-                    <div class="text">
-                        <h2>388,688</h2>
-                        <span>items solid</span>
-                    </div>
-                </div>
-                <div class="overview-chart">
-                    <canvas id="widgetChart2"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-lg-3">
-        <div class="overview-item overview-item--c3">
-            <div class="overview__inner">
-                <div class="overview-box clearfix">
-                    <div class="icon">
-                        <i class="zmdi zmdi-calendar-note"></i>
-                    </div>
-                    <div class="text">
-                        <h2>1,086</h2>
-                        <span>this week</span>
-                    </div>
-                </div>
-                <div class="overview-chart">
-                    <canvas id="widgetChart3"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-lg-3">
-        <div class="overview-item overview-item--c4">
-            <div class="overview__inner">
-                <div class="overview-box clearfix">
-                    <div class="icon">
-                        <i class="zmdi zmdi-money"></i>
-                    </div>
-                    <div class="text">
-                        <h2>$1,060,386</h2>
-                        <span>total earnings</span>
-                    </div>
-                </div>
-                <div class="overview-chart">
-                    <canvas id="widgetChart4"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-6">
-        <div class="au-card recent-report">
-            <div class="au-card-inner">
-                <h3 class="title-2">recent reports</h3>
-                <div class="chart-info">
-                    <div class="chart-info__left">
-                        <div class="chart-note">
-                            <span class="dot dot--blue"></span>
-                            <span>products</span>
+                        <div class="col-md-3">
+                            
+                            <!-- START WIDGET SLIDER -->
+                            <div class="widget widget-default widget-carousel">
+                                <div class="owl-carousel" id="owl-example">
+                                    <div>                                    
+                                        <div class="widget-title">Total Visitors</div>                                                                        
+                                        <div class="widget-subtitle">27/08/2014 15:23</div>
+                                        <div class="widget-int">3,548</div>
+                                    </div>
+                                    <div>                                    
+                                        <div class="widget-title">Returned</div>
+                                        <div class="widget-subtitle">Visitors</div>
+                                        <div class="widget-int">1,695</div>
+                                    </div>
+                                    <div>                                    
+                                        <div class="widget-title">New</div>
+                                        <div class="widget-subtitle">Visitors</div>
+                                        <div class="widget-int">1,977</div>
+                                    </div>
+                                </div>                            
+                                <div class="widget-controls">                                
+                                    <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+                                </div>                             
+                            </div>         
+                            <!-- END WIDGET SLIDER -->
+                            
                         </div>
-                        <div class="chart-note mr-0">
-                            <span class="dot dot--green"></span>
-                            <span>services</span>
+                        <div class="col-md-3">
+                            
+                            <!-- START WIDGET MESSAGES -->
+                            <div class="widget widget-default widget-item-icon" onclick="location.href='pages-messages.html';">
+                                <div class="widget-item-left">
+                                    <span class="fa fa-envelope"></span>
+                                </div>                             
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">48</div>
+                                    <div class="widget-title">New messages</div>
+                                    <div class="widget-subtitle">In your mailbox</div>
+                                </div>      
+                                <div class="widget-controls">                                
+                                    <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+                                </div>
+                            </div>                            
+                            <!-- END WIDGET MESSAGES -->
+                            
+                        </div>
+                        <div class="col-md-3">
+                            
+                            <!-- START WIDGET REGISTRED -->
+                            <div class="widget widget-default widget-item-icon" onclick="location.href='pages-address-book.html';">
+                                <div class="widget-item-left">
+                                    <span class="fa fa-user"></span>
+                                </div>
+                                <div class="widget-data">
+                                    <div class="widget-int num-count">375</div>
+                                    <div class="widget-title">Registred users</div>
+                                    <div class="widget-subtitle">On your website</div>
+                                </div>
+                                <div class="widget-controls">                                
+                                    <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+                                </div>                            
+                            </div>                            
+                            <!-- END WIDGET REGISTRED -->
+                            
+                        </div>
+                        <div class="col-md-3">
+                            
+                            <!-- START WIDGET CLOCK -->
+                            <div class="widget widget-info widget-padding-sm">
+                                <div class="widget-big-int plugin-clock">00:00</div>                            
+                                <div class="widget-subtitle plugin-date">Loading...</div>
+                                <div class="widget-controls">                                
+                                    <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="left" title="Remove Widget"><span class="fa fa-times"></span></a>
+                                </div>                            
+                                <div class="widget-buttons widget-c3">
+                                    <div class="col">
+                                        <a href="#"><span class="fa fa-clock-o"></span></a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="#"><span class="fa fa-bell"></span></a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="#"><span class="fa fa-calendar"></span></a>
+                                    </div>
+                                </div>                            
+                            </div>                        
+                            <!-- END WIDGET CLOCK -->
+                            
                         </div>
                     </div>
-                    <div class="chart-info__right">
-                        <div class="chart-statis">
-                            <span class="index incre">
-                                <i class="zmdi zmdi-long-arrow-up"></i>25%</span>
-                            <span class="label">products</span>
-                        </div>
-                        <div class="chart-statis mr-0">
-                            <span class="index decre">
-                                <i class="zmdi zmdi-long-arrow-down"></i>10%</span>
-                            <span class="label">services</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="recent-report__chart">
-                    <canvas id="recent-rep-chart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="au-card chart-percent-card">
-            <div class="au-card-inner">
-                <h3 class="title-2 tm-b-5">char by %</h3>
-                <div class="row no-gutters">
-                    <div class="col-xl-6">
-                        <div class="chart-note-wrap">
-                            <div class="chart-note mr-0 d-block">
-                                <span class="dot dot--blue"></span>
-                                <span>products</span>
+                    <!-- END WIDGETS -->                    
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            
+                            <!-- START USERS ACTIVITY BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title-box">
+                                        <h3>Users Activity</h3>
+                                        <span>Users vs returning</span>
+                                    </div>                                    
+                                    <ul class="panel-controls" style="margin-top: 2px;">
+                                        <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                                        <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                                            </ul>                                        
+                                        </li>                                        
+                                    </ul>                                    
+                                </div>                                
+                                <div class="panel-body padding-0">
+                                    <div class="chart-holder" id="dashboard-bar-1" style="height: 200px;"></div>
+                                </div>                                    
                             </div>
-                            <div class="chart-note mr-0 d-block">
-                                <span class="dot dot--red"></span>
-                                <span>services</span>
+                            <!-- END USERS ACTIVITY BLOCK -->
+                            
+                        </div>
+                        <div class="col-md-4">
+                            
+                            <!-- START VISITORS BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title-box">
+                                        <h3>Visitors</h3>
+                                        <span>Visitors (last month)</span>
+                                    </div>
+                                    <ul class="panel-controls" style="margin-top: 2px;">
+                                        <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                                        <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                                            </ul>                                        
+                                        </li>                                        
+                                    </ul>
+                                </div>
+                                <div class="panel-body padding-0">
+                                    <div class="chart-holder" id="dashboard-donut-1" style="height: 200px;"></div>
+                                </div>
                             </div>
+                            <!-- END VISITORS BLOCK -->
+                            
                         </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="percent-chart">
-                            <canvas id="percent-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-9">
-        <h2 class="title-1 m-b-25">Earnings By Items</h2>
-        <div class="table-responsive table--no-card m-b-40">
-            <table class="table table-borderless table-striped table-earning">
-                <thead>
-                    <tr>
-                        <th>date</th>
-                        <th>order ID</th>
-                        <th>name</th>
-                        <th class="text-right">price</th>
-                        <th class="text-right">quantity</th>
-                        <th class="text-right">total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2018-09-29 05:57</td>
-                        <td>100398</td>
-                        <td>iPhone X 64Gb Grey</td>
-                        <td class="text-right">$999.00</td>
-                        <td class="text-right">1</td>
-                        <td class="text-right">$999.00</td>
-                    </tr>
-                    <tr>
-                        <td>2018-09-28 01:22</td>
-                        <td>100397</td>
-                        <td>Samsung S8 Black</td>
-                        <td class="text-right">$756.00</td>
-                        <td class="text-right">1</td>
-                        <td class="text-right">$756.00</td>
-                    </tr>
-                    <tr>
-                        <td>2018-09-27 02:12</td>
-                        <td>100396</td>
-                        <td>Game Console Controller</td>
-                        <td class="text-right">$22.00</td>
-                        <td class="text-right">2</td>
-                        <td class="text-right">$44.00</td>
-                    </tr>
-                    <tr>
-                        <td>2018-09-26 23:06</td>
-                        <td>100395</td>
-                        <td>iPhone X 256Gb Black</td>
-                        <td class="text-right">$1199.00</td>
-                        <td class="text-right">1</td>
-                        <td class="text-right">$1199.00</td>
-                    </tr>
-                    <tr>
-                        <td>2018-09-25 19:03</td>
-                        <td>100393</td>
-                        <td>USB 3.0 Cable</td>
-                        <td class="text-right">$10.00</td>
-                        <td class="text-right">3</td>
-                        <td class="text-right">$30.00</td>
-                    </tr>
-                    <tr>
-                        <td>2018-09-29 05:57</td>
-                        <td>100392</td>
-                        <td>Smartwatch 4.0 LTE Wifi</td>
-                        <td class="text-right">$199.00</td>
-                        <td class="text-right">6</td>
-                        <td class="text-right">$1494.00</td>
-                    </tr>
-                    <tr>
-                        <td>2018-09-24 19:10</td>
-                        <td>100391</td>
-                        <td>Camera C430W 4k</td>
-                        <td class="text-right">$699.00</td>
-                        <td class="text-right">1</td>
-                        <td class="text-right">$699.00</td>
-                    </tr>
-                    <tr>
-                        <td>2018-09-22 00:43</td>
-                        <td>100393</td>
-                        <td>USB 3.0 Cable</td>
-                        <td class="text-right">$10.00</td>
-                        <td class="text-right">3</td>
-                        <td class="text-right">$30.00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <h2 class="title-1 m-b-25">Top countries</h2>
-        <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
-            <div class="au-card-inner">
-                <div class="table-responsive">
-                    <table class="table table-top-countries">
-                        <tbody>
-                            <tr>
-                                <td>United States</td>
-                                <td class="text-right">$119,366.96</td>
-                            </tr>
-                            <tr>
-                                <td>Australia</td>
-                                <td class="text-right">$70,261.65</td>
-                            </tr>
-                            <tr>
-                                <td>United Kingdom</td>
-                                <td class="text-right">$46,399.22</td>
-                            </tr>
-                            <tr>
-                                <td>Turkey</td>
-                                <td class="text-right">$35,364.90</td>
-                            </tr>
-                            <tr>
-                                <td>Germany</td>
-                                <td class="text-right">$20,366.96</td>
-                            </tr>
-                            <tr>
-                                <td>France</td>
-                                <td class="text-right">$10,366.96</td>
-                            </tr>
-                            <tr>
-                                <td>Australia</td>
-                                <td class="text-right">$5,366.96</td>
-                            </tr>
-                            <tr>
-                                <td>Italy</td>
-                                <td class="text-right">$1639.32</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-6">
-        <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
-            <div class="au-card-title" style="background-image:url('images/bg-title-01.jpg');">
-                <div class="bg-overlay bg-overlay--blue"></div>
-                <h3>
-                    <i class="zmdi zmdi-account-calendar"></i>26 April, 2018</h3>
-                <button class="au-btn-plus">
-                    <i class="zmdi zmdi-plus"></i>
-                </button>
-            </div>
-            <div class="au-task js-list-load">
-                <div class="au-task__title">
-                    <p>Tasks for John Doe</p>
-                </div>
-                <div class="au-task-list js-scrollbar3">
-                    <div class="au-task__item au-task__item--danger">
-                        <div class="au-task__item-inner">
-                            <h5 class="task">
-                                <a href="#">Meeting about plan for Admin Template 2018</a>
-                            </h5>
-                            <span class="time">10:00 AM</span>
-                        </div>
-                    </div>
-                    <div class="au-task__item au-task__item--warning">
-                        <div class="au-task__item-inner">
-                            <h5 class="task">
-                                <a href="#">Create new task for Dashboard</a>
-                            </h5>
-                            <span class="time">11:00 AM</span>
-                        </div>
-                    </div>
-                    <div class="au-task__item au-task__item--primary">
-                        <div class="au-task__item-inner">
-                            <h5 class="task">
-                                <a href="#">Meeting about plan for Admin Template 2018</a>
-                            </h5>
-                            <span class="time">02:00 PM</span>
-                        </div>
-                    </div>
-                    <div class="au-task__item au-task__item--success">
-                        <div class="au-task__item-inner">
-                            <h5 class="task">
-                                <a href="#">Create new task for Dashboard</a>
-                            </h5>
-                            <span class="time">03:30 PM</span>
-                        </div>
-                    </div>
-                    <div class="au-task__item au-task__item--danger js-load-item">
-                        <div class="au-task__item-inner">
-                            <h5 class="task">
-                                <a href="#">Meeting about plan for Admin Template 2018</a>
-                            </h5>
-                            <span class="time">10:00 AM</span>
-                        </div>
-                    </div>
-                    <div class="au-task__item au-task__item--warning js-load-item">
-                        <div class="au-task__item-inner">
-                            <h5 class="task">
-                                <a href="#">Create new task for Dashboard</a>
-                            </h5>
-                            <span class="time">11:00 AM</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="au-task__footer">
-                    <button class="au-btn au-btn-load js-load-btn">load more</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
-            <div class="au-card-title" style="background-image:url('images/bg-title-02.jpg');">
-                <div class="bg-overlay bg-overlay--blue"></div>
-                <h3>
-                    <i class="zmdi zmdi-comment-text"></i>New Messages</h3>
-                <button class="au-btn-plus">
-                    <i class="zmdi zmdi-plus"></i>
-                </button>
-            </div>
-            <div class="au-inbox-wrap js-inbox-wrap">
-                <div class="au-message js-list-load">
-                    <div class="au-message__noti">
-                        <p>You Have
-                            <span>2</span>
 
-                            new messages
-                        </p>
-                    </div>
-                    <div class="au-message-list">
-                        <div class="au-message__item unread">
-                            <div class="au-message__item-inner">
-                                <div class="au-message__item-text">
-                                    <div class="avatar-wrap">
-                                        <div class="avatar">
-                                            <img src="images/icon/avatar-02.jpg" alt="John Smith">
-                                        </div>
-                                    </div>
-                                    <div class="text">
-                                        <h5 class="name">John Smith</h5>
-                                        <p>Have sent a photo</p>
-                                    </div>
+						<div class="col-md-4">
+                            
+                            <!-- START PROJECTS BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title-box">
+                                        <h3>Projects</h3>
+                                        <span>Projects activity</span>
+                                    </div>                                    
+                                    <ul class="panel-controls" style="margin-top: 2px;">
+                                        <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                                        <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                                            </ul>                                        
+                                        </li>                                        
+                                    </ul>
                                 </div>
-                                <div class="au-message__item-time">
-                                    <span>12 Min ago</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="au-message__item unread">
-                            <div class="au-message__item-inner">
-                                <div class="au-message__item-text">
-                                    <div class="avatar-wrap online">
-                                        <div class="avatar">
-                                            <img src="images/icon/avatar-03.jpg" alt="Nicholas Martinez">
-                                        </div>
+                                <div class="panel-body panel-body-table">
+                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th width="50%">Project</th>
+                                                    <th width="20%">Status</th>
+                                                    <th width="30%">Activity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Joli Admin</strong></td>
+                                                    <td><span class="label label-danger">Developing</span></td>
+                                                    <td>
+                                                        <div class="progress progress-small progress-striped active">
+                                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 85%;">85%</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Gemini</strong></td>
+                                                    <td><span class="label label-warning">Updating</span></td>
+                                                    <td>
+                                                        <div class="progress progress-small progress-striped active">
+                                                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">40%</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>                                                
+                                                <tr>
+                                                    <td><strong>Taurus</strong></td>
+                                                    <td><span class="label label-warning">Updating</span></td>
+                                                    <td>
+                                                        <div class="progress progress-small progress-striped active">
+                                                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 72%;">72%</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Leo</strong></td>
+                                                    <td><span class="label label-success">Support</span></td>
+                                                    <td>
+                                                        <div class="progress progress-small progress-striped active">
+                                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">100%</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Virgo</strong></td>
+                                                    <td><span class="label label-success">Support</span></td>
+                                                    <td>
+                                                        <div class="progress progress-small progress-striped active">
+                                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">100%</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>                                                
+                                                
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="text">
-                                        <h5 class="name">Nicholas Martinez</h5>
-                                        <p>You are now connected on message</p>
-                                    </div>
-                                </div>
-                                <div class="au-message__item-time">
-                                    <span>11:00 PM</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="au-message__item">
-                            <div class="au-message__item-inner">
-                                <div class="au-message__item-text">
-                                    <div class="avatar-wrap online">
-                                        <div class="avatar">
-                                            <img src="images/icon/avatar-04.jpg" alt="Michelle Sims">
-                                        </div>
-                                    </div>
-                                    <div class="text">
-                                        <h5 class="name">Michelle Sims</h5>
-                                        <p>Lorem ipsum dolor sit amet</p>
-                                    </div>
-                                </div>
-                                <div class="au-message__item-time">
-                                    <span>Yesterday</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="au-message__item">
-                            <div class="au-message__item-inner">
-                                <div class="au-message__item-text">
-                                    <div class="avatar-wrap">
-                                        <div class="avatar">
-                                            <img src="images/icon/avatar-05.jpg" alt="Michelle Sims">
-                                        </div>
-                                    </div>
-                                    <div class="text">
-                                        <h5 class="name">Michelle Sims</h5>
-                                        <p>Purus feugiat finibus</p>
-                                    </div>
-                                </div>
-                                <div class="au-message__item-time">
-                                    <span>Sunday</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="au-message__item js-load-item">
-                            <div class="au-message__item-inner">
-                                <div class="au-message__item-text">
-                                    <div class="avatar-wrap online">
-                                        <div class="avatar">
-                                            <img src="images/icon/avatar-04.jpg" alt="Michelle Sims">
-                                        </div>
-                                    </div>
-                                    <div class="text">
-                                        <h5 class="name">Michelle Sims</h5>
-                                        <p>Lorem ipsum dolor sit amet</p>
-                                    </div>
-                                </div>
-                                <div class="au-message__item-time">
-                                    <span>Yesterday</span>
+                                    
                                 </div>
                             </div>
-                        </div>
-                        <div class="au-message__item js-load-item">
-                            <div class="au-message__item-inner">
-                                <div class="au-message__item-text">
-                                    <div class="avatar-wrap">
-                                        <div class="avatar">
-                                            <img src="images/icon/avatar-05.jpg" alt="Michelle Sims">
-                                        </div>
-                                    </div>
-                                    <div class="text">
-                                        <h5 class="name">Michelle Sims</h5>
-                                        <p>Purus feugiat finibus</p>
-                                    </div>
-                                </div>
-                                <div class="au-message__item-time">
-                                    <span>Sunday</span>
-                                </div>
-                            </div>
+                            <!-- END PROJECTS BLOCK -->
+                            
                         </div>
                     </div>
-                    <div class="au-message__footer">
-                        <button class="au-btn au-btn-load js-load-btn">load more</button>
-                    </div>
-                </div>
-                <div class="au-chat">
-                    <div class="au-chat__title">
-                        <div class="au-chat-info">
-                            <div class="avatar-wrap online">
-                                <div class="avatar avatar--small">
-                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
+                    
+                    <div class="row">
+						<div class="col-md-8">
+                            
+                            <!-- START SALES BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title-box">
+                                        <h3>Sales</h3>
+                                        <span>Sales activity by period you selected</span>
+                                    </div>                                     
+                                    <ul class="panel-controls panel-controls-title">                                        
+                                        <li>
+                                            <div id="reportrange" class="dtrange">                                            
+                                                <span></span><b class="caret"></b>
+                                            </div>                                     
+                                        </li>                                
+                                        <li><a href="#" class="panel-fullscreen rounded"><span class="fa fa-expand"></span></a></li>
+                                    </ul>                                    
+                                    
+                                </div>
+                                <div class="panel-body">                                    
+                                    <div class="row stacked">
+                                        <div class="col-md-4">                                            
+                                            <div class="progress-list">                                               
+                                                <div class="pull-left"><strong>In Queue</strong></div>
+                                                <div class="pull-right">75%</div>                                                
+                                                <div class="progress progress-small progress-striped active">
+                                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 75%;">75%</div>
+                                                </div>
+                                            </div>
+                                            <div class="progress-list">                                               
+                                                <div class="pull-left"><strong>Shipped Products</strong></div>
+                                                <div class="pull-right">450/500</div>                                                
+                                                <div class="progress progress-small progress-striped active">
+                                                    <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">90%</div>
+                                                </div>
+                                            </div>
+                                            <div class="progress-list">                                               
+                                                <div class="pull-left"><strong class="text-danger">Returned Products</strong></div>
+                                                <div class="pull-right">25/500</div>                                                
+                                                <div class="progress progress-small progress-striped active">
+                                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 5%;">5%</div>
+                                                </div>
+                                            </div>
+                                            <div class="progress-list">                                               
+                                                <div class="pull-left"><strong class="text-warning">Progress Today</strong></div>
+                                                <div class="pull-right">75/150</div>                                                
+                                                <div class="progress progress-small progress-striped active">
+                                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
+                                                </div>
+                                            </div>
+                                            <p><span class="fa fa-warning"></span> Data update in end of each hour. You can update it manual by pressign update button</p>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div id="dashboard-map-seles" style="width: 100%; height: 200px"></div>
+                                        </div>
+                                    </div>                                    
                                 </div>
                             </div>
-                            <span class="nick">
-                                <a href="#">John Smith</a>
-                            </span>
+                            <!-- END SALES BLOCK -->
+                            
                         </div>
-                    </div>
-                    <div class="au-chat__content">
-                        <div class="recei-mess-wrap">
-                            <span class="mess-time">12 Min ago</span>
-                            <div class="recei-mess__inner">
-                                <div class="avatar avatar--tiny">
-                                    <img src="images/icon/avatar-02.jpg" alt="John Smith">
+						<div class="common-modal modal fade" id="common-Modal1" tabindex="-1" role="dialog" aria-hidden="true">
+							<div class="modal-content">
+								<ul class="list-inline item-details">
+									<li><a href="http://themifycloud.com/downloads/janux-premium-responsive-bootstrap-admin-dashboard-template/">Admin templates</a></li>
+									<li><a href="http://themescloud.org">Bootstrap themes</a></li>
+								</ul>
+							</div>
+						</div>
+                        
+                        <div class="col-md-4">
+                            
+                            <!-- START SALES & EVENTS BLOCK -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title-box">
+                                        <h3>Sales & Event</h3>
+                                        <span>Event "Purchase Button"</span>
+                                    </div>
+                                    <ul class="panel-controls" style="margin-top: 2px;">
+                                        <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+                                        <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                                                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                                            </ul>                                        
+                                        </li>                                        
+                                    </ul>
                                 </div>
-                                <div class="recei-mess-list">
-                                    <div class="recei-mess">Lorem ipsum dolor sit amet, consectetur adipiscing elit non iaculis</div>
-                                    <div class="recei-mess">Donec tempor, sapien ac viverra</div>
+                                <div class="panel-body padding-0">
+                                    <div class="chart-holder" id="dashboard-line-1" style="height: 200px;"></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="send-mess-wrap">
-                            <span class="mess-time">30 Sec ago</span>
-                            <div class="send-mess__inner">
-                                <div class="send-mess-list">
-                                    <div class="send-mess">Lorem ipsum dolor sit amet, consectetur adipiscing elit non iaculis</div>
-                                </div>
-                            </div>
+                            <!-- END SALES & EVENTS BLOCK -->
+                            
                         </div>
                     </div>
-                    <div class="au-chat-textfield">
-                        <form class="au-form-icon">
-                            <input class="au-input au-input--full au-input--h65" type="text" placeholder="Type a message">
-                            <button class="au-input-icon">
-                                <i class="zmdi zmdi-camera"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@stop
+                    
+                    <!-- START DASHBOARD CHART -->
+					<div class="chart-holder" id="dashboard-area-1" style="height: 200px;"></div>
+					<div class="block-full-width">
+                                                                       
+                    </div>                    
+                    <!-- END DASHBOARD CHART -->
+                    </div>  
+ @stop
