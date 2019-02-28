@@ -7,7 +7,11 @@ use App\User;
 use Illuminate\Support\Facades\Session;
 class LoginController extends Controller
 {
-    public function trelloLogin(){
+    public function trelloLogin(Request $request){
+        if($request->session()->exists('userinfo')) {
+            //dd( Session::get('userinfo'));
+            return redirect()->route('main-dashboard');
+        }
         return view('login/login');
     }
 
@@ -19,7 +23,7 @@ class LoginController extends Controller
         );
         $authUser=User::where('token',$requestdata['trello_token'])->first();
         if($authUser){
-            Session::put('userinfo', $authUser);
+            Session::put('userinfo', $authUser->toArray());
             return [
                 'success' => true,
                 'message' => 'login successfully'
@@ -53,7 +57,8 @@ class LoginController extends Controller
                 'email' => $return_data['email'],
                 'token' => $token
             ];
-            if(User::create($insert_data)){
+            if($user=User::create($insert_data)){
+                $insert_data['id']=$user->id;
                 Session::put('userinfo', $insert_data);
                 return true;
             }

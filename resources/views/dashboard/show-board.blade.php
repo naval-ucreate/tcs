@@ -15,13 +15,13 @@
             </tr>
         </thead>
         <tbody>
+            <?php $count = 1; ?>
+            @forelse ($userBoardsData as $userBoardsVal)            
             <tr class="tr-shadow">
-                <td>Lori Lynch</td>
-                <td>
-                    <span class="block-email">lori@example.com</span>
-                </td>
-                <td class="desc">Samsung S8 Black</td>
-                <td>2018-09-27 02:12</td>
+                <td>{{ $count++ }}</td>
+                <td>{{ $userBoardsVal->trello_board_id }}</td>
+                <td>{{ $userBoardsVal->name }}</td>
+                <td>{{ $userBoardsVal->name }}</td>
                 <td>
                     <div class="table-data-feature">
                         <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send">
@@ -39,7 +39,10 @@
                     </div>
                 </td>
             </tr>
-            <tr class="spacer"></tr>            
+            <tr class="spacer"></tr> 
+            @empty
+            <p>No users</p>
+            @endforelse           
         </tbody>
     </table>
 </div>

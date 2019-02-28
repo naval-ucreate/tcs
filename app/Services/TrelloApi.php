@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Session;
 
 class TrelloApi {
 
@@ -9,11 +10,12 @@ class TrelloApi {
     private $client;
     const ApiEndPoint='';
     private $token='';
+
     public function __construct(String $api_key){
         $this->api_key = $api_key;
         $this->client  =  new Client();
-        if(Session::get('userInfo')){
-            $this->token=Session::get('userInfo')->token;
+        if(Session::get('userinfo')){
+            $this->token=Session::get('userinfo')['token'];
         }
     }
 
@@ -29,9 +31,7 @@ class TrelloApi {
     }
 
 
-
-
-    public function getBoards(){
+    public function getUserBoards(){
         $url        = config("app.trello_api_end_point").'members/me/boards?key='.$this->api_key.'&token='.$this->token;
         $response   = $this->client->request('GET',$url);
         if($response->getStatusCode()==200){
@@ -39,14 +39,6 @@ class TrelloApi {
         }
         throw new Exception("Api end Error");
     }
-
-
-
-    public function GetList(String $boardId){
-        
-    }
-
-
 
 }
 
