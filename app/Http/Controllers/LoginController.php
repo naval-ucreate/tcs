@@ -57,7 +57,8 @@ class LoginController extends Controller
                 'email' => $return_data['email'],
                 'token' => $token
             ];
-            if(User::create($insert_data)){
+            if($user=User::create($insert_data)){
+                $insert_data['id']=$user->id;
                 Session::put('userinfo', $insert_data);
                 return true;
             }
