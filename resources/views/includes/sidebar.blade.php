@@ -26,7 +26,7 @@
                         <a href="index.html"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>                        
                     </li>
                     <li class="active">
-                        <a href="{{ route('show-board') }}"><span class="fa fa-desktop"></span> <span class="xn-text">Board</span></a>                        
+                        <a href="{{ route('show-board') }}"><span class="fa fa-desktop"></span> <span class="xn-text">Boards</span></a>                        
                     </li>                                      
                     <li class="xn-openable">
                         <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Pages</span></a>

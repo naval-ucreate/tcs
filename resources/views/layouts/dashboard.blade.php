@@ -13,8 +13,10 @@
             <ul class="breadcrumb">
                 <li><a href="#">Home</a></li>                    
                 <li class="active">Dashboard</li>
-            </ul>            
+            </ul>  
+                <div class="container">
                 @yield('content') 
+                </div>
         </div>            
     </div>
     @include('includes.footer')     
