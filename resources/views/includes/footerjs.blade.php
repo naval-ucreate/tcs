@@ -3,6 +3,12 @@
 <audio id="audio-fail" src="{{ URL::asset('jolly/audio/fail.mp3') }}" preload="auto"></audio>
 <!-- END PRELOADS -->                  
 
+<<<<<<< HEAD
+    <!-- Main JS-->
+    <script src="{{ URL::asset('cooladmin/js/main.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  
+=======
 <!-- START SCRIPTS -->
 <!-- START PLUGINS -->
 <script type="text/javascript" src="{{ URL::asset('jolly/js/plugins/jquery/jquery.min.js') }}"></script>
@@ -37,3 +43,4 @@
 <script type="text/javascript" src="{{ URL::asset('jolly/js/demo_dashboard.js') }}"></script>
 <!-- END TEMPLATE -->
 <!-- END SCRIPTS -->  
+>>>>>>> e9611a762f61108bd464bf5f22ad3871bb740c11

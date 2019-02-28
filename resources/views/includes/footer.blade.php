@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+<div class="row">
+    <div class="col-md-12">
+        <div class="copyright">
+            <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Ucreate</a>.</p>
+=======
 <!-- MESSAGE BOX-->
 <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
     <div class="mb-container">
@@ -13,6 +19,7 @@
                     <button class="btn btn-default btn-lg mb-control-close">No</button>
                 </div>
             </div>
+>>>>>>> e9611a762f61108bd464bf5f22ad3871bb740c11
         </div>
     </div>
 </div>

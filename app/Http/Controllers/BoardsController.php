@@ -28,7 +28,7 @@ class BoardsController extends Controller
                             ];                      
                 $this->addUpdateBoard($insertData);                              
             endforeach;
-            $userBoardsData = Board::where('user_id',$userInfo['id'])->get();  
+            $userBoardsData = Board::where('user_id','=',$userInfo['id'])->get();  
             return view('dashboard/show-board',compact('userBoardsData'));
         }
     }
@@ -45,4 +45,10 @@ class BoardsController extends Controller
         Board::create($insertData);        
         return true;
     }
+
+    public function distory(Board $board){
+        $board->delete();
+        return 1;
+    }
+
 }
