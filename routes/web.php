@@ -26,8 +26,7 @@ Route::get('/add-data-in-session','LoginController@addSession' )->name('add-sess
 Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::get('/dashboard','DashboardController@mainDashboard' )->name('main-dashboard');
     Route::get('/boards','BoardsController@showBoards' )->name('show-board');
-
-
+    Route::delete('/ajax_delete/{board}','BoardsController@distory');
     Route::get('/save-boards','BoardsController@saveBoards' )->name('save-board');
 });
 

@@ -6,6 +6,7 @@
     <meta name="keywords" content="au theme template">
     <!-- Title Page-->
     <title>@yield('pageTitle') - Trello Control Cecklist</title>
+    <meta name="_token" content="{{ csrf_token() }}">
     <!-- Fontfaces CSS-->
     <link href="{{ URL::asset('cooladmin/css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ URL::asset('cooladmin/vendor/font-awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet" media="all">

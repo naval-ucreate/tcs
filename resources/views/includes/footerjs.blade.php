@@ -21,3 +21,5 @@
 
     <!-- Main JS-->
     <script src="{{ URL::asset('cooladmin/js/main.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  

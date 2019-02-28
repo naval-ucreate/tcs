@@ -25,13 +25,11 @@
                 <td>{{ $userBoardsVal->name }}</td>
                 <td>
                     <div class="table-data-feature">
-                        <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send">
-                            <i class="zmdi zmdi-mail-send"></i>
-                        </button>
+                       
                         <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
                             <i class="zmdi zmdi-edit"></i>
                         </button>
-                        <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
+                        <button class="item delete_data" rel="{{$userBoardsVal->id}}" model="Board" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
                             <i class="zmdi zmdi-delete"></i>
                         </button>
                         <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
@@ -50,3 +48,4 @@
 <!-- END DATA TABLE -->
 </div>
 @stop
+<script src="{{url('js/script/board.js')}}"></script>
