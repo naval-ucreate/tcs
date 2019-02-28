@@ -37,7 +37,7 @@ class BoardsController extends Controller
     function addUpdateBoard($insertData){
         $authUserCount  =   Board::where('user_id',$insertData['user_id'])
                                 ->where('trello_board_id',$insertData['trello_board_id'])
-                                ->count();
+                                ->count(); 
         if($authUserCount>0){
             Board::where('trello_board_id',$insertData['trello_board_id'])->update($insertData);
             return true;
