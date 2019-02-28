@@ -1,4 +1,5 @@
 @extends('layouts.dashboard')
+@section('pageTitle', 'Boards')
 @section('content')
 <div class="col-md-12">
 <!-- DATA TABLE -->
