@@ -138,7 +138,7 @@
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">john doe</a>
+                                                        <a href="#">/a>
                                                     </h5>
                                                     <span class="email">johndoe@example.com</span>
                                                 </div>
