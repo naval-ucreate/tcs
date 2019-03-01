@@ -1,23 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
 @include('includes.head')
-</head>
 <body>
-   <div class="page-container">            
-        <div class="page-sidebar">
-        @include('includes.sidebar')
-        </div>
-        <div class="page-content"> 
-            @include('includes.header') 
+    <div class="page-container page-navigation-top fixed">            
+        <div class="page-content">
+             @include('includes.sidebar')
             <ul class="breadcrumb">
-                <li><a href="#">Home</a></li>                    
-                <li class="active">Dashboard</li>
-            </ul>            
+                    <li><a href="{{ route('main-dashboard') }}">Home</a></li>
+                    <li class="active">@yield('pageTitle')</a></li>
+            </ul> 
+            <div class="page-title">                    
+                    <h2><span class="fa fa-arrow-circle-o-left" onclick="window.history.back()" ></span> {!! session()->flash('previous-route', Route::current()->getName());  !!}</h2>
+            </div>
+            <div class="page-content-wrap animated slideInUp">             
                 @yield('content') 
+            </div>    
         </div>            
     </div>
-    @include('includes.footer')     
-    @include('includes.footerjs')
+      
+   
 </body>
 </html>
+@include('includes.footer')   
+@include('includes.commanjs')
