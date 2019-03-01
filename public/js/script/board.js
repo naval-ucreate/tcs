@@ -3,8 +3,7 @@
 window.addEventListener('load',function(){
    let _cross_token = $('meta[name="_token"]').attr('content');  
     $(document.body).on('click','.delete_data',function(){
-        let id=$(this).attr('rel');
-        let model=$(this).attr('model');
+        let id    =  $(this).attr('rel');
         swal({
             text: 'Are You sure want to delete this ?',
             content: "input",
@@ -46,4 +45,7 @@ window.addEventListener('load',function(){
                swal.close();
             })
     });
+    $(document.body).on('click','.update_data',function(){
+       console.log("test");
+    });   
 });

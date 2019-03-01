@@ -19,10 +19,12 @@
                                     </div>
                                     <div class="panel-body">
                                     {{ $userBoardsVal->name }}
-                                    </div>      
+                                    </div>     
+                         
                                     <div class="panel-footer">
+                                        <button class="btn btn-success pull-right update_data" rel="{{$userBoardsVal->id}}" model="Board" >Update</button>  
                                         <button class="btn btn-danger pull-right delete_data" rel="{{$userBoardsVal->id}}" model="Board" >Delete</button>
-                                    </div>                            
+                                    </div>                                                            
                                 </div>
                     
                         </div>
