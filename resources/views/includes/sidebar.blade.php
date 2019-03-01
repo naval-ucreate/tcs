@@ -22,10 +22,10 @@
                         </div>                                                                        
                     </li>
                     <li class="xn-title">Navigation</li>
-                    <li class="active">
+                    <li class="{{ Route::is('main-dashboard') ? 'active' : '' }}">
                         <a href="index.html"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>                        
                     </li>
-                    <li class="active">
+                    <li class="{{ Route::is('show-board') ? 'active' : '' }}">
                         <a href="{{ route('show-board') }}"><span class="fa fa-desktop"></span> <span class="xn-text">Boards</span></a>                        
                     </li>                                      
                     <li class="xn-openable">
