@@ -55,7 +55,9 @@ class LoginController extends Controller
                 'confirmed' => $return_data['confirmed'],
                 'memberType' => $return_data['memberType'],
                 'email' => $return_data['email'],
-                'token' => $token
+                'token' => $token,
+                'total_board' => count($return_data['idBoards']),
+                'last_api_hit' => strtotime('+24 hours',time())
             ];
             if($user=User::create($insert_data)){
                 $insert_data['id']=$user->id;

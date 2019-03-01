@@ -16,21 +16,43 @@ class BoardsController extends Controller
     public function showBoards(){
         $userInfo    =    Session::get('userinfo');
         $oAuthToken  =    $userInfo['token'];
-        $boardsData  =    app('trello')->getUserBoards();
-        if(count($boardsData)){
-            foreach($boardsData as $boardVal):
-                $insertData = [
-                                'trello_user_id'=>$userInfo['trello_id'],
-                                'user_id'=>$userInfo['id'],
-                                'name'=> $boardVal['name'],
-                                'image'=> $boardVal['prefs']['backgroundImage'],
-                                'trello_board_id'=> $boardVal['id'],
-                                'members'=> json_encode($boardVal['memberships'])
-                            ];                      
-                $this->addUpdateBoard($insertData);                              
-            endforeach;
-            $userBoardsData = Board::where('user_id','=',$userInfo['id'])->get();  
-            return view('dashboard/show-board',compact('userBoardsData'));
+        $userBoardsData = Board::where('user_id','=',$userInfo['id'])->get();
+        if(!count($userBoardsData->toArray())){
+            if($userInfo['total_board']>0){
+                $boardsData  =    app('trello')->getUserBoards();
+                if(count($boardsData)){
+                    foreach($boardsData as $boardVal):
+                        $insertData[] = [
+                                        'trello_user_id'=>$userInfo['trello_id'],
+                                        'user_id'=>$userInfo['id'],
+                                        'name'=> $boardVal['name'],
+                                        'image'=> $boardVal['prefs']['backgroundImage'],
+                                        'trello_board_id'=> $boardVal['id'],
+                                        'backgroundImage' => $boardVal['prefs']['backgroundImage'],
+                                        'backgroundTile' => $boardVal['prefs']['backgroundTile'],
+                                        'backgroundBrightness' => $boardVal['prefs']['backgroundBrightness'],
+                                        'backgroundBottomColor' => $boardVal['prefs']['backgroundBottomColor'],
+                                        'backgroundTopColor' => $boardVal['prefs']['backgroundTopColor'],
+                                        'canBePublic' => $boardVal['prefs']['canBePublic'],
+                                        'canBeEnterprise' => $boardVal['prefs']['canBeEnterprise'],
+                                        'canBeOrg' => $boardVal['prefs']['canBeOrg'],
+                                        'canBePrivate' => $boardVal['prefs']['canBePrivate'],
+                                        'canInvite' => $boardVal['prefs']['canInvite'],
+                                        'members'=> json_encode($boardVal['memberships']),
+                                        'total_members' => count($boardVal['memberships'])
+                                    ];                                               
+                    endforeach;
+                    $userBoardsData   =  $this->store($insertData);
+                    return view('dashboard/show-board',compact('userBoardsData'));
+                }
+            }
+        } 
+        return view('dashboard/show-board',compact('userBoardsData'));
+    }
+
+    public function store(Array $data){
+        if(Board::insert($data)){
+            return Board::where('user_id','=',$userInfo['id'])->get();  
         }
     }
 
@@ -64,7 +86,8 @@ class BoardsController extends Controller
     }
 
     public function TrelloList(String $id){
-        
+        $board=Board::where('trello_board_id','=',$id)->first();
+        return view('dashboard/trelloList',compact('board'));
     }
 
 

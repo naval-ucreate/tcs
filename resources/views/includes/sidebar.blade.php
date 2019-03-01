@@ -9,7 +9,7 @@
                     <li class="xn-openable {{ Route::is('show-board') ? 'active' : '' }}">    
                         <a href="{{route('show-board')}}"><span class="fa fa-book"></span> <span class="xn-text">Boards</span></a>
                     </li>
-                    <li class="xn-openable">       
+                    <li class="xn-openable {{ Route::is('lists') ? 'active' : '' }}">       
                         <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Lists</span></a>
                     </li>
                     <li class="xn-openable">           

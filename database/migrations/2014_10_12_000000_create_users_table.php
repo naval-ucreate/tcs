@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('trello_url');
             $table->string('memberType');
             $table->boolean('confirmed');
+            $table->integer('total_board')->nullable();
+            $table->integer('last_api_hit')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken()->nullable();

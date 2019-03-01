@@ -10,15 +10,13 @@
     <div class="row ">
             @forelse ($userBoardsData as $userBoardsVal)   
             <div class="col-md-4">       
-                <div class="panel panel-info">
-                            <div class="panel-heading ui-draggable-handle">
-                                <h3 class="panel-title"><a style="color:skyblue" href="list/{{$userBoardsVal->trello_board_id}}" >{{ $userBoardsVal->name }}</a></h3>
-                                <button class="btn btn-info pull-right delete_data">Members</button>
-                            </div>
-                            <div class="panel-body">
-                                {{ $userBoardsVal->name }}
-                            </div>      
-                            <div class="panel-footer">
+                <div class="panel panel-info"  >
+                            <a href="{{route('lists',[$userBoardsVal->trello_board_id])}}">
+                                <div class="panel-body" style='height:100px;{{ ($userBoardsVal->backgroundImage) ? "background-image:url($userBoardsVal->backgroundImage)" : "background-color: rgb(0, 121, 191);"}}' >
+                                <h3 style="color:white"> <center> {{ $userBoardsVal->name }} </center> </h3>
+                                </div>
+                            </a>      
+                            <div class="panel-footer footer-info" style='{{ ($userBoardsVal->backgroundImage) ? "background-image:url($userBoardsVal->backgroundImage)" : "background-color: rgb(0, 121, 191);"}}'>
                                 <button class="btn btn-primary pull-center delete_data">Edit</button>
                                 
                                 <button class="btn btn-danger pull-right delete_data" rel="{{$userBoardsVal->id}}" model="Board" >Delete</button>
