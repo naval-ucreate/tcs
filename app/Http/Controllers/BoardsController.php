@@ -63,5 +63,9 @@ class BoardsController extends Controller
         dd($client);
     }
 
+    public function TrelloList(String $id){
+        
+    }
+
 
 }

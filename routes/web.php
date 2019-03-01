@@ -29,6 +29,7 @@ Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::delete('/ajax_delete/{board}','BoardsController@distory');
     Route::get('/save-boards','BoardsController@saveBoards' )->name('save-board');
     Route::get('/update-board','BoardsController@updateBoard' )->name('update-board');
+    Route::get('/TrelloList/{id}','BoardsController@list' )->name('list');
 });
 
 
