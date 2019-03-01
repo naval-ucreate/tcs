@@ -52,6 +52,7 @@ class BoardsController extends Controller
 
     public function store(Array $data){
         if(Board::insert($data)){
+            $userInfo    =    Session::get('userinfo');
             return Board::where('user_id','=',$userInfo['id'])->get();  
         }
     }
