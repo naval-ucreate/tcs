@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Board;
 use Illuminate\Support\Facades\Session;
+use Trello\Client;
 use GuzzleHttp\Client as HttpClient;
 class BoardsController extends Controller
 {
@@ -50,5 +51,17 @@ class BoardsController extends Controller
         $board->delete();
         return 1;
     }
+
+    public function updateBoard(){
+        $boardId    =   '5c6bb49e2b175466e1f763a1';
+        $name       =   'test11';
+        $client     =   new Client();
+        $userInfo   =   Session::get('userinfo');
+        $oAuthToken =   $userInfo['token'];
+        $client->authenticate(config('app.trello_key'), $oAuthToken, Client::AUTH_URL_CLIENT_ID);
+        $client->boards()->setName($boardId, $name);
+        dd($client);
+    }
+
 
 }
