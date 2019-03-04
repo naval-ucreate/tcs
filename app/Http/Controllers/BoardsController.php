@@ -13,12 +13,22 @@ class BoardsController extends Controller
     public function showBoards1(){
         return view('dashboard/show-board');
     }
-    public function getDataFromApi(Array $dbBoard){    
+    public function getDataFromApi(){ 
+        
+            $userInfo    =    Session::get('userinfo');
+            $userBoardsData = Board::where('user_id','=',$userInfo['id'])->get()->toArray();
+            echo "<pre>";
+             print_R($userBoardsData);
+            echo "</pre>";
+            die();
             $boardsData     = app('trello')->getUserBoards(
                 [
                     'fields' => 'id'
                 ]
             );
+
+
+
             foreach($dbBoard as $key => $val){
                 if(!in_array($val)){
                     // add the data in db 
