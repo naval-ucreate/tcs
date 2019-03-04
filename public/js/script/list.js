@@ -4,13 +4,16 @@ window.addEventListener('load',function(){
     if(typeof data ==='string'){
         data=JSON.parse(data);
         if(data.backgroundImage){
-            //$("#_contest_").css('background','url('+data.backgroundImage+')');
             $(".listing_view").css('background','url('+data.backgroundImage+')');
+            $("h3").css('color','white','!important');
         }
     }
-    
+    let all_task_id='';
+    $('.tasks').attr('id',function(key,val){
+        all_task_id+='#'+val+",";
+    });
+    console.log(all_task_id.slice('0','-1'));
     var tasks = function(){
-        
         $("#add_new_task").on("click",function(){
             var nt = $("#new_task").val();
             if(nt != ''){
@@ -26,17 +29,20 @@ window.addEventListener('load',function(){
             }            
         });
         
-        $("#tasks,#tasks_progreess,#tasks_completed").sortable({
+        $(all_task_id.slice('0','-1')).sortable({
             items: "> .task-item",
-            connectWith: "#tasks_progreess,#tasks_completed",
+            connectWith: all_task_id.slice('0','-1'),
             handle: ".task-text",            
             receive: function(event, ui) {
-                if(this.id == "tasks_completed"){
-                    ui.item.addClass("task-complete").find(".task-footer > .pull-right").remove();
-                }
-                if(this.id == "tasks_progreess"){
-                    ui.item.find(".task-footer").append('<div class="pull-right"><span class="fa fa-play"></span> 00:00</div>');
-                }                
+                $('.tasks').attr('id',function(key,val){
+                    if(this.id == val){
+                        ui.item.addClass("task-complete").find(".task-footer > .pull-right").remove();
+                    }
+                });
+               
+                // if(this.id == "tasks_progreess"){
+                //     ui.item.find(".task-footer").append('<div class="pull-right"><span class="fa fa-play"></span> 00:00</div>');
+                // }                
                 page_content_onresize();
             }
         }).disableSelection();

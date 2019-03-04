@@ -1,7 +1,9 @@
 @extends('layouts.dashboard')
 @section('pageTitle', 'Lists')
 @section('content')
-    <div id="board_data" rel='{{json_encode($board)}}'> </div>
+    <?php   $backgroud_image=json_encode($list_data['prefs']);  ?>
+
+    <div id="board_data" rel='{{$backgroud_image}}'> </div>
     <div class="content-frame listing_view">     
                     <!-- START CONTENT FRAME TOP -->
                               
@@ -41,7 +43,7 @@
                         </div>
                         <div class="form-group">
                             <h4>Tags:</h4>
-                            <ul class="list-tags">
+                            <!-- <ul class="list-tags">
                                 <li><a href="#"><span class="fa fa-tag"></span> amet</a></li>
                                 <li><a href="#"><span class="fa fa-tag"></span> rutrum</a></li>
                                 <li><a href="#"><span class="fa fa-tag"></span> nunc</a></li>
@@ -49,7 +51,7 @@
                                 <li><a href="#"><span class="fa fa-tag"></span> eros</a></li>
                                 <li><a href="#"><span class="fa fa-tag"></span> suspendisse</a></li>
                                 <li><a href="#"><span class="fa fa-tag"></span> dolor</a></li>
-                            </ul>                            
+                            </ul>                             -->
                         </div>
                         
                     </div>       
@@ -58,12 +60,14 @@
                     <!-- START CONTENT FRAME BODY -->
                     <div class="content-frame-body listing_view">
                                                 
-                        <div class="row push-up-10">
+                        <div class="row">
+                            @foreach($list_data['lists'] as $list)
+                           
                             <div class="col-md-4">
                                 
-                                <h3>To-do List</h3>
+                                <h3>{{$list['name']}}</h3>
                                 
-                                <div class="tasks" id="tasks">
+                                <div class="tasks" id="{{$list['id']}}">
 
                                     <div class="task-item task-primary">                                    
                                         <div class="task-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris rutrum velit vel erat fermentum, a dignissim dolor malesuada.</div>
@@ -79,73 +83,12 @@
                                             <div class="pull-right"><a href="#"><span class="fa fa-chain"></span></a> <a href="#"><span class="fa fa-comments"></span></a></div>
                                         </div>                                    
                                     </div>
-
-                                    <div class="task-item task-warning">                                    
-                                        <div class="task-text">Donec lacus lacus, iaculis nec pharetra id, congue ut tortor. Donec tincidunt luctus metus eget rhoncus.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 1day ago</div>
-                                        </div>                                    
-                                    </div>
-
-                                    <div class="task-item task-danger">                                    
-                                        <div class="task-text">Pellentesque faucibus molestie lectus non efficitur. Vestibulum mattis dignissim diam, eget dapibus urna rutrum vitae.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 2days ago</div>
-                                            <div class="pull-right"><a href="#"><span class="fa fa-chain"></span></a> <a href="#"><span class="fa fa-comments"></span></a></div>
-                                        </div>                                    
-                                    </div>
-
-                                    <div class="task-item task-info">                                    
-                                        <div class="task-text">Quisque quis ipsum quis magna bibendum laoreet.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 3days ago</div>
-                                            <div class="pull-right"><a href="#"><span class="fa fa-chain"></span></a> <a href="#"><span class="fa fa-comments"></span></a></div>
-                                        </div>                                    
-                                    </div>
-                                    
                                 </div>                            
 
                             </div>
-                            <div class="col-md-4">
-                                <h3>In Progress</h3>
-                                <div class="tasks" id="tasks_progreess">
-
-                                    <div class="task-item task-warning">
-                                        <div class="task-text">In mauris nunc, blandit a turpis in, vehicula viverra metus. Quisque dictum purus lorem, in rhoncus justo dapibus eget. Aenean pretium non mauris et porttitor.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 2h 55min</div>
-                                            <div class="pull-right"><span class="fa fa-pause"></span> 4:51</div>
-                                        </div>                                    
-                                    </div>                            
-                                    
-                                    <div class="task-drop push-down-10">
-                                        <span class="fa fa-cloud"></span>
-                                        Drag your task here to start it tracking time
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <h3>Completed</h3>
-                                <div class="tasks" id="tasks_completed">
-                                    <div class="task-item task-danger task-complete">                                    
-                                        <div class="task-text">Donec maximus sodales feugiat.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 15min</div>                                    
-                                        </div>                                    
-                                    </div>
-                                    <div class="task-item task-info task-complete">                                    
-                                        <div class="task-text">Aliquam eget est a dui tincidunt commodo in nec ante.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 35min</div>                                    
-                                        </div>                                    
-                                    </div>
-                                    <div class="task-drop">
-                                        <span class="fa fa-cloud"></span>
-                                        Drag your task here to finish it
-                                    </div>                                    
-                                </div>
-                            </div>
+                            @endforeach;
+                        
+                            
                         </div>    
                           
                                                 

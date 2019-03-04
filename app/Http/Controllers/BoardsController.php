@@ -12,15 +12,11 @@ use GuzzleHttp\Client as HttpClient;
 class BoardsController extends Controller
 {
  
-    public function showBoards1(){
-        return view('dashboard/show-board');
-    }
-
     /**
      * 
      */
 
-    public function CheckBoards(Array $user_boards_data){         
+    public function checkBoards(Array $user_boards_data){         
             $user_info    =    Session::get('userinfo');
             $trello_board_ids   =   array_column($user_boards_data,'trello_board_id');
             $trello_boards      =   app('trello')->getUserBoards();          
@@ -112,7 +108,7 @@ class BoardsController extends Controller
          */
 
         if(time()>$user_info['last_api_hit']){
-            $user_boards =   $this->CheckBoards($user_boards->toArray());
+            $user_boards =   $this->checkBoards($user_boards->toArray());
         }
         return view('dashboard/show-board',compact('user_boards'));
     }
@@ -123,9 +119,6 @@ class BoardsController extends Controller
             return Board::where('user_id','=',$userInfo['id'])->get();  
         }
     }
-
-
-    
 
     public function distory(Board $board){
         $board->delete();
@@ -146,8 +139,7 @@ class BoardsController extends Controller
     public function TrelloList(String $id){
         //$board=Board::where('trello_board_id','=',$id)->first();
         $list_data=app('trello')->GetBoardList($id);
-        dd($list_data);
-        return view('dashboard/trelloList',compact('board'));  
+        return view('dashboard/trelloList',compact('list_data'));  
     }
 
 
