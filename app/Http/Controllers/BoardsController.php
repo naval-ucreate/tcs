@@ -13,6 +13,28 @@ class BoardsController extends Controller
     public function showBoards1(){
         return view('dashboard/show-board');
     }
+    public function getDataFromApi(Array $dbBoard){    
+            $boardsData     = app('trello')->getUserBoards(
+                [
+                    'fields' => 'id'
+                ]
+            );
+            foreach($dbBoard as $key => $val){
+                if(!in_array($val)){
+                    // add the data in db 
+                }
+            }
+
+            foreach($boardsData as $key){
+                if(!in_array()){
+                    // delete that id 
+                }
+            }
+            // again write the query and return the data.
+        
+        
+
+    }
     public function showBoards(){
         $userInfo    =    Session::get('userinfo');
         $oAuthToken  =    $userInfo['token'];
@@ -47,6 +69,10 @@ class BoardsController extends Controller
                 }
             }
         } 
+       
+        if(time()>$userInfo['last_api_hit']){
+            $userBoardsData=$this->getDataFromApi($userBoardsData->toArray());
+        }
         return view('dashboard/show-board',compact('userBoardsData'));
     }
 
