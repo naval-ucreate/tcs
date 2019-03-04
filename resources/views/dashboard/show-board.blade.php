@@ -8,18 +8,18 @@
    </div> 
    <div class="panel-body"> 
     <div class="row ">
-            @forelse ($userBoardsData as $userBoardsVal)   
+            @forelse ($user_boards as $user_boards_val)   
             <div class="col-md-4">       
                 <div class="panel panel-info"  >
-                            <a href="{{route('lists',[$userBoardsVal->trello_board_id])}}">
-                                <div class="panel-body" style='height:100px;{{ ($userBoardsVal->backgroundImage) ? "background-image:url($userBoardsVal->backgroundImage)" : "background-color: rgb(0, 121, 191);"}}' >
-                                <h3 style="color:white"> <center> {{ $userBoardsVal->name }} </center> </h3>
+                            <a href="{{route('lists',[$user_boards_val->trello_board_id])}}">
+                                <div class="panel-body" style='height:100px;{{ ($user_boards_val->background_image) ? "background-image:url($user_boards_val->background_image)" : "background-color: rgb(0, 121, 191);"}}' >
+                                <h3 style="color:white"> <center> {{ $user_boards_val->name }} </center> </h3>
                                 </div>
                             </a>      
-                            <div class="panel-footer footer-info" style='{{ ($userBoardsVal->backgroundImage) ? "background-image:url($userBoardsVal->backgroundImage)" : "background-color: rgb(0, 121, 191);"}}'>
+                            <div class="panel-footer footer-info" style='{{ ($user_boards_val->background_image) ? "background-image:url($user_boards_val->background_image)" : "background-color: rgb(0, 121, 191);"}}'>
                                 <button class="btn btn-primary pull-center delete_data">Edit</button>
                                 
-                                <button class="btn btn-danger pull-right delete_data" rel="{{$userBoardsVal->id}}" model="Board" >Delete</button>
+                                <button class="btn btn-danger pull-right delete_data" rel="{{$user_boards_val->id}}" model="Board" >Delete</button>
                             </div>                            
                         </div>
 
