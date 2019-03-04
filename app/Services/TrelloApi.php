@@ -43,7 +43,7 @@ class TrelloApi {
     }
 
     public function GetBoardList(String $board_id,Array $option=[]){
-        $url        = config("app.trello_api_end_point").'boards/'.$board_id.'?key='.$this->api_key.'&token='.$this->token.'&fields=all&lists=all&list_fields=all';
+        $url        = config("app.trello_api_end_point").'boards/'.$board_id.'?key='.$this->api_key.'&token='.$this->token;
         $url       .= "&fields=all&lists=all&list_fields=all";
         $response   = $this->client->request('GET',$url);
         if($response->getStatusCode()==200){
