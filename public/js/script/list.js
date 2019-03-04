@@ -8,7 +8,7 @@ window.addEventListener('load',function(){
             $(".listing_view").css('background','url('+data.backgroundImage+')');
         }
     }
-
+    
     var tasks = function(){
         
         $("#add_new_task").on("click",function(){

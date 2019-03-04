@@ -7,6 +7,7 @@ use App\Models\Board;
 use Illuminate\Support\Facades\Session;
 use Trello\Client;
 use GuzzleHttp\Client as HttpClient;
+use App\Models\User;
 class BoardsController extends Controller
 {
  
@@ -20,7 +21,7 @@ class BoardsController extends Controller
             $add_new_board      =   []; 
             $del_old_board      =   []; 
             foreach($trello_boards as $trello_boards_val){
-                  if(!in_array($boardVal['id'],$trello_board_ids)){
+                  if(!in_array($trello_boards_val['id'],$trello_board_ids)){
                     $add_new_board[] = [
                         'trello_user_id'=>$user_info['trello_id'],
                         'user_id'=>$user_info['id'],
@@ -42,7 +43,7 @@ class BoardsController extends Controller
                     ];  
                }
             }           
-            if(count($add_new_board>0)){
+            if(count($add_new_board)>0){
                 $this->store($add_new_board);
             }
           
@@ -51,10 +52,15 @@ class BoardsController extends Controller
                     $del_old_board[]=$trello_board_val;
                 }
             }
-            if(count($del_old_board>0)){
+            if(count($del_old_board)>0){
                 Board::whereIn('trello_board_id','=',$del_old_board)->delete();
-            }            
-            $user_boards_data    =   Board::where('user_id','=',$user_boards_data['id'])->get()->toArray();
+            }
+            $user_info    =    Session::get('userinfo');
+            $user_info['last_api_hit']=strtotime("+24 hour",time()); // for add the 24 hr in current time.
+            $user_info['total_board']=count($trello_boards);
+            Session::put('userinfo', $user_info);
+            User::where('id','=',$user_info['id'])->update($user_info);
+            $user_boards_data    =   Board::where('user_id','=',$user_info['id'])->get()->toArray();
             return $user_boards_data;  
     }
     public function showBoards(){
@@ -134,9 +140,10 @@ class BoardsController extends Controller
     }
 
     public function TrelloList(String $id){
-        $board=Board::where('trello_board_id','=',$id)->first();
-        return view('dashboard/trelloList',compact('board'));
-        
+        //$board=Board::where('trello_board_id','=',$id)->first();
+        $list_data=app('trello')->GetBoardList($id);
+        dd($list_data);
+        return view('dashboard/trelloList',compact('board'));  
     }
 
 
