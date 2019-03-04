@@ -56,6 +56,7 @@ class BoardsController extends Controller
                 Board::whereIn('trello_board_id','=',$del_old_board)->delete();
             }    
             //1551780402 
+            
             $insertData     =     ['last_api_hit' => strtotime('+24 hours',time())];
             if($user=User::where('id',$user_info['id'])->update($insertData)){
                   $user_info = User::where('id',$user_info['id'])->get()->toArray();
