@@ -71,9 +71,9 @@ class BoardsController extends Controller
             }
         } 
        
-        if(time()>$userInfo['last_api_hit']){
-            $userBoardsData=$this->getDataFromApi($userBoardsData->toArray());
-        }
+        // if(time()>$userInfo['last_api_hit']){
+        //     $userBoardsData=$this->getDataFromApi($userBoardsData->toArray());
+        // }
         return view('dashboard/show-board',compact('userBoardsData'));
     }
 

@@ -42,7 +42,7 @@ class TrelloApi {
         throw new Exception("Api end Error");
     }
 
-    public function GetBoardList(String $board_id){
+    public function GetBoardList(String $board_id,Array $option=[]){
         $url        = config("app.trello_api_end_point").'boards/'.$board_id.'?key='.$this->api_key.'&token='.$this->token.'&fields=all&lists=all&list_fields=all';
         $url       .= "&fields=all&lists=all&list_fields=all";
         $response   = $this->client->request('GET',$url);
