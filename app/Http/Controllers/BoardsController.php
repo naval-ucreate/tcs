@@ -13,12 +13,13 @@ class BoardsController extends Controller
     public function showBoards1(){
         return view('dashboard/show-board');
     }
-    public function getDataFromApi(Array $dbBoard){    
+    public function getDataFromApi(Array $dbBoard=[]){    
             $boardsData     = app('trello')->getUserBoards(
                 [
                     'fields' => 'id'
                 ]
             );
+            return  $boardsData ;
             foreach($dbBoard as $key => $val){
                 if(!in_array($val)){
                     // add the data in db 
@@ -115,7 +116,7 @@ class BoardsController extends Controller
     public function TrelloList(String $id){
         $board=Board::where('trello_board_id','=',$id)->first();
         return view('dashboard/trelloList',compact('board'));
-        
+
     }
 
 
