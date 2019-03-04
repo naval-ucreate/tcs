@@ -16,7 +16,12 @@ class BoardsController extends Controller
         return view('dashboard/show-board');
     }
 
-    public function getDataFromApi(Array $user_boards_data,Array $user_info){         
+    /**
+     * 
+     */
+
+    public function CheckBoards(Array $user_boards_data){         
+            $user_info    =    Session::get('userinfo');
             $trello_board_ids   =   array_column($user_boards_data,'trello_board_id');
             $trello_boards      =   app('trello')->getUserBoards();          
             $add_new_board      =   []; 
@@ -55,14 +60,15 @@ class BoardsController extends Controller
             }
             if(count($del_old_board)>0){
                 Board::whereIn('trello_board_id','=',$del_old_board)->delete();
-            }
-            $user_info    =    Session::get('userinfo');
+            }    
+            
             $user_info['last_api_hit']=strtotime("+24 hour",time()); // for add the 24 hr in current time.
-            $user_info['total_board']=count($trello_boards);
-            Session::put('userinfo', $user_info);
-            User::where('id','=',$user_info['id'])->update($user_info);
-            $user_boards_data    =   Board::where('user_id','=',$user_info['id'])->get()->toArray();
-            return $user_boards_data;  
+            $user_info['total_board']=count($trello_boards); // update the total boards in session 
+            Session::put('userinfo', $user_info); // update userinfo current user info
+            User::where('id','=',$user_info['id'])->update($user_info); // update user info in db.
+
+            $user_boards_data    =   Board::where('user_id','=',$user_info['id'])->get()->toArray(); // get all update boards.
+            return $user_boards_data;  // return array 
     }
     public function showBoards(){
         $user_info      = Session::get('userinfo');
@@ -97,9 +103,16 @@ class BoardsController extends Controller
                 }
             }
         } 
+
+        /**
+         * check new board after every 24 hr .
+         * If any board delete and update on trello then update and delete in local db.
+         * @param Array
+         * @return Array
+         */
+
         if(time()>$user_info['last_api_hit']){
-         
-            $user_boards =   $this->getDataFromApi($user_boards->toArray(),$user_info);
+            $user_boards =   $this->CheckBoards($user_boards->toArray());
         }
         return view('dashboard/show-board',compact('user_boards'));
     }
@@ -112,17 +125,7 @@ class BoardsController extends Controller
     }
 
 
-    function addUpdateBoard($insertData){
-        $authUserCount  =   Board::where('user_id',$insertData['user_id'])
-                                ->where('trello_board_id',$insertData['trello_board_id'])
-                                ->count(); 
-        if($authUserCount>0){
-            Board::where('trello_board_id',$insertData['trello_board_id'])->update($insertData);
-            return true;
-        }
-        Board::create($insertData);        
-        return true;
-    }
+    
 
     public function distory(Board $board){
         $board->delete();
