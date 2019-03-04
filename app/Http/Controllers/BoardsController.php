@@ -13,91 +13,88 @@ class BoardsController extends Controller
     public function showBoards1(){
         return view('dashboard/show-board');
     }
-    public function getDataFromApi(Array $userBoardsData){         
-            //$userInfo       =   Session::get('userinfo');
-            //$db_board        =   Board::where('user_id','=',$userInfo['id'])->get()->toArray();
-            $dbBoardIds     =   array_column($userBoardsData,'trello_board_id');
-            $boardsData     =   app('trello')->getUserBoards();          
-            $add_new_board  =   []; 
-            $del_old_board  =   []; 
-            foreach($boardsData as $boardVal){
-                  if(!in_array($boardVal['id'],$dbBoardIds)){
-                    $add_new_board[]=[
-                        'trello_user_id'=>$userInfo['trello_id'],
-                        'user_id'=>$userInfo['id'],
-                        'name'=> $boardVal['name'],
-                        'image'=> $boardVal['prefs']['backgroundImage'],
-                        'trello_board_id'=> $boardVal['id'],
-                        'backgroundImage' => $boardVal['prefs']['backgroundImage'],
-                        'backgroundTile' => $boardVal['prefs']['backgroundTile'],
-                        'backgroundBrightness' => $boardVal['prefs']['backgroundBrightness'],
-                        'backgroundBottomColor' => $boardVal['prefs']['backgroundBottomColor'],
-                        'backgroundTopColor' => $boardVal['prefs']['backgroundTopColor'],
-                        'canBePublic' => $boardVal['prefs']['canBePublic'],
-                        'canBeEnterprise' => $boardVal['prefs']['canBeEnterprise'],
-                        'canBeOrg' => $boardVal['prefs']['canBeOrg'],
-                        'canBePrivate' => $boardVal['prefs']['canBePrivate'],
-                        'canInvite' => $boardVal['prefs']['canInvite'],
-                        'members'=> json_encode($boardVal['memberships']),
-                        'total_members' => count($boardVal['memberships'])
-                    ];      
+
+    public function getDataFromApi(Array $user_boards_data){         
+            $trello_board_ids   =   array_column($user_boards_data,'trello_board_id');
+            $trello_boards      =   app('trello')->getUserBoards();          
+            $add_new_board      =   []; 
+            $del_old_board      =   []; 
+            foreach($trello_boards as $trello_boards_val){
+                  if(!in_array($boardVal['id'],$trello_board_ids)){
+                    $add_new_board[] = [
+                        'trello_user_id'=>$user_info['trello_id'],
+                        'user_id'=>$user_info['id'],
+                        'name'=> $trello_boards_val['name'],
+                        'image'=> $trello_boards_val['prefs']['backgroundImage'],
+                        'trello_board_id'=> $trello_boards_val['id'],
+                        'background_image' => $trello_boards_val['prefs']['backgroundImage'],
+                        'background_tile' => $trello_boards_val['prefs']['backgroundTile'],
+                        'background_brightness' => $trello_boards_val['prefs']['backgroundBrightness'],
+                        'background_bottom_color' => $trello_boards_val['prefs']['backgroundBottomColor'],
+                        'background_top_color' => $trello_boards_val['prefs']['backgroundTopColor'],
+                        'can_be_public' => $trello_boards_val['prefs']['canBePublic'],
+                        'can_be_enterprise' => $trello_boards_val['prefs']['canBeEnterprise'],
+                        'can_be_org' => $trello_boards_val['prefs']['canBeOrg'],
+                        'can_be_private' => $trello_boards_val['prefs']['canBePrivate'],
+                        'can_invite' => $trello_boards_val['prefs']['canInvite'],
+                        'members'=> json_encode($trello_boards_val['memberships']),
+                        'total_members' => count($trello_boards_val['memberships'])
+                    ];  
                }
             }           
             if(count($add_new_board>0)){
-                $this->store($insertData);
+                $this->store($add_new_board);
             }
           
-            foreach($dbBoardIds as $dbBoardVal){
-                if(!in_array($dbBoardVal,array_column($boardsData,'id'))){
-                    $del_old_board[]=$dbBoardVal;
+            foreach($trello_board_ids as $trello_board_val){
+                if(!in_array($trello_board_val,array_column($trello_boards,'id'))){
+                    $del_old_board[]=$trello_board_val;
                 }
             }
             if(count($del_old_board>0)){
                 Board::whereIn('trello_board_id','=',$del_old_board)->delete();
-            }
-            
-            $dbBoardData    =   Board::where('user_id','=',$userInfo['id'])->get()->toArray();
-            return $dbBoardData;  
+            }            
+            $user_boards_data    =   Board::where('user_id','=',$user_boards_data['id'])->get()->toArray();
+            return $user_boards_data;  
     }
     public function showBoards(){
-        $userInfo    =    Session::get('userinfo');
-        $oAuthToken  =    $userInfo['token'];
-        $userBoardsData = Board::where('user_id','=',$userInfo['id'])->get();
-        if(!count($userBoardsData->toArray())){
-            if($userInfo['total_board']>0){
-                $boardsData  =    app('trello')->getUserBoards();
-                if(count($boardsData)){
-                    foreach($boardsData as $boardVal):
-                        $insertData[] = [
-                                        'trello_user_id'=>$userInfo['trello_id'],
-                                        'user_id'=>$userInfo['id'],
-                                        'name'=> $boardVal['name'],
-                                        'image'=> $boardVal['prefs']['backgroundImage'],
-                                        'trello_board_id'=> $boardVal['id'],
-                                        'backgroundImage' => $boardVal['prefs']['backgroundImage'],
-                                        'backgroundTile' => $boardVal['prefs']['backgroundTile'],
-                                        'backgroundBrightness' => $boardVal['prefs']['backgroundBrightness'],
-                                        'backgroundBottomColor' => $boardVal['prefs']['backgroundBottomColor'],
-                                        'backgroundTopColor' => $boardVal['prefs']['backgroundTopColor'],
-                                        'canBePublic' => $boardVal['prefs']['canBePublic'],
-                                        'canBeEnterprise' => $boardVal['prefs']['canBeEnterprise'],
-                                        'canBeOrg' => $boardVal['prefs']['canBeOrg'],
-                                        'canBePrivate' => $boardVal['prefs']['canBePrivate'],
-                                        'canInvite' => $boardVal['prefs']['canInvite'],
-                                        'members'=> json_encode($boardVal['memberships']),
-                                        'total_members' => count($boardVal['memberships'])
+        $user_info      = Session::get('userinfo');
+        $user_boards    = Board::where('user_id','=',$user_info['id'])->get();
+        if(!count($user_boards->toArray())){
+            if($user_info['total_board']>0){
+                $trello_boards =    app('trello')->getUserBoards();
+                if(count($trello_boards)){
+                    foreach($trello_boards as $trello_boards_val):
+                        $insert_data[] = [
+                                        'trello_user_id'=>$user_info['trello_id'],
+                                        'user_id'=>$user_info['id'],
+                                        'name'=> $trello_boards_val['name'],
+                                        'image'=> $trello_boards_val['prefs']['backgroundImage'],
+                                        'trello_board_id'=> $trello_boards_val['id'],
+                                        'background_image' => $trello_boards_val['prefs']['backgroundImage'],
+                                        'background_tile' => $trello_boards_val['prefs']['backgroundTile'],
+                                        'background_brightness' => $trello_boards_val['prefs']['backgroundBrightness'],
+                                        'background_bottom_color' => $trello_boards_val['prefs']['backgroundBottomColor'],
+                                        'background_top_color' => $trello_boards_val['prefs']['backgroundTopColor'],
+                                        'can_be_public' => $trello_boards_val['prefs']['canBePublic'],
+                                        'can_be_enterprise' => $trello_boards_val['prefs']['canBeEnterprise'],
+                                        'can_be_org' => $trello_boards_val['prefs']['canBeOrg'],
+                                        'can_be_private' => $trello_boards_val['prefs']['canBePrivate'],
+                                        'can_invite' => $trello_boards_val['prefs']['canInvite'],
+                                        'members'=> json_encode($trello_boards_val['memberships']),
+                                        'total_members' => count($trello_boards_val['memberships'])
                                     ];                                               
                     endforeach;
-                    $userBoardsData   =  $this->store($insertData);
-                    return view('dashboard/show-board',compact('userBoardsData'));
+                    $user_boards   =  $this->store($insert_data);
+                    return view('dashboard/show-board',compact('user_boards'));
                 }
             }
         } 
        
-        if(time()>$userInfo['last_api_hit']){
-            $userBoardsData=$this->getDataFromApi($userBoardsData->toArray());
+        if(time()>$user_info['last_api_hit']){
+            $user_boards =   $this->getDataFromApi($user_boards->toArray());
         }
-        return view('dashboard/show-board',compact('userBoardsData'));
+        return view('dashboard/show-board',compact('user_boards'));
     }
 
     public function store(Array $data){
