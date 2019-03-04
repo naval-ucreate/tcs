@@ -89,7 +89,10 @@ class BoardsController extends Controller
     public function TrelloList(String $id){
         $board=Board::where('trello_board_id','=',$id)->first();
         return view('dashboard/trelloList',compact('board'));
+        
     }
+
+
 
 
 }
