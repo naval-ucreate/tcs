@@ -13,37 +13,51 @@ class BoardsController extends Controller
     public function showBoards1(){
         return view('dashboard/show-board');
     }
-    public function getDataFromApi(){ 
-        
-            $userInfo    =    Session::get('userinfo');
-            $userBoardsData = Board::where('user_id','=',$userInfo['id'])->get()->toArray();
-            echo "<pre>";
-             print_R($userBoardsData);
-            echo "</pre>";
-            die();
-            $boardsData     = app('trello')->getUserBoards(
-                [
-                    'fields' => 'id'
-                ]
-            );
-
-
-
-            foreach($dbBoard as $key => $val){
-                if(!in_array($val)){
-                    // add the data in db 
+    public function getDataFromApi(Array $userBoardsData){         
+            //$userInfo       =   Session::get('userinfo');
+            //$db_board        =   Board::where('user_id','=',$userInfo['id'])->get()->toArray();
+            $dbBoardIds     =   array_column($userBoardsData,'trello_board_id');
+            $boardsData     =   app('trello')->getUserBoards();          
+            $add_new_board  =   []; 
+            $del_old_board  =   []; 
+            foreach($boardsData as $boardVal){
+                  if(!in_array($boardVal['id'],$dbBoardIds)){
+                    $add_new_board[]=[
+                        'trello_user_id'=>$userInfo['trello_id'],
+                        'user_id'=>$userInfo['id'],
+                        'name'=> $boardVal['name'],
+                        'image'=> $boardVal['prefs']['backgroundImage'],
+                        'trello_board_id'=> $boardVal['id'],
+                        'backgroundImage' => $boardVal['prefs']['backgroundImage'],
+                        'backgroundTile' => $boardVal['prefs']['backgroundTile'],
+                        'backgroundBrightness' => $boardVal['prefs']['backgroundBrightness'],
+                        'backgroundBottomColor' => $boardVal['prefs']['backgroundBottomColor'],
+                        'backgroundTopColor' => $boardVal['prefs']['backgroundTopColor'],
+                        'canBePublic' => $boardVal['prefs']['canBePublic'],
+                        'canBeEnterprise' => $boardVal['prefs']['canBeEnterprise'],
+                        'canBeOrg' => $boardVal['prefs']['canBeOrg'],
+                        'canBePrivate' => $boardVal['prefs']['canBePrivate'],
+                        'canInvite' => $boardVal['prefs']['canInvite'],
+                        'members'=> json_encode($boardVal['memberships']),
+                        'total_members' => count($boardVal['memberships'])
+                    ];      
+               }
+            }           
+            if(count($add_new_board>0)){
+                $this->store($insertData);
+            }
+          
+            foreach($dbBoardIds as $dbBoardVal){
+                if(!in_array($dbBoardVal,array_column($boardsData,'id'))){
+                    $del_old_board[]=$dbBoardVal;
                 }
             }
-
-            foreach($boardsData as $key){
-                if(!in_array()){
-                    // delete that id 
-                }
+            if(count($del_old_board>0)){
+                Board::whereIn('trello_board_id','=',$del_old_board)->delete();
             }
-            // again write the query and return the data.
-        
-        
-
+            
+            $dbBoardData    =   Board::where('user_id','=',$userInfo['id'])->get()->toArray();
+            return $dbBoardData;  
     }
     public function showBoards(){
         $userInfo    =    Session::get('userinfo');
