@@ -35,6 +35,7 @@ Route::group(['middleware' => ['TrelloOauthCheck']], function () {
 
 
 Route::get('/timediff','BoardsController@getDataFromApi' )->name('check-time');
+Route::get('/testing','BoardsController@getDataFromApi' );
 
 
 

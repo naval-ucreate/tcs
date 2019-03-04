@@ -32,7 +32,7 @@ class TrelloApi {
         $url        = config("app.trello_api_end_point").'members/me/boards?key='.$this->api_key.'&token='.$this->token;
         if(count($option)>0){
             foreach($option as $key=>$value){
-                $url.='&'.key.'='.$value;
+                $url.='&'.$key.'='.$value;
             }
         }
         $response   = $this->client->request('GET',$url);
