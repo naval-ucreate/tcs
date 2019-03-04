@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Board;
 use Illuminate\Support\Facades\Session;
 use Trello\Client;
-use GuzzleHttp\Client as HttpClient;
 use App\Models\User;
+use GuzzleHttp\Client as HttpClient;
+
 class BoardsController extends Controller
 {
  
@@ -15,7 +16,7 @@ class BoardsController extends Controller
         return view('dashboard/show-board');
     }
 
-    public function getDataFromApi(Array $user_boards_data){         
+    public function getDataFromApi(Array $user_boards_data,Array $user_info){         
             $trello_board_ids   =   array_column($user_boards_data,'trello_board_id');
             $trello_boards      =   app('trello')->getUserBoards();          
             $add_new_board      =   []; 
@@ -96,9 +97,9 @@ class BoardsController extends Controller
                 }
             }
         } 
-       
         if(time()>$user_info['last_api_hit']){
-            $user_boards =   $this->getDataFromApi($user_boards->toArray());
+         
+            $user_boards =   $this->getDataFromApi($user_boards->toArray(),$user_info);
         }
         return view('dashboard/show-board',compact('user_boards'));
     }
