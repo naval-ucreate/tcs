@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Board;
 use Illuminate\Support\Facades\Session;
 use Trello\Client;
+use App\Models\User;
 use GuzzleHttp\Client as HttpClient;
 class BoardsController extends Controller
 {
@@ -14,13 +15,13 @@ class BoardsController extends Controller
         return view('dashboard/show-board');
     }
 
-    public function getDataFromApi(Array $user_boards_data){         
+    public function getDataFromApi(Array $user_boards_data,Array $user_info){         
             $trello_board_ids   =   array_column($user_boards_data,'trello_board_id');
             $trello_boards      =   app('trello')->getUserBoards();          
             $add_new_board      =   []; 
             $del_old_board      =   []; 
             foreach($trello_boards as $trello_boards_val){
-                  if(!in_array($boardVal['id'],$trello_board_ids)){
+                  if(!in_array($trello_boards_val['id'],$trello_board_ids)){
                     $add_new_board[] = [
                         'trello_user_id'=>$user_info['trello_id'],
                         'user_id'=>$user_info['id'],
@@ -41,8 +42,8 @@ class BoardsController extends Controller
                         'total_members' => count($trello_boards_val['memberships'])
                     ];  
                }
-            }           
-            if(count($add_new_board>0)){
+            }         
+            if(count($add_new_board)>0){
                 $this->store($add_new_board);
             }
           
@@ -51,11 +52,18 @@ class BoardsController extends Controller
                     $del_old_board[]=$trello_board_val;
                 }
             }
-            if(count($del_old_board>0)){
+            if(count($del_old_board)>0){
                 Board::whereIn('trello_board_id','=',$del_old_board)->delete();
-            }            
-            $user_boards_data    =   Board::where('user_id','=',$user_boards_data['id'])->get()->toArray();
-            return $user_boards_data;  
+            }    
+            //1551780402 
+            $insertData     =     ['last_api_hit' => strtotime('+24 hours',time())];
+            if($user=User::where('id',$user_info['id'])->update($insertData)){
+                  $user_info = User::where('id',$user_info['id'])->get()->toArray();
+                  Session::put('userinfo', $user_info);
+            }
+        
+            $user_boards    =   Board::where('user_id','=',$user_info['id'])->get();
+            return $user_boards;  
     }
     public function showBoards(){
         $user_info      = Session::get('userinfo');
@@ -90,9 +98,9 @@ class BoardsController extends Controller
                 }
             }
         } 
-       
         if(time()>$user_info['last_api_hit']){
-            $user_boards =   $this->getDataFromApi($user_boards->toArray());
+         
+            $user_boards =   $this->getDataFromApi($user_boards->toArray(),$user_info);
         }
         return view('dashboard/show-board',compact('user_boards'));
     }

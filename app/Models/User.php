@@ -16,7 +16,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',  'password','username','token','image','trello_id','trello_url','trello_id','memberType','email','confirmed'
+        'name',  'password','username','token','image','trello_id','trello_url','trello_id','memberType','email',
+        'confirmed','total_board','last_api_hit',
     ];
 
     /**
