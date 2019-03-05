@@ -30,12 +30,11 @@ Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::get('/save-boards','BoardsController@saveBoards' )->name('save-board');
     Route::get('/update-board','BoardsController@updateBoard' )->name('update-board');
     Route::get('/lists/{id}','BoardsController@TrelloList')->name('lists');
+
+    Route::get('/test-web-hook','TrelloListController@testWebHook')->name('test_web_hook');
+    Route::get('/register-web-hook','TrelloListController@postGuzzleRequest')->name('postGuzzleRequest');
+
 });
-
-
-
-Route::get('/timediff','BoardsController@getDataFromApi' )->name('check-time');
-Route::get('/testing','BoardsController@getDataFromApi' );
 
 
 

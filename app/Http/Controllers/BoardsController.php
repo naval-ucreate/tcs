@@ -17,7 +17,7 @@ class BoardsController extends Controller
      */
 
     public function checkBoards(Array $user_boards_data){         
-            $user_info    =    Session::get('userinfo');
+            $user_info          =   Session::get('userinfo');
             $trello_board_ids   =   array_column($user_boards_data,'trello_board_id');
             $trello_boards      =   app('trello')->getUserBoards();          
             $add_new_board      =   []; 
