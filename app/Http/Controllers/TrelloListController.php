@@ -27,7 +27,8 @@ class TrelloListController extends Controller
     }
     public function testWebHook(WebhookCallLog $webhook_calllog)
     {      
-        $data =  json_encode($_POST);
+      // $_POST = array("name"=>"naval");
+        $data =  json_encode($_GET);
         $webhook_calllog->create($data);
     }   
    
