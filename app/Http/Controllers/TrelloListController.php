@@ -18,7 +18,7 @@ class TrelloListController extends Controller
         $headers                = ['Content-Type: application/json'];
         $url                    = "https://api.trello.com/1/tokens/".$token."/webhooks/";
         $myBody['key']          = $api;
-        $myBody['callbackURL']  = "http://trellocontrollchecklist.herokuapp.com/test-web-hook";
+        $myBody['callbackURL']  = "http://trellocontrollchecklist.herokuapp.com/api/test-web-hook";
         $myBody['idModel']      = "5c6bb49e2b175466e1f763a1";
         $myBody['description']  = "My First Trello App";
         $myBody['active']       = "true";
