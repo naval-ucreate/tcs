@@ -36,7 +36,7 @@ Route::group(['middleware' => ['TrelloOauthCheck']], function () {
 
 });
 
-Route::get('/test-web-hook','TrelloListController@testWebHook')->name('test_web_hook');
+Route::any('/test-web-hook','TrelloListController@testWebHook')->name('test_web_hook');
 
 
 
