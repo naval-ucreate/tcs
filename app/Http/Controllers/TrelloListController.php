@@ -21,6 +21,7 @@ class TrelloListController extends Controller
         $myBody['callbackURL']  = "http://trellocontrollchecklist.herokuapp.com/test-web-hook";
         $myBody['idModel']      = "5c6bb49e2b175466e1f763a1";
         $myBody['description']  = "My First Trello App";
+        $myBody['active']       = "true";
         $request                = $client->post($url,['form_params'=>$myBody]);
         $response               = $request->send();
        // dd($response);
