@@ -10,7 +10,11 @@ class TrelloListController extends Controller
 {
    
     public function postGuzzleRequest(){
-      
+        echo "<pre>";
+        print_R(Session::get('userinfo'));
+        echo "</pre>";
+
+        dd("test");
         $token                  = Session::get('userinfo')['token'];
         $api                    = '5b60d3f32d9fadef119dfaf96af008ba';
         $client                 = new \GuzzleHttp\Client();
