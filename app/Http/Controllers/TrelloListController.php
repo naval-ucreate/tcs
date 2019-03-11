@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\WebhookCallLog;
+use Illuminate\Support\Facades\Session;
 
 class TrelloListController extends Controller
 {
@@ -13,8 +14,7 @@ class TrelloListController extends Controller
         echo "<pre>";
         print_R(Session::get('userinfo'));
         echo "</pre>";
-
-        dd("test");
+        dd();
         $token                  = Session::get('userinfo')['token'];
         $api                    = '5b60d3f32d9fadef119dfaf96af008ba';
         $client                 = new \GuzzleHttp\Client();
@@ -28,10 +28,10 @@ class TrelloListController extends Controller
         $response               = $request->send();
         dd($response);
     }
-    public function testWebHook(WebhookCallLog $webhook_calllog){  
-
-        $data =   ['body'=>'testing'];
-        $webhook_calllog->create($data);
+    public function testWebHook(WebhookCallLog $webhook_calllog)
+    {      
+      $data =   ['body'=>'testing1212'];
+      $webhook_calllog->create($data);
     }   
    
 }
