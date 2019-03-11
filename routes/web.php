@@ -31,10 +31,12 @@ Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::get('/update-board','BoardsController@updateBoard' )->name('update-board');
     Route::get('/lists/{id}','BoardsController@TrelloList')->name('lists');
 
-    Route::get('/test-web-hook','TrelloListController@testWebHook')->name('test_web_hook');
+    
     Route::get('/register-web-hook','TrelloListController@postGuzzleRequest')->name('postGuzzleRequest');
 
 });
+
+Route::get('/test-web-hook','TrelloListController@testWebHook')->name('test_web_hook');
 
 
 

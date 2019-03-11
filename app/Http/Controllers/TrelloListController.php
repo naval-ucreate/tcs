@@ -21,11 +21,13 @@ class TrelloListController extends Controller
         $token                  = Session::get('userinfo')['token'];
         $api                    = '5b60d3f32d9fadef119dfaf96af008ba';
         $client                 = new \GuzzleHttp\Client();
-        $url                    = "https://api.trello.com/1/tokens/".$token."/webhooks";
+        $headers                = ['Content-Type: application/json'];
+        $url                    = "https://api.trello.com/1/tokens/".$token."/webhooks/";
         $myBody['key']          = $api;
-        $myBody['callbackURL']  = "http://localhost/naval/tcc/public/test-web-hook";
+        $myBody['callbackURL']  = "http://trellocontrollchecklist.herokuapp.com/test-web-hook";
         $myBody['idModel']      = "5c6bb49e2b175466e1f763a1";
-        $request                = $client->post($url,  ['form_params'=>$myBody]);
+        $myBody['description']  = "My First Trello App";
+        $request                = $client->post($url,$headers,['form_params'=>$myBody]);
         $response               = $request->send();
         dd($response);
     }
@@ -39,13 +41,18 @@ class TrelloListController extends Controller
         fclose($myfile);
     }
 
-    public function testWebHook(){   
-        $token  = Session::get('userinfo')['token'];
+    public function testWebHook(){  
+        
+        $token  =  Session::get('userinfo')['token'];
         $api    = '5b60d3f32d9fadef119dfaf96af008ba';
         $client = new Client();
         $client->authenticate($api,$client, Client::AUTH_URL_CLIENT_ID);
 
         $service = new Service($client);
+
+
+
+        dd("test");
 
         // Bind a callable to a given event...
         $service->addListener(Events::BOARD_UPDATE, function ($event) {
