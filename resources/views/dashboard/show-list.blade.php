@@ -76,6 +76,7 @@
                                     </ul> -->
                                 </div>
                                 <div class="panel-body list-group list-group-contacts"> 
+                                <span id="reg_url" style="display:none">{{ route('register_hook') }}</span>
                                     <?php 
                                    /* echo "<pre>";
                                     print_R($board_list);
