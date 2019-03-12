@@ -18,11 +18,9 @@ Route::get('/game', function () {
 
 
 Route::get('/','LoginController@trelloLogin' )->name('login');
-Route::get('/logout','LoginController@logout' )->name('logout');
 Route::post('/login','LoginController@checkTrelloLogin' )->name('check-trello-login');
 Route::post('/ajax_login','LoginController@ajax_login' );
 Route::get('/add-data-in-session','LoginController@addSession' )->name('add-session');
-
 Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::get('/dashboard','DashboardController@mainDashboard' )->name('main-dashboard');
     Route::get('/boards','BoardsController@showBoards' )->name('show-board');
@@ -30,9 +28,8 @@ Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::get('/save-boards','BoardsController@saveBoards' )->name('save-board');
     Route::get('/update-board','BoardsController@updateBoard' )->name('update-board');
     Route::get('/lists/{id}','BoardsController@TrelloList')->name('lists');
-
-    
-    Route::get('/register-web-hook','TrelloListController@postGuzzleRequest')->name('postGuzzleRequest');
+    Route::post('/register-web-hook','HookController@RegisterHook')->name('RegisterHook');
+    Route::get('/logout','LoginController@logout' )->name('logout');
 
 });
 

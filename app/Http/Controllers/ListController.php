@@ -24,7 +24,6 @@ class ListController extends Controller
     public function TrelloList(String $id){
         $list_data      =   app('trello')->GetBoardList($id);
         $list           =   Lists::where('trello_board_id','=',$id)->get();
-
         dd($list_data);
         return view('dashboard/trelloList',compact('list_data'));  
     }    

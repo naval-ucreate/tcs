@@ -126,21 +126,5 @@ class BoardsController extends Controller
         $client->boards()->setName($boardId, $name);
         dd($client);
     }
-    public function TrelloList(String $id){       
-        $list           =   BoardList::where('trello_board_id','=',$id)->get()->toArray;
-        if(!count($list)){
-            $list_data      =   app('trello')->GetBoardList($id);
-            if(count($list_data))
-            {
-                foreach($list_data['lists'] as $list_val)
-                {
-                    $insert_data[] = [
-                    ];
-                   echo $list_val['name']; 
-                }
-                //dd($list_data);
-                // return view('dashboard/trelloList',compact('list_data'));
-            } 
-        }         
-    }
+    
 }
