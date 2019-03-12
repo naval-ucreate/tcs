@@ -1,9 +1,13 @@
 @extends('layouts.dashboard')
 @section('pageTitle', 'Lists')
 @section('content')
-    <?php   $backgroud_image=json_encode($list_data['prefs']);  ?>
+    <?php  
+    // $backgroud_image=json_encode($list_data['prefs']);  
+    $backgroud_image    =  $board_list[0]['board']['background_image'];
+    //$backgroud_image;
+    ?>
 
-    <div id="board_data" rel='{{$backgroud_image}}'> </div>
+    <div id="board_data" rel='{{ $backgroud_image }}'> </div>
     <div class="content-frame listing_view">     
                     <!-- START CONTENT FRAME TOP -->
                               
@@ -61,34 +65,35 @@
                     <div class="content-frame-body listing_view">
                                                 
                         <div class="row">
-                            @foreach($list_data['lists'] as $list)
-                           
-                            <div class="col-md-4">
-                                
-                                <h3>{{$list['name']}}</h3>
-                                
-                                <div class="tasks" id="{{$list['id']}}">
-
-                                    <div class="task-item task-primary">                                    
-                                        <div class="task-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris rutrum velit vel erat fermentum, a dignissim dolor malesuada.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 1h 30min</div>                                    
-                                        </div>                                    
-                                    </div>
-
-                                    <div class="task-item task-success">                                    
-                                        <div class="task-text">Suspendisse a tempor eros. Curabitur fringilla maximus lorem, eget congue lacus ultrices eu. Nunc et molestie elit. Curabitur consectetur mollis ipsum, id hendrerit nunc molestie id.</div>
-                                        <div class="task-footer">
-                                            <div class="pull-left"><span class="fa fa-clock-o"></span> 1h 45min</div>
-                                            <div class="pull-right"><a href="#"><span class="fa fa-chain"></span></a> <a href="#"><span class="fa fa-comments"></span></a></div>
-                                        </div>                                    
-                                    </div>
-                                </div>                            
-
+              
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                        <div class="panel panel-default">
+                                <div class="panel-heading ui-draggable-handle">
+                                    <h3 class="panel-title">Lists</h3>         
+                                     <!--  <ul class="panel-controls">
+                                        <li><a href="#" class="control-primary"><span class="fa fa-plus"></span></a></li>
+                                    </ul> -->
+                                </div>
+                                <div class="panel-body list-group list-group-contacts"> 
+                                    <?php 
+                                   /* echo "<pre>";
+                                    print_R($board_list);
+                                    echo "</pre>";              */                     
+                                    ?>
+                                     @foreach($board_list as $list)                                                                                        
+                                    <a href="#" class="list-group-item">                                 
+                                        <div class="list-group-status status-{{ ($list['web_hook_enable']==1?'online':'offline') }}"></div>
+                                      <!--  <img src="assets/images/users/user4.jpg" class="pull-left" alt="Brad Pitt"> -->
+                                        <h2 class="contacts-title" style="margin-top: 10px;"> {{$list['name']}}</h2>
+                                        <div class="list-group-controls">
+                                          <input type="radio"  {{($list['web_hook_enable']==1?'checked':'')}} name="list_id" value="{{$list['trello_list_id']}}~{{$list['trello_board_id']}}">
+                                        </div>
+                                    </a>
+                                    @endforeach
                             </div>
-                            @endforeach;
-                        
-                            
+                            </div>
+                            </div>                      
                         </div>    
                           
                                                 

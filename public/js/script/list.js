@@ -1,12 +1,9 @@
 'use strict'
 window.addEventListener('load',function(){
+    let _cross_token = $('meta[name="_token"]').attr('content'); 
     let data = $("#board_data").attr('rel');
     if(typeof data ==='string'){
-        data=JSON.parse(data);
-        if(data.backgroundImage){
-            $(".listing_view").css('background','url('+data.backgroundImage+')');
-            $("h3").css('color','white','!important');
-        }
+       $(".listing_view").css('background','url('+data+')');
     }
     let all_task_id='';
     $('.tasks').attr('id',function(key,val){
@@ -44,4 +41,34 @@ window.addEventListener('load',function(){
         }).disableSelection();
         
     }();
+
+
+    $('input[type=radio][name=list_id]').change(function() {
+        var res = this.value.split("~",)
+        $.ajax({
+            method:'post',
+            data:{
+               _token:_cross_token,
+               list_id:res[0],
+               board_id:res[1]
+            },
+            url: 'http://localhost/naval/tcc/public/register-web-hook',
+            beforSend:(()=>{
+               // todo
+            }),success:()=>{
+               swal.stopLoading();
+               swal.close();
+               swal("Oh yes!", "Data updated successfully", "success");
+            },error:(err => {
+               swal("Oh noes!", "The AJAX request failed!", "error");
+               swal.stopLoading();
+            }),complete:(()=>{
+               // todo
+            })
+         });
+
+
+    });
+
+
 });

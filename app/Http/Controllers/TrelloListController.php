@@ -32,5 +32,8 @@ class TrelloListController extends Controller
         $data['body'] =  file_get_contents('php://input');
         $webhook_calllog->create($data);
     }   
+    public function test(){
+      return 1;
+    }
    
 }

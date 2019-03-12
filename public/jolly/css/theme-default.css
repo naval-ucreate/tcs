@@ -7314,3 +7314,8 @@ li.ext_zip {
 .x-navigation-minimized .xn-logo{
 display:none;
 }
+
+.board_list li
+{
+  list-style:none;
+}

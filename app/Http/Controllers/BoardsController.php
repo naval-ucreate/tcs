@@ -5,12 +5,11 @@ use App\Models\Board;
 use Illuminate\Support\Facades\Session;
 use Trello\Client;
 use App\Models\User;
-use App\Models\BoardList;
 use GuzzleHttp\Client as HttpClient;
 class BoardsController extends Controller
 {
  
-    /**
+    /**gi
      * 
      */
     public function checkBoards(Array $user_boards_data){         
@@ -95,6 +94,8 @@ class BoardsController extends Controller
                 }
             }
         } 
+
+      
         /**
          * check new board after every 24 hr .
          * If any board delete and update on trello then update and delete in local db.
@@ -126,21 +127,5 @@ class BoardsController extends Controller
         $client->boards()->setName($boardId, $name);
         dd($client);
     }
-    public function TrelloList(String $id){       
-        $list           =   BoardList::where('trello_board_id','=',$id)->get()->toArray;
-        if(!count($list)){
-            $list_data      =   app('trello')->GetBoardList($id);
-            if(count($list_data))
-            {
-                foreach($list_data['lists'] as $list_val)
-                {
-                    $insert_data[] = [
-                    ];
-                   echo $list_val['name']; 
-                }
-                //dd($list_data);
-                // return view('dashboard/trelloList',compact('list_data'));
-            } 
-        }         
-    }
+   
 }
