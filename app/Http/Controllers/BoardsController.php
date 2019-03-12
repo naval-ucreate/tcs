@@ -9,9 +9,6 @@ use GuzzleHttp\Client as HttpClient;
 class BoardsController extends Controller
 {
  
-    /**gi
-     * 
-     */
     public function checkBoards(Array $user_boards_data){         
             $user_info          =   Session::get('userinfo');
             $trello_board_ids   =   array_column($user_boards_data,'trello_board_id');
@@ -117,15 +114,6 @@ class BoardsController extends Controller
         $board->delete();
         return 1;
     }
-    public function updateBoard(){
-        $boardId    =   '5c6bb49e2b175466e1f763a1';
-        $name       =   'test11';
-        $client     =   new Client();
-        $userInfo   =   Session::get('userinfo');
-        $oAuthToken =   $userInfo['token'];
-        $client->authenticate(config('app.trello_key'), $oAuthToken, Client::AUTH_URL_CLIENT_ID);
-        $client->boards()->setName($boardId, $name);
-        dd($client);
-    }
+   
    
 }

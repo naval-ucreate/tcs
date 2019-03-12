@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BoardList;
-use App\Requests\RegisterHook;
+use App\Http\Requests\RegisterHook;
 
 class HookController extends Controller
 {
@@ -14,7 +14,7 @@ class HookController extends Controller
             'trello_board_id' => $request->board_id,
             'web_hook_enable' => true    
         ])->first();
-        if(count($data->toArray())>0){
+        if($data){
             if($this->UpdateHook($data->web_hook_id,$request->list_id,$request->board_id)){
                 $data->web_hook_enable=false;
                 $data->web_hook_id='';
@@ -23,7 +23,7 @@ class HookController extends Controller
             }
             return false;
         }
-        if($this->SaveHook($list_id)){
+        if($this->SaveHook($request->list_id)){
             return true;
         }
         return false;
@@ -46,9 +46,10 @@ class HookController extends Controller
         return false;
     }
 
-    public function SaveHook(string $list_id,BoardList $list){
+    public function SaveHook(string $list_id){
         $response=app('trello')->RegisterHookList($list_id);
         $hook_data=json_validator($response);
+        dd($hook_data);
         if(count($hook_data)>0){
             $list->trello_list_id=$list_id;
             $list->web_hook_id=$hook_data['id'];
@@ -58,9 +59,13 @@ class HookController extends Controller
         }
         return false;
     }
+   
 
     public function Listentrigger(){
         $data=json_decode(request()->getContent(), true);
+        if(count($data)==0){
+            return true;
+        }
         if(array_key_exists('action',$data)){
             if(array_key_exists('data',$data['action'])){
                 if(array_key_exists('card',$data['action']['data'])){

@@ -23,7 +23,6 @@ class ListController extends Controller
 
     }
 
-<<<<<<< HEAD
     public function TrelloList(String $id){       
         //$board_list          =   BoardList::where('trello_board_id','=',$id)->get()->toArray();
 
@@ -46,14 +45,5 @@ class ListController extends Controller
         }
         return view('dashboard/show-list',compact('board_list'));         
     }
-        
-=======
-    public function TrelloList(String $id){
-        $list_data      =   app('trello')->GetBoardList($id);
-        $list           =   Lists::where('trello_board_id','=',$id)->get();
-        dd($list_data);
-        return view('dashboard/trelloList',compact('list_data'));  
-    }    
->>>>>>> cf9c6c535e3b5c5f69f8eb43d332e5e74ce61e8d
 
 }

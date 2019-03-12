@@ -27,18 +27,9 @@ Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::delete('/ajax_delete/{board}','BoardsController@distory');
     Route::get('/save-boards','BoardsController@saveBoards' )->name('save-board');
     Route::get('/update-board','BoardsController@updateBoard' )->name('update-board');
-<<<<<<< HEAD
     Route::get('/lists/{id}','ListController@TrelloList')->name('lists');
-
-    
-    Route::get('/register-web-hook','TrelloListController@postGuzzleRequest')->name('postGuzzleRequest');
-    Route::post('/register-web-hook','TrelloListController@test')->name('reg_web_hook');
-=======
-    Route::get('/lists/{id}','BoardsController@TrelloList')->name('lists');
     Route::post('/register-web-hook','HookController@RegisterHook')->name('RegisterHook');
     Route::get('/logout','LoginController@logout' )->name('logout');
->>>>>>> cf9c6c535e3b5c5f69f8eb43d332e5e74ce61e8d
-
 });
 
 
