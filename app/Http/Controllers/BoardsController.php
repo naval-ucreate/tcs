@@ -63,8 +63,8 @@ class BoardsController extends Controller
     }
     public function showBoards(){
         $user_info      = Session::get('userinfo');
-        $user_boards    = Board::where('user_id','=',$user_info['id'])->get();
-        if(!count($user_boards->toArray())){
+        $user_boards    = Board::where('user_id','=',$user_info['id'])->get()->toArray();
+        if(!count($user_boards)){
             if($user_info['total_board']>0){
                 $trello_boards =    app('trello')->getUserBoards();
                 if(count($trello_boards)){
