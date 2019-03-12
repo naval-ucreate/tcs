@@ -126,7 +126,6 @@ class BoardsController extends Controller
         dd($client);
     }
     public function TrelloList(String $id){
-        //$board=Board::where('trello_board_id','=',$id)->first();
         $list_data=app('trello')->GetBoardList($id);
         return view('dashboard/trelloList',compact('list_data'));  
     }

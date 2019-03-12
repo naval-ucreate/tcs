@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Services\TrelloApi;
+
+use App\Services\TrelloHooks;
 
 class TrelloServiceProvider extends ServiceProvider
 {
@@ -25,7 +26,7 @@ class TrelloServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton('trello',function(){
-            return new TrelloApi(config('app.trello_key'));
+            return new TrelloHooks(config('app.trello_key'));
         });
     }
 }
