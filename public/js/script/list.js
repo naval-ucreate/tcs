@@ -9,8 +9,7 @@ window.addEventListener('load',function(){
 
     $('input[type=radio][name=list_id]').change(function() {
         var res = this.value.split("~",)
-        console.error(_cross_token);
-        console.log(window.location.host+"/register-web-hook");
+        console.log(location.host);
         $.ajax({
             method:'post',
             data:{
@@ -18,7 +17,7 @@ window.addEventListener('load',function(){
                list_id:res[0],
                board_id:res[1]
             },
-            url: window.location.host+"/register-web-hook",
+            url:"http://127.0.0.1/pankajvashisht/tcl/public/register-web-hook",
             beforSend:()=>{
                // todo
                

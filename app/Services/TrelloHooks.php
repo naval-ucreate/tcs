@@ -27,8 +27,8 @@ class TrelloHooks extends  TrelloApi {
     }
 
     public function UpdateHook(string $list_id,String $hook_id){
-        $url = config("app.trello_api_end_point").$this->token.'/webhooks/'.$hook_id;
-        $url.= "?idModel=".$list_id.'&key='.$this->api_key;
+        $url = config("app.trello_api_end_point").'webhooks/'.$hook_id;
+        $url.= "?idModel=".$list_id.'&key='.$this->api_key.'&token='.$this->token;
         $response   = $this->client->put($url);
         if($response->getStatusCode()==200){
             return  json_decode($response->getBody(), true);

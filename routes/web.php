@@ -29,7 +29,7 @@ Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::get('/save-boards','BoardsController@saveBoards' )->name('save-board');
     Route::get('/update-board','BoardsController@updateBoard' )->name('update-board');
     Route::get('/lists/{id}','ListController@TrelloList')->name('lists');
-    Route::post('/register-web-hook','HookController@RegisterHook')->name('RegisterHook');
+    Route::post('/register-web-hook','HookController@RegisterHook')->name('register_hook');
     Route::get('/logout','LoginController@logout' )->name('logout');
 });
 

@@ -55,13 +55,13 @@ class BoardsController extends Controller
             $user_info['total_board']=count($trello_boards); // update the total boards in session 
             Session::put('userinfo', $user_info); // update userinfo current user info
             User::where('id','=',$user_info['id'])->update($user_info); // update user info in db.
-            $user_boards_data    =   Board::where('user_id','=',$user_info['id'])->get()->toArray(); // get all update boards.
+            $user_boards_data    =   Board::where('user_id','=',$user_info['id'])->get(); // get all update boards.
             return $user_boards_data;  // return array 
     }
     public function showBoards(){
         $user_info      = Session::get('userinfo');
-        $user_boards    = Board::where('user_id','=',$user_info['id'])->get()->toArray();
-        if(!count($user_boards)){
+        $user_boards    = Board::where('user_id','=',$user_info['id'])->get();
+        if(!is_null( $user_boards ) && count($user_boards)==0){
             if($user_info['total_board']>0){
                 $trello_boards =    app('trello')->getUserBoards();
                 if(count($trello_boards)){
