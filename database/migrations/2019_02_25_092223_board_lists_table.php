@@ -15,10 +15,11 @@ class BoardListsTable extends Migration
     {
         Schema::create('board_lists', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('board_id');
             $table->string('trello_board_id',50);     
             $table->string('trello_list_id',50);
             $table->string('name');
+            $table->string('web_hook_id')->nullable();
+            $table->enum('web_hook_enable',['no', 'yes'])->nullable();
             $table->timestamps();
         });
     }
