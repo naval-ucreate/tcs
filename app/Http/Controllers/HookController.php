@@ -59,7 +59,10 @@ class HookController extends Controller
         }
         return false;
     }
-   
+    
+    public function ok(){
+        return 1;
+    }
 
     public function Listentrigger(){
         $data=json_decode(request()->getContent(), true);
