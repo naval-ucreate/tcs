@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 class TrelloHooks extends  TrelloApi {
 
 
-    // todo 
     public function __construct(String $api_key){
         parent::__construct($api_key);
     }

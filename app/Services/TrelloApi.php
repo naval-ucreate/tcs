@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Session;
 
 class TrelloApi {
 
-    private $api_key='';
-    private $client;
+    public $api_key='';
+    public $client;
     const ApiEndPoint='';
-    private $token='';
+    public $token='';
 
     public function __construct(String $api_key){
         $this->api_key = $api_key;
