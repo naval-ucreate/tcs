@@ -12,7 +12,7 @@ class TrelloHooks extends  TrelloApi {
 
 
     public function RegisterHookList(String $list_id){
-        $url        = config("app.trello_api_end_point").$this->token.'/webhooks/';
+        $url        = config("app.trello_api_end_point").'tokens/'.$this->token.'/webhooks/';
         $body=[];
         $body['key']          =  $this->api_key;
         $body['callbackURL']  = "http://trellocontrollchecklist.herokuapp.com/api/list-trigger";

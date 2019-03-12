@@ -14,6 +14,7 @@ class TrelloApi {
     public function __construct(String $api_key){
         $this->api_key = $api_key;
         $this->client  =  new Client();
+        $this->token= '6ed2a41e48d27d28586223c95939c872f3d0c5396f42a51dff04f373360c1cdc';
         if(Session::get('userinfo')){
             $this->token=Session::get('userinfo')['token'];
         }

@@ -21,6 +21,7 @@ Route::get('/','LoginController@trelloLogin' )->name('login');
 Route::post('/login','LoginController@checkTrelloLogin' )->name('check-trello-login');
 Route::post('/ajax_login','LoginController@ajax_login' );
 Route::get('/add-data-in-session','LoginController@addSession' )->name('add-session');
+//Route::get('/add-data-in-session','LoginController@addSession' )->name('add-session');
 Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::get('/dashboard','DashboardController@mainDashboard' )->name('main-dashboard');
     Route::get('/boards','BoardsController@showBoards' )->name('show-board');
@@ -31,6 +32,9 @@ Route::group(['middleware' => ['TrelloOauthCheck']], function () {
     Route::post('/register-web-hook','HookController@RegisterHook')->name('RegisterHook');
     Route::get('/logout','LoginController@logout' )->name('logout');
 });
+
+
+Route::get('/testwebhook','TrelloListController@postGuzzleRequest' )->name('testwebhook');
 
 
 
