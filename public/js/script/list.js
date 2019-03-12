@@ -38,17 +38,10 @@ window.addEventListener('load',function(){
                     if(this.id == val){
                         ui.item.addClass("task-complete").find(".task-footer > .pull-right").remove();
                     }
-                });
-               
-                // if(this.id == "tasks_progreess"){
-                //     ui.item.find(".task-footer").append('<div class="pull-right"><span class="fa fa-play"></span> 00:00</div>');
-                // }                
+                });             
                 page_content_onresize();
             }
         }).disableSelection();
         
     }();
-
-
-
 });
