@@ -63,9 +63,7 @@ class HookController extends Controller
 
     public function Listentrigger(){
         $data=json_decode(request()->getContent(), true);
-        if(count($data)==0){
-            return true;
-        }
+        dd($data);
         if(array_key_exists('action',$data)){
             if(array_key_exists('data',$data['action'])){
                 if(array_key_exists('card',$data['action']['data'])){
