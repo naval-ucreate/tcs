@@ -1,23 +1,19 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\Board;
 use Illuminate\Support\Facades\Session;
 use Trello\Client;
 use App\Models\User;
 use GuzzleHttp\Client as HttpClient;
-
 class BoardsController extends Controller
 {
  
     /**
      * 
      */
-
     public function checkBoards(Array $user_boards_data){         
-            $user_info    =    Session::get('userinfo');
+            $user_info          =   Session::get('userinfo');
             $trello_board_ids   =   array_column($user_boards_data,'trello_board_id');
             $trello_boards      =   app('trello')->getUserBoards();          
             $add_new_board      =   []; 
@@ -62,7 +58,6 @@ class BoardsController extends Controller
             $user_info['total_board']=count($trello_boards); // update the total boards in session 
             Session::put('userinfo', $user_info); // update userinfo current user info
             User::where('id','=',$user_info['id'])->update($user_info); // update user info in db.
-
             $user_boards_data    =   Board::where('user_id','=',$user_info['id'])->get()->toArray(); // get all update boards.
             return $user_boards_data;  // return array 
     }
@@ -99,32 +94,27 @@ class BoardsController extends Controller
                 }
             }
         } 
-
         /**
          * check new board after every 24 hr .
          * If any board delete and update on trello then update and delete in local db.
          * @param Array
          * @return Array
          */
-
         if(time()>$user_info['last_api_hit']){
             $user_boards =   $this->checkBoards($user_boards->toArray());
         }
         return view('dashboard/show-board',compact('user_boards'));
     }
-
     public function store(Array $data){
         if(Board::insert($data)){
             $userInfo    =    Session::get('userinfo');
             return Board::where('user_id','=',$userInfo['id'])->get();  
         }
     }
-
     public function distory(Board $board){
         $board->delete();
         return 1;
     }
-
     public function updateBoard(){
         $boardId    =   '5c6bb49e2b175466e1f763a1';
         $name       =   'test11';
@@ -135,14 +125,9 @@ class BoardsController extends Controller
         $client->boards()->setName($boardId, $name);
         dd($client);
     }
-
     public function TrelloList(String $id){
         //$board=Board::where('trello_board_id','=',$id)->first();
         $list_data=app('trello')->GetBoardList($id);
         return view('dashboard/trelloList',compact('list_data'));  
     }
-
-
-
-
 }

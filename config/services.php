@@ -40,4 +40,11 @@ return [
         ],
     ],
 
+
+    'rollbar' => [
+        'access_token' => env('ROLLBAR_ACCESS_TOKEN'),
+        'level' => 'debug',
+    ],
+ 
+
 ];

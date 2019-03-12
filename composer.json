@@ -12,7 +12,8 @@
         "cdaguerre/php-trello-api": "^0.9.3",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.7.*",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "jenssegers/rollbar": "^1.5"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
