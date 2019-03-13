@@ -4,15 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function trelloLogin(Request $request){
-        if($request->session()->exists('userinfo')) {
-            //dd( Session::get('userinfo'));
+        if(Auth::user()) {
             return redirect()->route('main-dashboard');
         }
-
         return view('login/login');
     }
 
@@ -24,7 +22,7 @@ class LoginController extends Controller
         );
         $authUser=User::where('token',$requestdata['trello_token'])->first();
         if($authUser){
-            Session::put('userinfo', $authUser->toArray());
+            Auth::loginUsingId($authUser->id, true);
             return [
                 'success' => true,
                 'message' => 'login successfully'
@@ -60,35 +58,16 @@ class LoginController extends Controller
                 'total_board' => count($return_data['idBoards']),
                 'last_api_hit' => strtotime('+24 hours',time())
             ];
-            if($user=User::create($insert_data)){
-                $insert_data['id']=$user->id;
-                Session::put('userinfo', $insert_data);
+            if($user=User::create($insert_data)){                
+                Auth::loginUsingId($user->id, true);
                 return true;
             }
             return false;
         }
     }
 
-
-
-    public function addSession(){
-        $insert_data=[
-            'name' => 'naval kishor',
-            'email' => 'naval@gmail.com',
-            'username' => 'naval66',
-            'token' => 'naval66',
-            'image' => 'xxx',
-            'trello_id' => 'xxx',
-            'trello_url' => 'xxx',
-            'confirmed' => 'xxx',
-            'memberType' => 'xxx',
-           
-        ];
-        
-    }
-
     public function logout(Request $request){
-        $request->session()->forget('userinfo');
+        Auth::logout();
         return redirect()->route('login');
     }
 

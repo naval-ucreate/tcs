@@ -9,7 +9,7 @@
    <div class="panel-body"> 
     <div class="row ">
             @forelse ($user_boards as $user_boards_val)   
-            <div class="col-md-4">       
+            <div class="col-md-3">       
                 <div class="panel panel-info"  >
                             <a href="{{route('lists',[$user_boards_val->trello_board_id])}}">
                                 <div class="panel-body" style='height:100px;{{ ($user_boards_val->background_image) ? "background-image:url($user_boards_val->background_image)" : "background-color: rgb(0, 121, 191);"}}' >

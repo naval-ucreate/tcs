@@ -2,8 +2,7 @@
 
 namespace App\Services;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Auth;
 class TrelloApi {
 
     public $api_key='';
@@ -15,9 +14,10 @@ class TrelloApi {
         $this->api_key = $api_key;
         $this->client  =  new Client();
         $this->token='3df031724a2a2970076e956b291778a113caba3b8c47fa88d4486918f651b77a';
-        if(Session::get('userinfo')){
-            $this->token=Session::get('userinfo')['token'];
+        if(Auth::user()){
+            $this->token=Auth::user()->toArray()['token'];
         }
+
     }
 
     public function getUserInfo(String $token){
@@ -63,7 +63,15 @@ class TrelloApi {
         throw new Exception("Api end Error");
     }
 
-
+    public function getListPos(string $list_id){
+        $url = config("app.trello_api_end_point").'lists/'.$card_id.'?key='.$this->api_key.'&token='.$this->token;
+        $url.="&checkItems=all";
+        $response   = $this->client->request('GET',$url);
+        if($response->getStatusCode()==200){
+            return  json_decode($response->getBody(), true);
+        }
+        throw new Exception("Api end Error");
+    }
 }
 
  
