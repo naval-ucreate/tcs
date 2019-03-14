@@ -9,10 +9,8 @@ class LoginController extends Controller
 {
     public function trelloLogin(Request $request){
         if($request->session()->exists('userinfo')) {
-            //dd( Session::get('userinfo'));
             return redirect()->route('main-dashboard');
         }
-
         return view('login/login');
     }
 
