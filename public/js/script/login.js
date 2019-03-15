@@ -28,7 +28,7 @@ window.addEventListener('load',function(){
             } ,
             success:  (login_data) => {
                 if(login_data.hasOwnProperty('success') && login_data.success==true){
-                    window.location.href="dashboard";
+                    window.location.href="boards";
                 }
             },
             error: (jqXHR, textStatus, errorThrown) =>  {

@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
-@section('pageTitle', 'Lists')
+@section('pageTitle', $board_list[0]['board']['name'])
 @section('content')
     <?php  
         $backgroud_image    =  $board_list[0]['board']['background_image'];
     ?>
 
     <div id="board_data" rel='{{ $backgroud_image }}'> </div>
-    <div class="content-frame listing_view">     
+ 
                     <!-- START CONTENT FRAME TOP -->
                               
                                                                     
@@ -14,40 +14,7 @@
                             <button class="btn btn-default content-frame-left-toggle"><span class="fa fa-bars"></span></button>
                         </div>                                
                      
-                                  
-                    <div class="content-frame-left">
-                        <div class="form-group">
-                            <h4>Add new task:</h4>
-                            <textarea class="form-control push-down-10" id="new_task" rows="4" placeholder="Add new List"></textarea>                            
-                            <center> <button class="btn btn-info" id="add_new_task"><span class="fa fa-edit"></span> Add</button></center>
-                        </div>                        
-                        <!-- <div class="form-group push-up-10">
-                            <h4>Searh in tasks:</h4>
-                            <div class="input-group">
-                                <div class="input-group-addon"><span class="fa fa-search"></span></div>
-                                <input type="text" class="form-control" placeholder="keyword..."/>
-                            </div>
-                        </div> -->
-                        <div class="form-group">
-                            <h4>Members:</h4>
-                            <div class="list-group border-bottom">
-                                
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <h4>Tags:</h4>
-                            <!-- <ul class="list-tags">
-                                <li><a href="#"><span class="fa fa-tag"></span> amet</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> rutrum</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> nunc</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> tempor</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> eros</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> suspendisse</a></li>
-                                <li><a href="#"><span class="fa fa-tag"></span> dolor</a></li>
-                            </ul>                             -->
-                        </div>
-                        
-                    </div>       
+                           
                     <!-- END CONTENT FRAME TOP -->
                     
                     <!-- START CONTENT FRAME BODY -->
