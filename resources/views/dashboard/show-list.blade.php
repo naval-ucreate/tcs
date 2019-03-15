@@ -2,9 +2,7 @@
 @section('pageTitle', 'Lists')
 @section('content')
     <?php  
-    // $backgroud_image=json_encode($list_data['prefs']);  
-    $backgroud_image    =  $board_list[0]['board']['background_image'];
-    //$backgroud_image;
+        $backgroud_image    =  $board_list[0]['board']['background_image'];
     ?>
 
     <div id="board_data" rel='{{ $backgroud_image }}'> </div>
@@ -15,16 +13,7 @@
                         <div class="pull-right">
                             <button class="btn btn-default content-frame-left-toggle"><span class="fa fa-bars"></span></button>
                         </div>                                
-                        <!-- <div class="pull-right" style="width: 100px; margin-right: 5px;">
-                            <select class="form-control select">
-                                <option>All</option>                                
-                                <option>Work</option>
-                                <option>Home</option>
-                                <option>Friends</option>
-                                <option>Closed</option>
-                            </select>
-                        </div> -->
-                        
+                     
                                   
                     <div class="content-frame-left">
                         <div class="form-group">
@@ -32,13 +21,13 @@
                             <textarea class="form-control push-down-10" id="new_task" rows="4" placeholder="Add new List"></textarea>                            
                             <center> <button class="btn btn-info" id="add_new_task"><span class="fa fa-edit"></span> Add</button></center>
                         </div>                        
-                        <div class="form-group push-up-10">
+                        <!-- <div class="form-group push-up-10">
                             <h4>Searh in tasks:</h4>
                             <div class="input-group">
                                 <div class="input-group-addon"><span class="fa fa-search"></span></div>
                                 <input type="text" class="form-control" placeholder="keyword..."/>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <h4>Members:</h4>
                             <div class="list-group border-bottom">
@@ -109,34 +98,6 @@
         </div>
         <!-- END PAGE CONTAINER -->
 
-        <!-- MODALS -->        
-        <div class="modal fade" id="taskEdit" tabindex="-1" role="dialog" aria-labelledby="taskEditModalHead" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="taskEditModalHead">Edit Task</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Task description</label>
-                            <textarea class="form-control" id="task-text" rows="4"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Task group</label>
-                            <select class="form-control select">
-                                <option>Work</option>
-                                <option>Home</option>
-                                <option>Friends</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">                        
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>        
+             
 @endsection
 <script src="{{url('js/script/list.js')}}"></script>

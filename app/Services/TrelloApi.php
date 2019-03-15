@@ -14,9 +14,9 @@ class TrelloApi {
         $this->api_key = $api_key;
         $this->client  =  new Client();
         $this->token='3df031724a2a2970076e956b291778a113caba3b8c47fa88d4486918f651b77a';
-        if(Auth::user()){
-            $this->token=Auth::user()->toArray()['token'];
-        }
+        // if(Auth::user()){
+        //     $this->token=Auth::user()->toArray()['token'];
+        // }
 
     }
 
