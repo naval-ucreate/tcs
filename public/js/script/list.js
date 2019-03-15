@@ -23,7 +23,7 @@ window.addEventListener('load',function(){
                // todo
                
             },success:()=>{
-               swal("Oh yes!", "webhook triger", "success");
+               swal("", "Done", "success");
             },error:(err => {
                 console.log(err);
                swal("Oh noes!", "The AJAX request failed!", "error");

@@ -22,7 +22,7 @@ Route::post('/login','LoginController@checkTrelloLogin' )->name('check-trello-lo
 Route::post('/ajax_login','LoginController@ajax_login' );
 Route::get('/add-data-in-session','LoginController@addSession' )->name('add-session');
 //Route::get('/add-data-in-session','LoginController@addSession' )->name('add-session');
-Route::group(['middleware' => ['TrelloOauthCheck']], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard','DashboardController@mainDashboard' )->name('main-dashboard');
     Route::get('/boards','BoardsController@showBoards' )->name('show-board');
     Route::delete('/ajax_delete/{board}','BoardsController@distory');

@@ -65,22 +65,24 @@ class HookController extends Controller
 
     public function Listentrigger(){
         $data=json_decode(request()->getContent(), true);
-        if(array_key_exists('action',$data)){
-            if(array_key_exists('data',$data['action'])){
-                if(array_key_exists('card',$data['action']['data'])){
-                    $card_id=$data['action']['data']['card']['id'];
-                    $response=app('trello')->getCardChecklists($card_id);
-                    if(count($response)>0){
-                        $checklist_array = array_column($response, 'checkItems');
-                        foreach($checklist_array as $k => $value){
-                            foreach($value as $checklist){
-                                if($checklist['state']=='incomplete'){
-                                    app('trello')->addLable($card_id);
-                                    break;
+        if($data['model']['id']!=$data['action']['data']['old']['idList']){
+            if(array_key_exists('action',$data)){
+                if(array_key_exists('data',$data['action'])){
+                    if(array_key_exists('card',$data['action']['data'])){
+                        $card_id=$data['action']['data']['card']['id'];
+                        $response=app('trello')->getCardChecklists($card_id);
+                        if(count($response)>0){
+                            $checklist_array = array_column($response, 'checkItems');
+                            foreach($checklist_array as $k => $value){
+                                foreach($value as $checklist){
+                                    if($checklist['state']=='incomplete'){
+                                        app('trello')->addLable($card_id);
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                    }    
+                        }    
+                    }
                 }
             }
         }

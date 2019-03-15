@@ -2,15 +2,15 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Board;
-use Illuminate\Support\Facades\Session;
 use Trello\Client;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client as HttpClient;
 class BoardsController extends Controller
 {
  
     public function checkBoards(Array $user_boards_data){         
-            $user_info          =   Session::get('userinfo');
+            $user_info          =   Auth::user()->toArray();
             $trello_board_ids   =   array_column($user_boards_data,'trello_board_id');
             $trello_boards      =   app('trello')->getUserBoards();          
             $add_new_board      =   []; 
@@ -53,13 +53,13 @@ class BoardsController extends Controller
             
             $user_info['last_api_hit']=strtotime("+24 hour",time()); // for add the 24 hr in current time.
             $user_info['total_board']=count($trello_boards); // update the total boards in session 
-            Session::put('userinfo', $user_info); // update userinfo current user info
+            // Session::put('userinfo', $user_info); // update userinfo current user info
             User::where('id','=',$user_info['id'])->update($user_info); // update user info in db.
             $user_boards_data    =   Board::where('user_id','=',$user_info['id'])->get(); // get all update boards.
             return $user_boards_data;  // return array 
     }
     public function showBoards(){
-        $user_info      = Session::get('userinfo');
+        $user_info          = Auth::user()->toArray();
         $user_boards    = Board::where('user_id','=',$user_info['id'])->get();
         if(!is_null( $user_boards ) && count($user_boards)==0){
             if($user_info['total_board']>0){
@@ -106,8 +106,8 @@ class BoardsController extends Controller
     }
     public function store(Array $data){
         if(Board::insert($data)){
-            $userInfo    =    Session::get('userinfo');
-            return Board::where('user_id','=',$userInfo['id'])->get();  
+            $user_info          = Auth::user()->toArray();
+            return Board::where('user_id','=',$user_info['id'])->get();  
         }
     }
     public function distory(Board $board){

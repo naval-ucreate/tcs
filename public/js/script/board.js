@@ -5,7 +5,7 @@ window.addEventListener('load',function(){
     $(document.body).on('click','.delete_data',function(){
         let id    =  $(this).attr('rel');
         swal({
-            text: 'Are You sure want to delete this ?',
+            text: 'For Delete this boards write Down Delete ?',
             content: "input",
             button: {
                text: "Delete",
@@ -31,7 +31,7 @@ window.addEventListener('load',function(){
                   }),success:()=>{
                      swal.stopLoading();
                      swal.close();
-                     swal("Oh yes!", "Data Delete successfully", "success");
+                     swal("Success", "Data Delete successfully", "success");
                      $(this).parent().parent().parent().fadeOut('slow');
                   },error:(err => {
                      swal("Oh noes!", "The AJAX request failed!", "error");
