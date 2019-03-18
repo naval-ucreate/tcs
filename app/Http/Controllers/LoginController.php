@@ -9,7 +9,7 @@ class LoginController extends Controller
 {
     public function trelloLogin(Request $request){
         if(Auth::user()) {
-            return redirect()->route('main-dashboard');
+            return redirect()->route('show-board');
         }
         return view('login/login');
     }

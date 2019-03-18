@@ -15,6 +15,7 @@ class TrelloOauthCheck
      */
     public function handle($request, Closure $next)
     {
+       
         if($request->session()->exists('userinfo')) {
             //dd( Session::get('userinfo'));
             return $next($request);

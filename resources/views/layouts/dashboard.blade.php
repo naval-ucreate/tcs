@@ -10,9 +10,11 @@
             <div class="page-title">                    
                     <h2><span class="fa fa-arrow-circle-o-left" onclick="window.history.back()" ></span> @yield('pageTitle')</h2>
             </div>
-            <div class="page-content-wrap animated slideInUp">             
+           
+            <div class="page-content-wrap animated slideInUp">      
+                       
                 @yield('content') 
-            </div>    
+            </div>
         </div>            
     </div>
       

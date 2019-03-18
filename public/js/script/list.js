@@ -13,6 +13,7 @@ window.addEventListener('load',function(){
     $(document.body).on('click','.delete-hook',deleteHook);
 
     function deleteHook(){
+     
       let _this=$("input[name='list_id']:checked");
       let data =_this.val();
       if(data==undefined){
@@ -23,13 +24,14 @@ window.addEventListener('load',function(){
       }
       data = data.split("~",);
       swal({
-         title: "Are you sure Want to delete the hook?",
+         title: "Are you sure want to delete the hook?",
          icon: "warning",
          buttons: true,
          dangerMode: true,
        })
        .then((willDelete) => {
          if (willDelete) {
+            $(".loading_loader").show();
             $.ajax({
                method:'post',
                data:{
@@ -38,13 +40,16 @@ window.addEventListener('load',function(){
                   board_id:data[1]
                },
                url:$("#delete_hook").text(),
-               beforSend:()=>{
-                  // todo
+               beforsend:()=>{
+                
                   
                },success:(data)=>{
                   if(data){
                      _this.prop('checked',false);
-                     swal("", "Done", "success");
+                     $(".list-group-status").removeClass('status-online');
+                     $(".list-group-status").addClass('status-offline');
+                     swal("", "Webhook successfully register", "success");
+                     $(this).remove();
                      return ;
                   }
                   swal("Oh no", "Something want wrong", "error");
@@ -52,7 +57,7 @@ window.addEventListener('load',function(){
                    console.log(err);
                   swal("Oh noes!", "The AJAX request failed!", "error");
                }),complete:(()=>{
-                  // todo
+                   $(".loading_loader").hide();
                })
             });
          } else {
@@ -62,6 +67,7 @@ window.addEventListener('load',function(){
     }
 
     $('input[type=radio][name=list_id]').change(function() {
+       $(".loading_loader").show();
         var res = this.value.split("~",)
         var s_url =  $('#reg_url').text();
         console.log(s_url);
@@ -77,12 +83,18 @@ window.addEventListener('load',function(){
                // todo
                
             },success:()=>{
+               $(".delete-hook").remove();
+               $(".list-group-status").removeClass('status-online');
+               $(".list-group-status").addClass('status-offline');
+               $("#_"+res[0]).removeClass('status-offline');
+               $("#_"+res[0]).addClass('status-online');
+               $("#"+res[0]).append(' <button class="btn btn-danger btn-sm delete-hook" rel="something"> Remove Hook </button>');
                swal("", "Done", "success");
             },error:(err => {
                 console.log(err);
                swal("Oh noes!", "The AJAX request failed!", "error");
             }),complete:(()=>{
-               // todo
+               $(".loading_loader").hide();
             })
          });
 
