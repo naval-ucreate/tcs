@@ -22,8 +22,10 @@
                                                 
                         <div class="row">
               
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="padding-top:50px">
+                            <button class="btn btn-danger delete-hook" rel="something"> Delete </button>
+                        </div>
+                        <div class="col-md-4" style="padding-top: 50px;">
                         <div class="panel panel-default">
                                 <div class="panel-heading ui-draggable-handle">
                                     <h3 class="panel-title">Lists</h3>         
@@ -33,18 +35,14 @@
                                 </div>
                                 <div class="panel-body list-group list-group-contacts"> 
                                 <span id="reg_url" style="display:none">{{ route('register_hook') }}</span>
-                                    <?php 
-                                   /* echo "<pre>";
-                                    print_R($board_list);
-                                    echo "</pre>";              */                     
-                                    ?>
+                                <span id="delete_hook" style="display:none">{{ route('delete_hook') }}</span>
                                      @foreach($board_list as $list)                                                                                        
                                     <a href="#" class="list-group-item">                                 
                                         <div class="list-group-status status-{{ ($list['web_hook_enable']==1?'online':'offline') }}"></div>
                                       <!--  <img src="assets/images/users/user4.jpg" class="pull-left" alt="Brad Pitt"> -->
                                         <h2 class="contacts-title" style="margin-top: 10px;"> {{$list['name']}}</h2>
                                         <div class="list-group-controls">
-                                          <input type="radio"  {{($list['web_hook_enable']==1?'checked':'')}} name="list_id" value="{{$list['trello_list_id']}}~{{$list['trello_board_id']}}">
+                                          <input type="radio"   {{($list['web_hook_enable']==1?'checked':'')}} name="list_id" value="{{$list['trello_list_id']}}~{{$list['trello_board_id']}}">
                                         </div>
                                     </a>
                                     @endforeach

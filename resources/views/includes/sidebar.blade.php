@@ -3,7 +3,7 @@
                         <a href="">{{config('app.name')}}</a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
-                    <li class="xn-openable {{ Route::is('main-dashboard') ? 'active' : '' }}">
+                    <li style="display:none;" class="xn-openable {{ Route::is('main-dashboard') ? 'active' : '' }}">
                         <a href="{{route('main-dashboard')}}"><span class="fa fa-files-o"></span> <span class="xn-text">Dashboard</span></a>
                     </li>
                     <li class="xn-openable {{ Route::is('show-board') ? 'active' : '' }}">    

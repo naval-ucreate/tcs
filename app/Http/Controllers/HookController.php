@@ -63,6 +63,28 @@ class HookController extends Controller
         return 1;
     }
 
+    public function deleteHook(){
+        $request_data = request()->validate(
+            [
+                'list_id' => 'required',
+                'board_id' => 'required'
+            ]
+        );
+        $board=BoardList::where([
+            'trello_list_id' => $request_data['list_id'],
+            'trello_board_id' => $request_data['board_id'] 
+        ])->first();
+        if($board){
+            if(app('trello')->deleteHook($board->web_hook_id)){
+                $board->web_hook_id=null;
+                $board->web_hook_enable=false;
+                $board->save();
+                return 1;
+            }
+        }
+        return 0;
+    }
+
     public function Listentrigger(){
         $data=json_decode(request()->getContent(), true);
         if($data['model']['id']!=$data['action']['data']['old']['idList']){

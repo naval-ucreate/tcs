@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/update-board','BoardsController@updateBoard' )->name('update-board');
     Route::get('/lists/{id}','ListController@TrelloList')->name('lists');
     Route::post('/register-web-hook','HookController@RegisterHook')->name('register_hook');
+    Route::post('/delete_hook','HookController@deleteHook')->name('delete_hook');
     Route::get('/logout','LoginController@logout' )->name('logout');
 });
 

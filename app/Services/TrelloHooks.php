@@ -37,9 +37,13 @@ class TrelloHooks extends  TrelloApi {
     }
 
     public function DeleteHook(string $hook_id){
-        
+        $url        = config("app.trello_api_end_point").'webhooks/'.$hook_id.'?key='.$this->api_key.'&token='.$this->token;
+        $response   = $this->client->delete($url);
+        if($response->getStatusCode()==200){
+            return $response->getBody();
+        }
+        return false;
     }
-
 
     public function addLable(String $card_id){
         $url        = config("app.trello_api_end_point").'cards/'.$card_id.'/labels?key='.$this->api_key.'&token='.$this->token;
@@ -50,6 +54,8 @@ class TrelloHooks extends  TrelloApi {
         }
         return false;
     }
+
+
 
 
 }
