@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-4" style="padding-top: 50px;">
                         <div style="display:none;" class="loading_loader">
-                        <img src="http://127.0.0.1:8000/jolly/img/loading.gif" style="position: absolute;z-index: 999;padding-top: 125px;padding-left: 206px;">
+                        <img src="{{ URL::asset('jolly/img/loading.gif') }}" style="position: absolute;z-index: 999;padding-top: 125px;padding-left: 206px;">
                         </div>  
                         <div class="panel panel-default">
                                 <div class="panel-heading ui-draggable-handle">
