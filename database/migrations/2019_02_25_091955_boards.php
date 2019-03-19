@@ -32,6 +32,7 @@ class Boards extends Migration
             $table->string('can_invite')->nullable();
             $table->string('total_members')->nullable();
             $table->string('image')->nullable();
+            $table->string('owner_token')->nullable();
             $table->string('trello_board_id',50);
             $table->text('members'); // stroe in json .
             $table->timestamps();

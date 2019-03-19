@@ -7319,3 +7319,17 @@ display:none;
 {
   list-style:none;
 }
+.delete-hook{
+  position: absolute;
+  margin-left: 26px;
+}
+.fa-check{
+  font-size: 150%;
+}
+.hook-alert{
+  text-align: center;
+  font-size: 30px;
+  color:red;
+  padding-top: 10px;
+  display: none ;
+}

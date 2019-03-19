@@ -16,4 +16,20 @@ function json_validator($data=NULL) {
             return false;
     }
     return false;
-  }
+}
+
+/**
+ * json array checking 
+ * @param array, string
+ * @return bool
+ */
+function array_exists($array ,$niddle){
+    $array=json_decode($array,true);   
+   
+    foreach($array as $key => $value):
+        if($niddle==$value['idMember'] && $value['memberType']=='admin'){
+            return true;
+        }
+    endforeach;
+    return false;
+}

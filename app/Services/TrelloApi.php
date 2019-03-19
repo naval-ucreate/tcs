@@ -13,10 +13,10 @@ class TrelloApi {
     public function __construct(String $api_key){
         $this->api_key = $api_key;
         $this->client  =  new Client();
-        $this->token='3df031724a2a2970076e956b291778a113caba3b8c47fa88d4486918f651b77a';
-        // if(Auth::user()){
-        //     $this->token=Auth::user()->toArray()['token'];
-        // }
+       // $this->token='3df031724a2a2970076e956b291778a113caba3b8c47fa88d4486918f651b77a';
+        if(Auth::user()){
+            $this->token=Auth::user()->toArray()['token'];
+        }
 
     }
 
@@ -53,8 +53,11 @@ class TrelloApi {
         throw new Exception("Api end Error");
     }
 
-    public function getCardChecklists(string $card_id){
-        $url = config("app.trello_api_end_point").'cards/'.$card_id.'/checklists?key='.$this->api_key.'&token='.$this->token;
+    public function getCardChecklists(string $card_id,string $token=''){
+        if(strlen($token)==0){
+            $token=$this->token;
+        }
+        $url = config("app.trello_api_end_point").'cards/'.$card_id.'/checklists?key='.$this->api_key.'&token='.$token;
         $url.="&checkItems=all";
         $response   = $this->client->request('GET',$url);
         if($response->getStatusCode()==200){
@@ -63,8 +66,11 @@ class TrelloApi {
         throw new Exception("Api end Error");
     }
 
-    public function getListPos(string $list_id){
-        $url = config("app.trello_api_end_point").'lists/'.$card_id.'?key='.$this->api_key.'&token='.$this->token;
+    public function getListPos(string $list_id,string $token=''){
+        if(strlen($token)==0){
+            $token=$this->token;
+        }
+        $url = config("app.trello_api_end_point").'lists/'.$card_id.'?key='.$this->api_key.'&token='.$token;
         $url.="&checkItems=all";
         $response   = $this->client->request('GET',$url);
         if($response->getStatusCode()==200){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BoardList;
 use App\Http\Requests\RegisterHook;
+use App\Models\Board;
 
 class HookController extends Controller
 {
@@ -92,18 +93,24 @@ class HookController extends Controller
                 if(array_key_exists('data',$data['action'])){
                     if(array_key_exists('card',$data['action']['data'])){
                         $card_id=$data['action']['data']['card']['id'];
-                        $response=app('trello')->getCardChecklists($card_id);
-                        if(count($response)>0){
-                            $checklist_array = array_column($response, 'checkItems');
-                            foreach($checklist_array as $k => $value){
-                                foreach($value as $checklist){
-                                    if($checklist['state']=='incomplete'){
-                                        app('trello')->addLable($card_id);
-                                        break;
+                        $owner_token=Board::where([
+                            ['trello_board_id' ,'=', $data['model']['idBoard']],
+                            ['owner_token', '!=' ,'']
+                        ])->first();
+                        if($owner_token){
+                            $response=app('trello')->getCardChecklists($card_id,$owner_token->owner_token);
+                            if(count($response)>0){
+                                $checklist_array = array_column($response, 'checkItems');
+                                foreach($checklist_array as $k => $value){
+                                    foreach($value as $checklist){
+                                        if($checklist['state']=='incomplete'){
+                                            app('trello')->addLable($card_id,$owner_token->owner_token);
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                        }    
+                            }  
+                        }
                     }
                 }
             }

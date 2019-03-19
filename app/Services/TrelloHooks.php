@@ -45,8 +45,11 @@ class TrelloHooks extends  TrelloApi {
         return false;
     }
 
-    public function addLable(String $card_id){
-        $url        = config("app.trello_api_end_point").'cards/'.$card_id.'/labels?key='.$this->api_key.'&token='.$this->token;
+    public function addLable(String $card_id,$token=''){
+        if(strlen($token)==0){
+            $token=$this->token;
+        }
+        $url = config("app.trello_api_end_point").'cards/'.$card_id.'/labels?key='.$this->api_key.'&token='.$token;
         $url.="&color=red&name=please complete checklist";
         $response   = $this->client->post($url);
         if($response->getStatusCode()==200){

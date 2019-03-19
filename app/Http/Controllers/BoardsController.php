@@ -34,7 +34,8 @@ class BoardsController extends Controller
                         'can_be_private' => $trello_boards_val['prefs']['canBePrivate'],
                         'can_invite' => $trello_boards_val['prefs']['canInvite'],
                         'members'=> json_encode($trello_boards_val['memberships']),
-                        'total_members' => count($trello_boards_val['memberships'])
+                        'total_members' => count($trello_boards_val['memberships']),
+                        'owner_token' => array_exists(json_encode($trello_boards_val['memberships']),$user_info['trello_id'])?$user_info['token']:''
                     ];  
                }
             }           
@@ -59,7 +60,9 @@ class BoardsController extends Controller
             return $user_boards_data;  // return array 
     }
     public function showBoards(){
-        $user_info          = Auth::user()->toArray();
+        $user_info      = Auth::user()->toArray();
+       // dd($user_info);
+       //trello_id
         $user_boards    = Board::where('user_id','=',$user_info['id'])->get();
         if(!is_null( $user_boards ) && count($user_boards)==0){
             if($user_info['total_board']>0){
@@ -83,7 +86,8 @@ class BoardsController extends Controller
                                         'can_be_private' => $trello_boards_val['prefs']['canBePrivate'],
                                         'can_invite' => $trello_boards_val['prefs']['canInvite'],
                                         'members'=> json_encode($trello_boards_val['memberships']),
-                                        'total_members' => count($trello_boards_val['memberships'])
+                                        'total_members' => count($trello_boards_val['memberships']),
+                                        'owner_token' => array_exists(json_encode($trello_boards_val['memberships']),$user_info['trello_id'])?$user_info['token']:''
                                     ];                                               
                     endforeach;
                     $user_boards   =  $this->store($insert_data);
