@@ -9,12 +9,12 @@
  
                               
                                                                     
-                        <div class="pull-right">
+                        <!-- <div class="pull-right">
                             <button class="btn btn-default content-frame-left-toggle"><span class="fa fa-bars"></span></button>
-                        </div>                                
+                        </div>                                 -->
                      
                     <div class="content-frame-body listing_view">
-                        <div class="hook-alert"> No Hook Register in this board</div>
+                        <div class="hook-alert"> No hook registered for this board </div>
                                                 
                         <div class="row">
               

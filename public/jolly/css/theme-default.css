@@ -7329,7 +7329,8 @@ display:none;
 .hook-alert{
   text-align: center;
   font-size: 30px;
-  color:red;
+  color:white;
   padding-top: 10px;
   display: none ;
+  background-color: rgba(0,0,0,0.6);
 }

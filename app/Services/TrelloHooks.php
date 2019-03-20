@@ -15,7 +15,8 @@ class TrelloHooks extends  TrelloApi {
         $url        = config("app.trello_api_end_point").'tokens/'.$this->token.'/webhooks/';
         $body=[];
         $body['key']          =  $this->api_key;
-        $body['callbackURL']  = "http://trellocontrollchecklist.herokuapp.com/api/list-trigger";
+        //$body['callbackURL']  = "http://trellocontrollchecklist.herokuapp.com/api/list-trigger";
+        $body['callbackURL']  = $_SERVER['HTTP_ORIGIN'].'/api/list-trigger';
         $body['idModel']      = $list_id;
         $body['description']  = "Creating the hook of list";
         $body['active']       = "true";
