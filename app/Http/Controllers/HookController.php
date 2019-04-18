@@ -92,7 +92,8 @@ class HookController extends Controller
             if(array_key_exists('action',$data)){
                 if(array_key_exists('data',$data['action'])){
                     if(array_key_exists('card',$data['action']['data'])){
-                        $card_id=$data['action']['data']['card']['id'];
+                        $card_id = $data['action']['data']['card']['id'];
+                        $old_list_id = $data['action']['data']['old']['idList'];
                         $owner_token=Board::where([
                             ['trello_board_id' ,'=', $data['model']['idBoard']],
                             ['owner_token', '!=' ,'']
@@ -105,11 +106,16 @@ class HookController extends Controller
                                     foreach($value as $checklist){
                                         if($checklist['state']=='incomplete'){
                                             app('trello')->addLable($card_id,$owner_token->owner_token);
+                                            app('trello')->moveCard($card_id, $old_list_id, $owner_token->owner_token);
                                             break;
                                         }
                                     }
                                 }
-                            }  
+                                return 1;
+                            }
+                            app('trello')->addLable($card_id,$owner_token->owner_token);
+                            app('trello')->moveCard($card_id, $old_list_id, $owner_token->owner_token); 
+                            return 1; 
                         }
                     }
                 }

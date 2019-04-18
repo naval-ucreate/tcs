@@ -15,7 +15,6 @@ class TrelloHooks extends  TrelloApi {
         $url        = config("app.trello_api_end_point").'tokens/'.$this->token.'/webhooks/';
         $body=[];
         $body['key']          =  $this->api_key;
-        //$body['callbackURL']  = "http://trellocontrollchecklist.herokuapp.com/api/list-trigger";
         $body['callbackURL']  = $_SERVER['HTTP_ORIGIN'].'/api/list-trigger';
         $body['idModel']      = $list_id;
         $body['description']  = "Creating the hook of list";
@@ -59,7 +58,15 @@ class TrelloHooks extends  TrelloApi {
         return false;
     }
 
-
-
-
+    public function moveCard(String $card_id, String $list_id, $token=''){
+        if(strlen($token)==0){
+            $token=$this->token;
+        }
+        $url = config("app.trello_api_end_point").'cards/'.$card_id.'?idList='.$list_id.'&key='.$this->api_key.'&token='.$token;
+        $response   = $this->client->post($url);
+        if($response->getStatusCode()==200){
+            return $response->getBody();
+        }
+        return false;
+    }
 }
