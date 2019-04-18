@@ -20,7 +20,7 @@
                                         @if($is_admin)
                                             <a href="{{route('lists',[$user_boards_val->trello_board_id])}}" class="btn btn-info pull-right" >Check List</a>
                                         @endif
-                                        <a href="{{route('lists',[$user_boards_val->trello_board_id])}}" class="btn btn-info pull-left" >Board Report</a>
+                                        <a href="#" class="btn btn-info pull-left" >Board Report</a>
                                         
                                 </div> 
                         </div>
