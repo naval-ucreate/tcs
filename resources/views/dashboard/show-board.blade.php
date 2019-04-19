@@ -7,9 +7,11 @@
       <center><h4 class="panel-success"> Boards</h4></center>
    </div> 
    <div class="panel-body"> 
+   
     <div class="row ">
             @forelse ($user_boards as $user_boards_val)   
             <?php $is_admin=array_exists($user_boards_val->members,Auth::user()->trello_id); ?>
+            @if($is_admin)
             <div class="col-md-3 " style="{{$is_admin?'':'opacity: 0.6;'}}">       
                 <div class="panel  {{$is_admin?'panel-info':'panel-danger'}}"  >
                                 <div class="panel-body" style='height:100px;{{ ($user_boards_val->background_image) ? "background-image:url($user_boards_val->background_image)" : "background-color: rgb(0, 121, 191);"}}' >
@@ -23,12 +25,38 @@
                                         <a href="#" class="btn btn-info pull-left" >Board Report</a>
                                         
                                 </div> 
-                        </div>
                 </div>
+             </div>
+            @endforelse    
             @empty
              <p>No Board </p>
             @endforelse
     </div>  
+    <hr>
+    <div class="row ">
+            @forelse ($user_boards as $user_boards_val)   
+            <?php $is_admin=array_exists($user_boards_val->members,Auth::user()->trello_id); ?>
+            @if(!$is_admin)
+            <div class="col-md-3 " style="{{$is_admin?'':'opacity: 0.6;'}}">       
+                <div class="panel  {{$is_admin?'panel-info':'panel-danger'}}"  >
+                                <div class="panel-body" style='height:100px;{{ ($user_boards_val->background_image) ? "background-image:url($user_boards_val->background_image)" : "background-color: rgb(0, 121, 191);"}}' >
+                                <h3 style="color:white"> <center> {{ $user_boards_val->name }} </center> </h3>
+                                </div>
+                                <div class="panel-footer footer-info" style='{{ ($user_boards_val->background_image) ? "background-image:url($user_boards_val->background_image)" : "background-color: rgb(0, 121, 191);"}}'>
+                                        <!-- <button class="btn btn-danger pull-right delete_data" rel="{{$user_boards_val->id}}" model="Board" >Delete</button> -->
+                                        @if($is_admin)
+                                            <a href="{{route('lists',[$user_boards_val->trello_board_id])}}" class="btn btn-info pull-right" >Check List</a>
+                                        @endif
+                                        <a href="#" class="btn btn-info pull-left" >Board Report</a>
+                                        
+                                </div> 
+                </div>
+             </div>
+            @endforelse    
+            @empty
+             <p>No Board </p>
+            @endforelse
+    </div> 
  </div>
 </div>
 
