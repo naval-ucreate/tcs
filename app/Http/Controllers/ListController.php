@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BoardList;
+use App\Models\TestingHook;
 
 class ListController extends Controller
 {
@@ -14,7 +15,7 @@ class ListController extends Controller
         }
     }
     public function TrelloList(String $id){       
-        $board_list =   BoardList::with('board')->where('trello_board_id','=',$id)->get()->toArray();
+        $board_list = BoardList::with('board')->where('trello_board_id','=',$id)->get()->toArray();
         if(!count($board_list)){
             $list_data  =   app('trello')->GetBoardList($id);
             if(count($list_data)){
@@ -31,6 +32,14 @@ class ListController extends Controller
             } 
         }
         return view('dashboard/show-list',compact('board_list'));         
+    }
+
+    public function testWebHook(){
+        $data=json_decode(request()->getContent(), true);
+        TestingHook::create([
+            'details' => json_encode($data)
+        ]);
+        return 1;
     }
 
 }
