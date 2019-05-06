@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\BoardList;
 use App\Http\Requests\RegisterHook;
 use App\Models\Board;
+use Illuminate\Support\Facades\Auth;
 use App\Repositories\Boards\BoardRepository;
 use App\Repositories\Lists\ListRepository;
 
@@ -21,7 +22,7 @@ class HookController extends Controller
                 $data->web_hook_id = $hook_id;
                 $data->web_hook_enable = true;
                 $data->owner_token = $user_info['trello_id'];
-                $board->update($board_id, $data);
+                $board->update($board_id, $data->toArray());
                 return 1;
             }
         }
@@ -35,7 +36,7 @@ class HookController extends Controller
                 $data->web_hook_id = '';
                 $data->web_hook_enable = false;
                 $data->owner_token = '';
-                $board->update($board_id, $data);
+                $board->update($board_id, $data->toArray());
                 return 1;
             }
         }
@@ -79,7 +80,7 @@ class HookController extends Controller
         return 0;
     }
 
-    public function listenTrigger():void{
+    public function listenTrigger(){
         $data=json_decode(request()->getContent(), true);
         $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
         $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
@@ -88,14 +89,16 @@ class HookController extends Controller
         if($data['action']['type']=='updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
             $this->checkCheckList($after_list_id, $befor_list_id, $card_id); 
         }
+        return 0;
     }
     
     
-    private function  checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, ListRepository $list):void{
+    private function  checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, ListRepository $list){
         $list_info = $list->findByListId($after_list_id);
         if($list_info->web_hook_enable){
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
+        return 0;
     }
 
     public function after(){
