@@ -6,26 +6,38 @@ use Illuminate\Http\Request;
 use App\Models\BoardList;
 use App\Http\Requests\RegisterHook;
 use App\Models\Board;
+use App\Repositories\Boards\BoardRepository;
+use App\Repositories\Lists\ListRepository;
 
 class HookController extends Controller
 {
     
-    public function RegisterHook(RegisterHook $request,BoardList $list){
-        $data=$list->where([
-            'trello_board_id' => $request->board_id,
-            'web_hook_enable' => true    
-        ])->first();
-        if($data){
-            if($this->UpdateHook($data->web_hook_id,$request->list_id,$request->board_id)){
-                $data->web_hook_enable=false;
-                $data->web_hook_id='';
-                $data->save();
+    public function registerHook($board_id,BoardRepository $board){
+        $data = $board->getBoardId($board_id);
+        if(!$data->web_hook_enable && $data->web_hook_id==''){
+            $hook_id = $this->saveHook($board_id);
+            if($hook_id){
+                $user_info = Auth::user()->toArray();
+                $data->web_hook_id = $hook_id;
+                $data->web_hook_enable = true;
+                $data->owner_token = $user_info['trello_id'];
+                $board->update($board_id, $data);
                 return 1;
             }
-            return 0;
         }
-        if($this->SaveHook($request->list_id)){
-            return 1;
+        return 0;
+    }
+
+    public function removeHook($board_id, BoardRepository $board){
+        $data = $board->getBoardId($board_id);
+        if($data->web_hook_enable && $data->web_hook_id!=''){
+            if($this->deleteHook($data->web_hook_id)){
+                $data->web_hook_id = '';
+                $data->web_hook_enable = false;
+                $data->owner_token = '';
+                $board->update($board_id, $data);
+                return 1;
+            }
         }
         return 0;
     }
@@ -47,15 +59,11 @@ class HookController extends Controller
         return 0;
     }
 
-    public function SaveHook(string $list_id){
-        $response=app('trello')->RegisterHookList($list_id);
-        $hook_data=json_validator($response);
-        if(count($hook_data)>0 &&  $hook_data){
-            BoardList::where('trello_list_id' , '=' ,$list_id)->update([
-                'web_hook_id' => $hook_data['id'],
-                'web_hook_enable' => true
-            ]);
-            return 1;
+    public function saveHook(string $borad_id){
+        $response = app('trello')->RegisterHookList($borad_id);
+        $hook_data = json_validator($response);
+        if(count($hook_data) > 0 &&  $hook_data){
+            return $hook_data['id'];
         }
         return 0;
     }
@@ -64,29 +72,33 @@ class HookController extends Controller
         return 1;
     }
 
-    public function deleteHook(){
-        $request_data = request()->validate(
-            [
-                'list_id' => 'required',
-                'board_id' => 'required'
-            ]
-        );
-        $board=BoardList::where([
-            'trello_list_id' => $request_data['list_id'],
-            'trello_board_id' => $request_data['board_id'] 
-        ])->first();
-        if($board){
-            if(app('trello')->deleteHook($board->web_hook_id)){
-                $board->web_hook_id=null;
-                $board->web_hook_enable=false;
-                $board->save();
-                return 1;
-            }
+    public function deleteHook(string $board_id){
+        if(app('trello')->deleteHook($board_id)){
+            return 1;
         }
         return 0;
     }
 
-    public function Listentrigger(){
+    public function listenTrigger():void{
+        $data=json_decode(request()->getContent(), true);
+        $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
+        $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
+        $borad_id = $data['action']['id'];
+        $card_id = $data['action']['display']['entities']['card']['id'];
+        if($data['action']['type']=='updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
+            $this->checkCheckList($after_list_id, $befor_list_id, $card_id); 
+        }
+    }
+    
+    
+    private function  checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, ListRepository $list):void{
+        $list_info = $list->findByListId($after_list_id);
+        if($list_info->web_hook_enable){
+            $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
+        }
+    }
+
+    public function after(){
         $data=json_decode(request()->getContent(), true);
         if($data['model']['id']!=$data['action']['data']['old']['idList']){
             if(array_key_exists('action',$data)) {
@@ -109,7 +121,7 @@ class HookController extends Controller
     }
 
     private function addLable($card_id, $owner_token, $old_list_id){
-        $response=app('trello')->getCardChecklists($card_id,$owner_token->owner_token);
+        $response=app('trello')->getCardChecklists($card_id,$owner_token);
         if(count($response)>0) {
             $checklist_array = array_column($response, 'checkItems');
             foreach($checklist_array as $k => $value) {
@@ -127,7 +139,4 @@ class HookController extends Controller
         app('trello')->moveCard($card_id, $old_list_id, $owner_token->owner_token); 
         return 1; 
     }
-
-
-
 }

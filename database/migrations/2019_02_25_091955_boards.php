@@ -15,8 +15,6 @@ class Boards extends Migration
     {
         Schema::create('boards', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('trello_user_id');
-            $table->integer('user_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('board_url')->nullable();

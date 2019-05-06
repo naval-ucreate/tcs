@@ -15,8 +15,7 @@ class UsersBoards extends Migration
     {
         Schema::create('users_boards', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('total_board'); 
+            $table->string('user_id');
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 'use strict';
 
 window.addEventListener('load',function(){
+    let base_path = window.location.origin;  
     let _cross_token = $('meta[name="_token"]').attr('content'); 
     let data = $("#board_data").attr('rel');
     let hook_alert=$("input[name='hook_checked']").val();
@@ -12,7 +13,6 @@ window.addEventListener('load',function(){
        $(".listing_view").css('background','url('+data+')');
     }
 
-    // for delete the hook 
     
     $(document.body).on('click','.delete-hook',deleteHook);
 
@@ -38,13 +38,12 @@ window.addEventListener('load',function(){
                if (willDelete) {
                   $(".loading_loader").show();
                   $.ajax({
-                     method:'post',
+                     method:'put',
                      data:{
                         _token:_cross_token,
-                        list_id:data[0],
-                        board_id:data[1]
+                        status:false
                      },
-                     url:$("#delete_hook").text(),
+                     url:base_path+'/disable_check_list/'+data[0],
                      beforsend:()=>{
                      
                         
@@ -80,21 +79,18 @@ window.addEventListener('load',function(){
     $(".add_hook").on('click',function(){
        $(".loading_loader").show();
        $(".list-group-item").css('pointer-events','none');
-        var res = $(this).children().find('input').val().split("~",)
-        var tick = $(this).children('._checkbox');
-        var s_url =  $('#reg_url').text();
-        console.log(s_url);
+        let res = $(this).children().find('input').val().split("~",)
+        let tick = $(this).children('._checkbox');
         $.ajax({
-            method:'post',
+            method:'put',
             data:{
                _token:_cross_token,
-               list_id:res[0],
-               board_id:res[1]
+               board_id:res[1],
+               status:true
             },
-            url:s_url,
+            url:base_path+'/enable_check_list/'+res[0],
             beforSend:()=>{
-              
-               
+ 
             },success:()=>{
                $('.hook-alert').fadeOut('slow');
                $(".delete-hook").remove();

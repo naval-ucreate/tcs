@@ -30,7 +30,7 @@
                                     <h3 class="panel-title text-center">{{$board_list[0]['board']['name']}}</h3>         
                                 </div>
                                 <div class="panel-body list-group list-group-contacts"> 
-                                <span id="reg_url" style="display:none">{{ route('register_hook') }}</span>
+                                
                                 <span id="delete_hook" style="display:none">{{ route('delete_hook') }}</span>
 
                                      @foreach($board_list as $list)                                                                                        

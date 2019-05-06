@@ -11,13 +11,13 @@ class TrelloHooks extends  TrelloApi {
     }
 
 
-    public function RegisterHookList(String $list_id){
-        $url        = config("app.trello_api_end_point").'tokens/'.$this->token.'/webhooks/';
+    public function RegisterHookList(String $board_id){
+        $url = config("app.trello_api_end_point").'tokens/'.$this->token.'/webhooks/';
         $body=[];
         $body['key']          =  $this->api_key;
         $body['callbackURL']  = $_SERVER['HTTP_ORIGIN'].'/api/list-trigger';
-        $body['idModel']      = $list_id;
-        $body['description']  = "Creating the hook of list";
+        $body['idModel']      = $board_id;
+        $body['description']  = "Creating the hook for baords";
         $body['active']       = "true";
         $response   = $this->client->post($url,['form_params'=>$body]);
         if($response->getStatusCode()==200){

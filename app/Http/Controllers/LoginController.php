@@ -20,8 +20,10 @@ class LoginController extends Controller
                'trello_token' => 'required' 
             ]
         );
-        $authUser=User::where('token',$requestdata['trello_token'])->first();
+        $authUser = User::where('token',$requestdata['trello_token'])->first();
         if($authUser){
+            $authUser->last_api_hit = strtotime('-2 min' ,time());
+            $authUser->save(); 
             Auth::loginUsingId($authUser->id, true);
             return [
                 'success' => true,
@@ -56,7 +58,7 @@ class LoginController extends Controller
                 'email' => $return_data['email'],
                 'token' => $token,
                 'total_board' => count($return_data['idBoards']),
-                'last_api_hit' => strtotime('+24 hours',time())
+                'last_api_hit' => strtotime('+24 hr', time())
             ];
             if($user=User::create($insert_data)){                
                 Auth::loginUsingId($user->id, true);

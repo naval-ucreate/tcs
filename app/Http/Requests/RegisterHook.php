@@ -24,7 +24,6 @@ class RegisterHook extends FormRequest
     public function rules()
     {
         return [
-            'list_id' => 'required',
             'board_id' => 'required'
         ];
     }
