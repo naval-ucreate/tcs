@@ -57,7 +57,7 @@ window.addEventListener('load',function(){
             beforSend:(()=>{
                // todo
             }),success:()=>{
-               swal("sucess", "Report ensabled", "success");
+               swal("sucess", "Report Enabled", "success");
                Response(true);
             },error:(err => {
                Reject(true);
@@ -82,7 +82,7 @@ window.addEventListener('load',function(){
             beforSend:(()=>{
                // todo
             }),success:()=>{
-               swal("sucess", "Report disabled", "success");
+               swal("sucess", "Report Disabled", "success");
                Response(true);
             },error:(err => {
                swal("Error", "Something went wrong", "error");
