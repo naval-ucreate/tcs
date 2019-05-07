@@ -6,10 +6,10 @@ window.addEventListener('load',function(){
     $(document.body).on('click','._register',function(){
       let board_id = $(this).attr('data');
       let status = $(this).attr('status');
-      $(this).find('.icon_show').show();
       let _this = $(this);
       
       if(status){
+         $(this).find('.icon_show').show();
          remove_hook(status, board_id).then(() => {
             $(this).find('.icon_show').hide();
             _this.removeClass('btn-danger');
@@ -21,15 +21,24 @@ window.addEventListener('load',function(){
          });
          return false;
       }
-
-      reqgister(status, board_id).then(() => {
-         $(this).find('.icon_show').hide();
-         _this.removeClass('btn-info');
-         _this.addClass('btn-danger');
-         _this.attr('status', true);
-         _this.html('Disable Report <i class="fa fa-spinner fa-spin icon_show" style="display:none;" aria-hidden="true"></i>');
-      }).catch( () => {
-         $(this).find('.icon_show').hide();
+      swal({
+         title: "Are you sure want to disable the report?",
+         icon: "warning",
+         buttons: true,
+         dangerMode: true,
+      }) .then((willDelete) => {
+         if (willDelete) {
+               $(this).find('.icon_show').show();
+               reqgister(status, board_id).then(() => {
+               $(this).find('.icon_show').hide();
+               _this.removeClass('btn-info');
+               _this.addClass('btn-danger');
+               _this.attr('status', true);
+               _this.html('Disable Report <i class="fa fa-spinner fa-spin icon_show" style="display:none;" aria-hidden="true"></i>');
+            }).catch( () => {
+               $(this).find('.icon_show').hide();
+            });
+         } 
       });
     });
 
@@ -62,35 +71,25 @@ window.addEventListener('load',function(){
     let remove_hook = (...data) => { 
       const [status, board_id] = data;
       return new Promise((Response, Reject) => {
-         swal({
-            title: "Are you sure want to disable the report?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-         }) .then((willDelete) => {
-            if (willDelete) {
-               $.ajax({
-                  method:'delete',
-                  data:{
-                     _token:_cross_token,
-                     status: status
-                  },
-                  url: base_path+'/disable_hook/'+board_id,
-                  beforSend:(()=>{
-                     // todo
-                  }),success:()=>{
-                     swal("sucess", "Report disabled", "success");
-                     Response(true);
-                  },error:(err => {
-                     swal("Error", "Something went wrong", "error");
-                     Reject(true);
-                  }),complete:(()=>{
-                     // todo
-                  })
-               });
-            }
+         $.ajax({
+            method:'delete',
+            data:{
+               _token:_cross_token,
+               status: status
+            },
+            url: base_path+'/disable_hook/'+board_id,
+            beforSend:(()=>{
+               // todo
+            }),success:()=>{
+               swal("sucess", "Report disabled", "success");
+               Response(true);
+            },error:(err => {
+               swal("Error", "Something went wrong", "error");
+               Reject(true);
+            }),complete:(()=>{
+               // todo
+            })
          });
-         
       });
     }
 
