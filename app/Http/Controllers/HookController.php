@@ -28,7 +28,7 @@ class HookController extends Controller
                 $user_info = Auth::user()->toArray();
                 $data->web_hook_id = $hook_id;
                 $data->web_hook_enable = true;
-                $data->owner_token = $user_info['trello_id'];
+                $data->owner_token = $user_info['token'];
                 $board->update($board_id, $data->toArray());
                 return 1;
             }
