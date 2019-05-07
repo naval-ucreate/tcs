@@ -47,6 +47,7 @@ window.addEventListener('load',function(){
             beforSend:(()=>{
                // todo
             }),success:()=>{
+               swal("sucess", "Report ensabled", "success");
                Response(true);
             },error:(err => {
                Reject(true);
@@ -61,25 +62,35 @@ window.addEventListener('load',function(){
     let remove_hook = (...data) => { 
       const [status, board_id] = data;
       return new Promise((Response, Reject) => {
-         $.ajax({
-            method:'delete',
-            data:{
-               _token:_cross_token,
-               status: status
-            },
-            url: base_path+'/disable_hook/'+board_id,
-            beforSend:(()=>{
-               // todo
-            }),success:()=>{
-               swal("sucess", "Report enabled", "success");
-               Response(true);
-            },error:(err => {
-               swal("Error", "Something went wrong", "error");
-               Reject(true);
-            }),complete:(()=>{
-               // todo
-            })
+         swal({
+            title: "Are you sure want to disable the report?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+         }) .then((willDelete) => {
+            if (willDelete) {
+               $.ajax({
+                  method:'delete',
+                  data:{
+                     _token:_cross_token,
+                     status: status
+                  },
+                  url: base_path+'/disable_hook/'+board_id,
+                  beforSend:(()=>{
+                     // todo
+                  }),success:()=>{
+                     swal("sucess", "Report disabled", "success");
+                     Response(true);
+                  },error:(err => {
+                     swal("Error", "Something went wrong", "error");
+                     Reject(true);
+                  }),complete:(()=>{
+                     // todo
+                  })
+               });
+            }
          });
+         
       });
     }
 
