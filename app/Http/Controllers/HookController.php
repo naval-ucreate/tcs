@@ -83,13 +83,13 @@ class HookController extends Controller
 
     public function listenTrigger(WebhookCallLog $webhook_calllog){
         $data=json_decode(request()->getContent(), true);
+        $webhook_calllog->create(['body' => json_encode($data)]);
         $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
         $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
         $borad_id = $data['action']['id'];
         $card_id = $data['action']['display']['entities']['card']['id'];
         if($data['action']['type']=='updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
-            $this->checkCheckList($after_list_id, $befor_list_id, $card_id);
-            $webhook_calllog->create(json_encode($data)); 
+            $this->checkCheckList($after_list_id, $befor_list_id, $card_id); 
         }
         return 0;
     }
