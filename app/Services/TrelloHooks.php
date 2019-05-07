@@ -22,7 +22,7 @@ class TrelloHooks extends  TrelloApi {
         $body['active']       = "true";
         $response   = $this->client->post($url,['form_params'=>$body]);
         if($response->getStatusCode()==200){
-            $webhook_calllog->create($response->getBody());
+            $webhook_calllog->create(['body' => $response->getBody()]);
             return $response->getBody();
         }
         return false;
