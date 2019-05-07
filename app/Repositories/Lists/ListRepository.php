@@ -25,4 +25,10 @@ class ListRepository extends ListClass
         return $this->model->where('trello_board_id' ,'=', $board_id)
         ->update(['web_hook_enable' => false]);
     }
+
+    public function findByListId(string $list_id){
+        return $this->model->with('board:owner_token,trello_board_id')
+        ->where('trello_list_id', '=', $list_id)
+        ->first();
+    }
 }

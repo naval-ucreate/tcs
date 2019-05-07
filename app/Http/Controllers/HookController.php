@@ -13,6 +13,12 @@ use App\Models\WebhookCallLog;
 
 class HookController extends Controller
 {
+
+    private $list;
+
+    public function  __construct(ListRepository $list){
+        $this->list = $list;
+    }
     
     public function registerHook($board_id,BoardRepository $board){
         $data = $board->getBoardId($board_id);
@@ -95,8 +101,8 @@ class HookController extends Controller
     }
     
     
-    private function  checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, ListRepository $list){
-        $list_info = $list->findByListId($after_list_id);
+    private function  checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id){
+        $list_info = $this->list->findByListId($after_list_id);
         if($list_info->web_hook_enable){
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
