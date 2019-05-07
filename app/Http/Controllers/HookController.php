@@ -9,6 +9,7 @@ use App\Models\Board;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Boards\BoardRepository;
 use App\Repositories\Lists\ListRepository;
+use App\Models\WebhookCallLog;
 
 class HookController extends Controller
 {
@@ -80,14 +81,15 @@ class HookController extends Controller
         return 0;
     }
 
-    public function listenTrigger(){
+    public function listenTrigger(WebhookCallLog $webhook_calllog){
         $data=json_decode(request()->getContent(), true);
         $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
         $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
         $borad_id = $data['action']['id'];
         $card_id = $data['action']['display']['entities']['card']['id'];
         if($data['action']['type']=='updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
-            $this->checkCheckList($after_list_id, $befor_list_id, $card_id); 
+            $this->checkCheckList($after_list_id, $befor_list_id, $card_id);
+            $webhook_calllog->create(json_encode($data)); 
         }
         return 0;
     }

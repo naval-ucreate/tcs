@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use App\Models\WebhookCallLog;
 class TrelloHooks extends  TrelloApi {
 
 
@@ -11,7 +12,7 @@ class TrelloHooks extends  TrelloApi {
     }
 
 
-    public function RegisterHookList(String $board_id){
+    public function RegisterHookList(String $board_id, WebhookCallLog $webhook_calllog){
         $url = config("app.trello_api_end_point").'tokens/'.$this->token.'/webhooks/';
         $body=[];
         $body['key']          =  $this->api_key;
@@ -21,6 +22,7 @@ class TrelloHooks extends  TrelloApi {
         $body['active']       = "true";
         $response   = $this->client->post($url,['form_params'=>$body]);
         if($response->getStatusCode()==200){
+            $webhook_calllog->create($response->getBody());
             return $response->getBody();
         }
         return false;
