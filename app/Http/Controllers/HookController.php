@@ -138,16 +138,16 @@ class HookController extends Controller
             foreach($checklist_array as $k => $value) {
                 foreach($value as $checklist){
                     if($checklist['state']=='incomplete') {
-                        app('trello')->addLable($card_id,$owner_token,'Checklist incomplete');
                         app('trello')->moveCard($card_id, $old_list_id, $owner_token);
+                        app('trello')->addLable($card_id,$owner_token,'Checklist incomplete');
                         break;
                     }
                 }
             }
             return 1;
         }
+        app('trello')->moveCard($card_id, $old_list_id, $owner_token);
         app('trello')->addLable($card_id,$owner_token,'Checklist missing');
-        app('trello')->moveCard($card_id, $old_list_id, $owner_token); 
         return 1; 
     }
 }
