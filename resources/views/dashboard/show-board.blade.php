@@ -23,39 +23,26 @@
                 <?php $admin_class = $user_boards_val->is_admin ? 'panel-info':'panel-danger'; ?>
                 <?php $board_name = $user_boards_val->boards->name; ?>
                 
-              <!--  @if($user_boards_val->boards->web_hook_enable && $user_boards_val->is_admin)
-                        <?php $hook_register .= '<div class="col-md-3">       
-                                                        <div class="panel  '.$admin_class.'"  >
-                                                                        <div class="panel-body" style="height:100px;'. $background .'" >
-                                                                        <h3 style="color:white"> <center> '. $board_name .' </center> </h3>
-                                                                        </div>
-                                                                        <div class="panel-footer footer-info" style="'.$background.'">
-                                                                                <!-- <button class="btn btn-danger pull-right delete_data" rel="{{$user_boards_val->id}}" model="Board" >Delete</button> -->
-                                                                                
-                                                                                <a href="'.route("lists",[$user_boards_val->trello_board_id]).'" class="btn btn-primary pull-right" >Settings </a> 
-                                                                                <a href="#" class="btn btn-info pull-right" style="margin-right:10px" >Board Report</a>
-                                                                                <a href="javascript:void(0)" status="'.$user_boards_val->boards->web_hook_enable.'" class="btn btn-info btn-sm pull-left _register" data="'.$user_boards_val->trello_board_id.'">Enabled Report <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></a>
-                                                                        </div> 
-                                                        </div>
-                                                </div>' 
-                        ?>
-                @endif
-                -->        
                 @if($user_boards_val->is_admin)
                         <?php 
-                                $report_enable = (!$user_boards_val->boards->web_hook_enable)?'Enabled Report':'Disabled Report'; 
+                                $report_enable = (!$user_boards_val->boards->web_hook_enable)?'Enabled Report':'Disabled Report';
+                                $report_class =  (!$user_boards_val->boards->web_hook_enable)?'btn-info':'btn-danger';
                         ?>
                         <?php $user_admin .= '<div class="col-md-3">       
                                                         <div class="panel  '.$admin_class.'"  >
-                                                                        <div class="panel-body" style="height:100px;'. $background .'" >
-                                                                        <h3 style="color:white"> <center> '. $board_name .' </center> </h3>
-                                                                        </div>
-                                                                        <div class="panel-footer footer-info" style="'.$background.'">
-                                                                                <!-- <button class="btn btn-danger pull-right delete_data" rel="{{$user_boards_val->id}}" model="Board" >Delete</button> -->
-                                                                                <a href="'.route("lists",[$user_boards_val->trello_board_id]).'" class="btn btn-primary pull-right" >Settings </a> 
-                                                                                <a href="#" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>
-                                                                                <a href="javascript:void(0)" class="btn btn-info btn-sm pull-left _register" status = "'.$user_boards_val->boards->web_hook_enable.'" data="'.$user_boards_val->trello_board_id.'">'.$report_enable.' <i class="fa fa-spinner fa-spin icon_show" style="display:none;" aria-hidden="true"></i></a>
-                                                                        </div> 
+                                                                <div class="panel-body" style="height:100px;'. $background .'" >
+                                                                <h3 style="color:white"> <center> '. $board_name .' </center> </h3>
+                                                                </div>
+                                                                <div class="panel-footer footer-info" style="'.$background.'">
+                                                                        <!-- <button class="btn btn-danger pull-right delete_data" 
+                                                                        rel="{{$user_boards_val->id}}" model="Board" >Delete</button> -->
+                                                                        <a href="'.route("lists",[$user_boards_val->trello_board_id]).'" class="btn btn-primary pull-right" >Settings </a> 
+                                                                        <a href="#" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>
+                                                                        <a href="javascript:void(0)" class="btn '.$report_class.' btn-sm pull-left _register" 
+                                                                        status = "'.$user_boards_val->boards->web_hook_enable.'" 
+                                                                        data="'.$user_boards_val->trello_board_id.'">'.$report_enable.' 
+                                                                        <i class="fa fa-spinner fa-spin icon_show" style="display:none;" aria-hidden="true"></i></a>
+                                                                </div> 
                                                         </div>
                                                 </div>' 
                         ?>
