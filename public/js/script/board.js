@@ -1,6 +1,7 @@
 'use strict'
 
 window.addEventListener('load',function(){
+
    let _cross_token = $('meta[name="_token"]').attr('content');
    let base_path = window.location.origin; 
    
@@ -95,7 +96,7 @@ window.addEventListener('load',function(){
     }
 
     $(document.body).on('click','.delete_data',function(){
-        let id    =  $(this).attr('rel');
+        let id = $(this).attr('rel');
         swal({
             text: 'For Delete this boards write Down Delete ?',
             content: "input",
@@ -137,6 +138,7 @@ window.addEventListener('load',function(){
                swal.close();
             })
     });
+
     $(document.body).on('click','.update_data',function(){
        console.log("test");
     });   

@@ -7396,3 +7396,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.configration {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}

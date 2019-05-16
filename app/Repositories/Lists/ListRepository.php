@@ -23,7 +23,7 @@ class ListRepository extends ListClass
 
     public function disbaleAll(string $board_id){
         return $this->model->where('trello_board_id' ,'=', $board_id)
-        ->update(['web_hook_enable' => false]);
+        ->update(['checklist_enable' => false]);
     }
 
     public function findByListId(string $list_id){
@@ -31,4 +31,15 @@ class ListRepository extends ListClass
         ->where('trello_list_id', '=', $list_id)
         ->first();
     }
+
+    public function disbaleAllBug(string $board_id){
+        return $this->model->where('trello_board_id' ,'=', $board_id)
+        ->update(['bug_enable' => false]);
+    }
+
+    public function updateListBug(Array $list_ids){
+        return $this->model->whereIn('trello_list_id' , $list_ids)
+        ->update(['bug_enable' => true]);
+    }
+
 }

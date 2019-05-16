@@ -36,10 +36,10 @@ class ListController extends Controller
                 }
             } 
         }
+
         if(time()>$this->login_user['last_api_hit']) {
-            $board_list = $this->checkNewList($id,$board_list);
+            $board_list = $this->checkNewList($id, $board_list);
         }
-        
         return view('dashboard/show-list',compact('board_list'));         
     }
 
@@ -83,6 +83,7 @@ class ListController extends Controller
             'trello_list_id'=>$list_val['id'],
             'name'=> $list_val['name'],
             'web_hook_enable'=>0,
+            'checklist_enable' => 0
             ];
         }
         return $insert_data;
@@ -93,11 +94,24 @@ class ListController extends Controller
         if(isset($data['board_id'])){
             $this->list->disbaleAll($data['board_id']);
         }
-        $update = ['web_hook_enable' => $data['status']];
+        $update = ['checklist_enable' => $data['status']];
         if($this->list->update($list_id, $update)){
             return 1;
         }
-        return false;
+        return 0;
+    }
+
+    public function enableBug(string $board_id){
+       $data = request()->toArray();
+       $list_id = $data['list_ids'];
+       $list_id = explode(',', $list_id);
+       if(count($list_id) == 0) {
+        $this->list->disbaleAllBug($board_id);
+        return 1;
+       }
+       $this->list->disbaleAllBug($board_id);
+       if($this->list->updateListBug($list_id) ) return 1;
+       return 0;
     }
 
     public function testWebHook(){

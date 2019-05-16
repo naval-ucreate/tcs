@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/enable_check_list/{list_id}','ListController@updateListcheckList')->name('enable_check_list');
     Route::delete('/disable_hook/{board_id}','HookController@removeHook')->name('disable_hook');
     Route::put('/enable_report/{board_id}','HookController@registerHook')->name('enable_report');
+    Route::put('/update_bug_list/{board_id}','ListController@enableBug')->name('update_bug_list');
     Route::get('/logout','LoginController@logout' )->name('logout');
 });
 

@@ -5,18 +5,63 @@ window.addEventListener('load',function(){
     let _cross_token = $('meta[name="_token"]').attr('content'); 
     let data = $("#board_data").attr('rel');
     let hook_alert=$("input[name='hook_checked']").val();
+
     if(hook_alert==undefined){
       $('.hook-alert').show();
     }
 
-    if(typeof data ==='string'){
+   if(typeof data ==='string'){
        $(".listing_view").css('background','url('+data+')');
-    }
+   }
 
+   
+   $(".add_bug").on('click', function() {
+      if($(this).children().find('input').prop('checked')) {
+         $(this).children().find('input').prop('checked', false);
+         return false;
+      }
+      $(this).children().find('input').prop('checked', true);
+   }); 
     
-    $(document.body).on('click','.delete-hook',deleteHook);
+   $('.config').on('click', function(){
+      let active_tab = $(this).children('a').attr('rel');
+      let deactive_tab = $(this).siblings().children('a').attr('rel');
+      $("#"+active_tab).show();
+      $("#"+deactive_tab).hide();
+   });
+   
+   $('.update_bug').on('click', function(){
+      $(".loading_loader").show();
+      let borad_id = window.location.pathname.split('/');
+      borad_id = borad_id[borad_id.length-1];
+      let list_ids = [];
+      $("input[name='list_id[]']:checked").each( function () {
+         list_ids.push($(this).val());
+      });
 
-    function deleteHook(e){
+      $.ajax({
+         method:'put',
+         data:{
+            _token:_cross_token,
+            list_ids: list_ids.toString(),
+         },
+         url:base_path+'/update_bug_list/'+borad_id,
+         beforsend:()=>{
+
+         },success:(data)=>{
+            swal("Success Information", "Inforamtion Updated", "success");
+         },error:(err => {
+            swal("Oh noes!", "Something went wrong", "error");
+         }),complete:(()=>{
+            $(".loading_loader").hide();
+         })
+      });
+
+   });
+
+   $(document.body).on('click','.delete-hook', deleteHook);
+
+   function deleteHook(e){
             e.preventDefault();
             let _this=$("input[name='list_id']:checked");
             let data =_this.val();
@@ -28,6 +73,7 @@ window.addEventListener('load',function(){
             }
             $(".list-group-item").css('pointer-events','none');
             data = data.split("~",);
+            
             swal({
                title: "Are you sure want to delete the hook?",
                icon: "warning",
