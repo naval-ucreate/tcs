@@ -51,12 +51,12 @@
 
                         <?php $only_member .= '<div class="col-md-3 ">       
                                                         <div class="panel  '.$admin_class.'"  >
-                                                                        <div class="panel-body" style="height:100px;'. $background .'" >
+                                                                    <div class="panel-body" style="height:100px;'. $background .'" >
                                                                         <h3 style="color:white"> <center> '. $board_name .' </center> </h3>
-                                                                        </div>
-                                                                        <div class="panel-footer footer-info" style="'.$background.'">
+                                                                    </div>
+                                                                    <div class="panel-footer footer-info" style="'.$background.'">
                                                                                 <a href="#" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>     
-                                                                        </div> 
+                                                                    </div> 
                                                         </div>
                                                 </div>'  
                         ?>

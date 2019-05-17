@@ -90,7 +90,7 @@ class HookController extends Controller
     }
 
     public function listenTrigger(WebhookCallLog $webhook_calllog){
-        $data=json_decode(request()->getContent(), true);
+        $data = json_decode(request()->getContent(), true);
         $webhook_calllog->create(['body' => json_encode($data)]);
         $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
         $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
@@ -107,16 +107,56 @@ class HookController extends Controller
     
     private function checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, Array $card_information){
         $list_info = $this->list->findByListId($after_list_id);
+        
+        $this->saveCard($card_information);
+
         if($list_info->checklist_enable){
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
+        
+        $list_info = $this->list->findByListId($befor_list_id);
+        
         if($list_info->bug_enable){
-            $this->saveCard($card_information);
+            $this->addBugInCard($card_id, $list_info->board->owner_token);
+            $this->addRevertCount($card_id, $befor_list_id, $after_list_id);
         }
         return 0;
     }
 
+    private function addBugInCard($card_id, $token){
+
+        $response = app('trello')->getCardChecklists($card_id, $token);
+        if(count($response)>0) {
+            $checklist_array = array_column($response, 'checkItems');
+            $i = 0;
+            foreach($checklist_array as $k => $value) {
+                foreach($value as $checklist){
+                    if($checklist['state'] == 'incomplete') {
+                        $i++;
+                    }
+                }
+            }
+            $card_info = $this->card->findByCardId($card_id);
+            $card_info->total_bugs = $card_info->total_bugs + $i;
+            $card_info->save();
+        }
+        return 1;
+    }
+
+    private function addRevertCount($card_id, $befor_list_id, $after_list_id){
+
+        $after = $this->list->findByListId($after_list_id);
+        $befor = $this->list->findByListId($befor_list_id);
+        if($after->id > $befor->id) {
+            $card_info = $this->card->findByCardId($card_id);
+            $card_info->total_return = $card_info->total_return + 1;
+            $card_info->save();
+        }
+        return 1;
+    }
+
     private function saveCard(array $card_information){
+        
         $attribute = [
             'trello_board_id' => $card_information['board_id'],
             'trello_list_id' => $card_information['idList'],
@@ -124,11 +164,18 @@ class HookController extends Controller
             'name' => $card_information['text'],
             'description' => 'not found',
             'total_bugs' => 0,
-            'is_complete' => true
+            'is_complete' => true,
+            'total_return' => 0,
         ];
-        if($this->card->findByCardidAndBoardId($card_information['board_id'], $card_information['id'])){
-            $this->card->updateByBoardAndCard($card_information['board_id'], $card_information['id'], $attribute);
+        
+        if($this->card->findByCardId($card_information['id'])) {
+            unset( $attribute['is_complete']);
+            unset( $attribute['total_bugs']);
+            unset( $attribute['total_return']);
+            $this->card->updateByCard($card_information['id'], $attribute);
+            return 1;
         }
+        
         $this->card->create($attribute);
         return 1;
     }
@@ -161,7 +208,7 @@ class HookController extends Controller
             $checklist_array = array_column($response, 'checkItems');
             foreach($checklist_array as $k => $value) {
                 foreach($value as $checklist){
-                    if($checklist['state']=='incomplete') {
+                    if($checklist['state'] == 'incomplete') {
                         app('trello')->moveCard($card_id, $old_list_id, $owner_token);
                         app('trello')->addLable($card_id,$owner_token,'Checklist incomplete');
                         break;
