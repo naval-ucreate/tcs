@@ -10,16 +10,18 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\Boards\BoardRepository;
 use App\Repositories\Lists\ListRepository;
 use App\Repositories\Cards\CardRepository;
+use App\Repositories\BoardActivities\BoardActivitiesRepository as BoardActivity;
 use App\Models\WebhookCallLog;
 
 class HookController extends Controller
 {
 
-    private $list, $card;
+    private $list, $card, $board_activity;
 
-    public function  __construct(ListRepository $list, CardRepository $card){
+    public function  __construct(ListRepository $list, CardRepository $card, BoardActivity $board_activity){
         $this->list = $list;
         $this->card = $card;
+        $this->board_activity = $board_activity;
     }
     
     public function registerHook($board_id,BoardRepository $board){
@@ -95,11 +97,13 @@ class HookController extends Controller
         $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
         $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
         $borad_id = $data['action']['id'];
+        $user_id = $befor_list_id = $data['action']['display']['entities']['memberCreator']['id'];
         $card_id = $data['action']['display']['entities']['card']['id'];
         $card_information = $data['action']['display']['entities']['card'];
         $card_information['board_id'] = $borad_id;
-        if($data['action']['type']=='updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
-            $this->checkCheckList($after_list_id, $befor_list_id, $card_id, $card_information); 
+        if($data['action']['type'] == 'updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
+            $this->saveActivity($befor_list_id, $after_list_id, $card_id, $borad_id, $user_id); 
+            $this->checkCheckList($after_list_id, $befor_list_id, $card_id, $card_information);
         }
         return 0;
     }
@@ -121,6 +125,18 @@ class HookController extends Controller
             $this->addRevertCount($card_id, $befor_list_id, $after_list_id);
         }
         return 0;
+    }
+
+    private function saveActivity($befor_list_id, $after_list_id, $card_id, $borad_id, $user_id){
+        $attribute = [
+            'board_id' =>  $borad_id,
+            'to_list_id' => $after_list_id,
+            'from_list_id' => $befor_list_id,
+            'card_id' => $card_id,
+            'user_id' => $user_id
+        ];
+        $this->board_activity->create($attribute);
+        return 1;
     }
 
     private function addBugInCard($card_id, $token){

@@ -20,8 +20,8 @@ class TrelloApi {
     }
 
     public function getUserInfo(String $token){
-        $url        = config("app.trello_api_end_point").'members/me?key='.$this->api_key.'&token='.$token;
-        $response   = $this->client->request('GET',$url);
+        $url = config("app.trello_api_end_point").'members/me?key='.$this->api_key.'&token='.$token;
+        $response = $this->client->request('GET',$url);
         if($response->getStatusCode()==200){
             return  json_decode($response->getBody(), true);
         }
@@ -43,13 +43,23 @@ class TrelloApi {
     }
 
     public function GetBoardList(String $board_id,Array $option=[]){
-        $url        = config("app.trello_api_end_point").'boards/'.$board_id.'?key='.$this->api_key.'&token='.$this->token;
-        $url       .= "&fields=all&lists=all&list_fields=all";
-        $response   = $this->client->request('GET',$url);
+        $url = config("app.trello_api_end_point").'boards/'.$board_id.'?key='.$this->api_key.'&token='.$this->token;
+        $url .= "&fields=all&lists=all&list_fields=all";
+        $response = $this->client->request('GET',$url);
         if($response->getStatusCode()==200){
             return  json_decode($response->getBody(), true);
         }
         throw new Exception("Api end Error");
+    }
+
+    public function getBoardMembers(String $board_id, Array $option=[]){
+        $url = config("app.trello_api_end_point").'boards/'. $board_id .'memberships/?key='.$this->api_key.'&token='.$this->token;
+        $url .= "&orgMemberType=true&member=true&member_fields=all";
+        $response = $this->client->request('GET',$url);
+        if($response->getStatusCode()==200){
+            return json_decode($response->getBody(), true);
+        }
+        throw new Exception("Api end Error");        
     }
 
     public function getCardChecklists(string $card_id,string $token=''){

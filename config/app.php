@@ -239,4 +239,11 @@ return [
 
     'trello_api_end_point' => env('TRELLO_LINK',''),
     'trello_key' => env('TRELLO_API_KEY',''),
+    'trello_config' => [
+        1 => 'checklist',
+        2 => 'bugcount',
+        3 => 'Qa',
+        4 => 'Pm',
+        5 => 'production' 
+    ]
 ];
