@@ -37,7 +37,7 @@ class ListController extends Controller
             } 
         }
 
-        if( strtotome('+7 hour', time()) > $this->login_user['last_api_hit'] ) {
+        if( strtotime('+7 hour', time()) > $this->login_user['last_api_hit'] ) {
             $board_list = $this->checkNewList($id, $board_list);
         }
         return view('dashboard/show-list',compact('board_list'));         
