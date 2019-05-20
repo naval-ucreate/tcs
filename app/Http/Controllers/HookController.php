@@ -137,7 +137,7 @@ class HookController extends Controller
                 }
             }
             $card_info = $this->card->findByCardId($card_id);
-            $card_info->total_bugs = $card_info->total_bugs + $i;
+            $card_info->total_bugs = $i;
             $card_info->save();
         }
         return 1;
@@ -147,11 +147,11 @@ class HookController extends Controller
 
         $after = $this->list->findByListId($after_list_id);
         $befor = $this->list->findByListId($befor_list_id);
-        if($after->id > $befor->id) {
+        // if($after->id > $befor->id) {
             $card_info = $this->card->findByCardId($card_id);
             $card_info->total_return = $card_info->total_return + 1;
             $card_info->save();
-        }
+        //}
         return 1;
     }
 
