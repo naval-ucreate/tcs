@@ -6,15 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\BoardList;
 use App\Models\TestingHook;
 use App\Repositories\Lists\ListRepository;
+use App\Repositories\BoardConfigurations\BoardConfigurationsRepository;
 use Illuminate\Support\Facades\Auth;
 
 class ListController extends Controller
 {
     
-    private $list, $login_user;
+    private $list, $login_user, $board_config;
 
-    public function __construct(ListRepository $list){
+    public function __construct(ListRepository $list, BoardConfigurationsRepository $board_config){
         $this->list = $list;
+        $this->board_config = $board_config;
     }
 
     public function store(array $data,$id){
@@ -91,15 +93,28 @@ class ListController extends Controller
 
     public function updateListcheckList($list_id){
         $data = request()->toArray();
-        if(isset($data['board_id'])){
-            $this->list->disbaleAll($data['board_id']);
+        $board_config = $this->board_config->boardConfigByType($data['board_id'], 1);
+        
+        if(isset($board_config)) {
+            $board_config->status = $data['status'];
+            $board_config->list_id = $list_id;
+            $board_config->save();
+            return 1;
         }
-        $update = ['checklist_enable' => $data['status']];
-        if($this->list->update($list_id, $update)){
+
+        $attribute = [
+            'list_id' => $list_id,
+            'board_id' => $data['board_id'],
+            'type' => 1,
+            'status' => $data['status']
+        ];
+
+        if($this->board_config->create($attribute)) {
             return 1;
         }
         return 0;
     }
+
 
     public function enableBug(string $board_id){
        $data = request()->toArray();

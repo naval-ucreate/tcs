@@ -4,9 +4,11 @@ window.addEventListener('load',function(){
     let base_path = window.location.origin;  
     let _cross_token = $('meta[name="_token"]').attr('content'); 
     let data = $("#board_data").attr('rel');
+    let board_id = window.location.pathname.split('/');
+    board_id = board_id[board_id.length-1];
     let hook_alert=$("input[name='hook_checked']").val();
 
-    if(hook_alert==undefined){
+    if(hook_alert == undefined){
       $('.hook-alert').show();
     }
 
@@ -23,19 +25,20 @@ window.addEventListener('load',function(){
       $(this).children().find('input').prop('checked', true);
    }); 
     
-   $('.config').on('click', function(){
+   $('.config').on('click', function() {
       let active_tab = $(this).children('a').attr('rel');
-      let deactive_tab = $(this).siblings().children('a').attr('rel');
+      $(this).siblings('li').filter(function(){
+         $("#"+$(this).children('a').attr('rel')).hide();
+      });
       $("#"+active_tab).show();
-      $("#"+deactive_tab).hide();
    });
    
-   $('.update_bug').on('click', function(){
+   $('.update_bug').on('click', function() {
       $(".loading_loader").show();
       let borad_id = window.location.pathname.split('/');
       borad_id = borad_id[borad_id.length-1];
       let list_ids = [];
-      $("input[name='list_id[]']:checked").each( function () {
+      $(this).children().find("input[name='list_id[]']:checked").each( function () {
          list_ids.push($(this).val());
       });
 
@@ -59,43 +62,40 @@ window.addEventListener('load',function(){
 
    });
 
-   $(document.body).on('click','.delete-hook', deleteHook);
+   $(document.body).on('click','.delete-hook', checkListRemove);
 
-   function deleteHook(e){
+   function checkListRemove(e) {
             e.preventDefault();
-            let _this=$("input[name='list_id']:checked");
-            let data =_this.val();
-            if(data==undefined){
+            let list_id = $(this).parents().children().find('input').val();
+
+            if(list_id == undefined || list_id==''){
                swal("No Webhook register",{
                   icon: "error",
                });
                return false;
             }
+
             $(".list-group-item").css('pointer-events','none');
-            data = data.split("~",);
             
             swal({
                title: "Are you sure want to delete the hook?",
                icon: "warning",
                buttons: true,
                dangerMode: true,
-            })
-            .then((willDelete) => {
+            }).then(( willDelete ) => {
                if (willDelete) {
                   $(".loading_loader").show();
                   $.ajax({
                      method:'put',
                      data:{
                         _token:_cross_token,
+                        board_id: board_id,
                         status:false
                      },
-                     url:base_path+'/disable_check_list/'+data[0],
-                     beforsend:()=>{
-                     
-                        
-                     },success:(data)=>{
+                     url:base_path+'/disable_check_list/'+list_id,
+                     success:(data) => {
                         if(data){
-                           _this.prop('checked',false);
+                           $(this).parents().children().find('input').prop('checked',false);
                            $(".list-group-status").removeClass('status-online');
                            $(".list-group-status").addClass('status-offline');
                            $(".fa-check").remove();
@@ -106,7 +106,7 @@ window.addEventListener('load',function(){
                         }
                         swal("Oh no", "Something want wrong", "error");
                      },error:(err => {
-                        console.log(err);
+
                         swal("Oh noes!", "The AJAX request failed!", "error");
                      }),complete:(()=>{
                         $(".loading_loader").hide();
@@ -122,22 +122,23 @@ window.addEventListener('load',function(){
  
 
 
-    $(".add_hook").on('click',function(){
+    $(".add_hook").on('click',function() {
+
        $(".loading_loader").show();
        $(".list-group-item").css('pointer-events','none');
-        let res = $(this).children().find('input').val().split("~",)
+        let list_id = $(this).children().find('input').val();
         let tick = $(this).children('._checkbox');
         $.ajax({
             method:'put',
             data:{
-               _token:_cross_token,
-               board_id:res[1],
+               _token : _cross_token,
+               board_id : board_id,
                status:true
             },
-            url:base_path+'/enable_check_list/'+res[0],
-            beforSend:()=>{
+            url:base_path+'/enable_check_list/'+ list_id,
+            beforSend:()=> {
  
-            },success:()=>{
+            },success:()=> {
                $('.hook-alert').fadeOut('slow');
                $(".delete-hook").remove();
                $(".fa-check").remove();
@@ -147,13 +148,13 @@ window.addEventListener('load',function(){
                tick.append('<i class="fa fa-check" aria-hidden="true"></i> ');
                $(".list-group-status").removeClass('status-online');
                $(".list-group-status").addClass('status-offline');
-               $("#_"+res[0]).removeClass('status-offline');
-               $("#_"+res[0]).addClass('status-online');
-               $("#"+res[0]).append(' <button class="btn btn-danger btn-sm delete-hook" rel="something"> Remove Hook </button>');
+               $("#_" + list_id).removeClass('status-offline');
+               $("#_" + list_id).addClass('status-online');
+               $("#" + list_id).append(' <button class="btn btn-danger btn-sm delete-hook" rel="something"> Remove </button>');
             },error:(err => {
                 console.log(err);
                swal("Oh noes!", "The AJAX request failed!", "error");
-            }),complete:(()=>{
+            }),complete:(()=> {
                $(".loading_loader").hide();
                $(".list-group-item").css('pointer-events','');
             })

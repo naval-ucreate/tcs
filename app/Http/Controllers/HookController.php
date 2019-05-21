@@ -10,18 +10,20 @@ use Illuminate\Support\Facades\Auth;
 use App\Repositories\Boards\BoardRepository;
 use App\Repositories\Lists\ListRepository;
 use App\Repositories\Cards\CardRepository;
+use App\Repositories\BoardConfigurations\BoardConfigurationsRepository as BoardConfig;
 use App\Repositories\BoardActivities\BoardActivitiesRepository as BoardActivity;
 use App\Models\WebhookCallLog;
 
 class HookController extends Controller
 {
 
-    private $list, $card, $board_activity;
+    private $list, $card, $board_activity, $board_config;
 
-    public function  __construct(ListRepository $list, CardRepository $card, BoardActivity $board_activity){
+    public function  __construct(BoardConfig $board_config, ListRepository $list, CardRepository $card, BoardActivity $board_activity){
         $this->list = $list;
         $this->card = $card;
         $this->board_activity = $board_activity;
+        $this->board_config = $board_config;
     }
     
     public function registerHook($board_id,BoardRepository $board){
@@ -110,17 +112,17 @@ class HookController extends Controller
     
     
     private function checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, Array $card_information){
-        $list_info = $this->list->findByListId($after_list_id);
+        $list_info = $this->board_config->boardConfigByListId($after_list_id);
         
         $this->saveCard($card_information);
 
-        if($list_info->checklist_enable){
+        if(isset($list_info) && $list_info->type == 1) {
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
         
         $list_info = $this->list->findByListId($befor_list_id);
         
-        if($list_info->bug_enable){
+        if($list_info->bug_enable) {
             $this->addBugInCard($card_id, $list_info->board->owner_token);
             $this->addRevertCount($card_id, $befor_list_id, $after_list_id);
         }

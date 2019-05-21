@@ -16,4 +16,8 @@ class BoardList extends Model
         return $this->belongsTo('App\Models\Board','trello_board_id','trello_board_id');
     }
 
+    public function boardConfig() {
+        return $this->belongsTo('App\Models\BoardConfiguration','trello_list_id','list_id');
+    }
+
 }

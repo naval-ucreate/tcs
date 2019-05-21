@@ -9,10 +9,10 @@ class ListRepository extends ListClass
 
     public function findByTrelloBoardId($board_id){
         return $this->model->with('board')
+        ->with('boardConfig')
         ->where('trello_board_id','=',$board_id)->get()->toArray();
     }
-
-
+    
     public function insertMany($data){
         return $this->model->insert($data);
     }
