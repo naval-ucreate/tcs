@@ -42,3 +42,16 @@ function newArrayElement($old, $new){
     }
     return $new_array;
 }
+
+function config_enable(Array $array, string $list_id, int $type ){
+    
+    if(count($array)==0) {
+        return false;
+    }
+    foreach($array as $value){
+        if($value['list_id'] == $list_id && $value['type'] ==  $type && $value['status'] == true) {
+            return true;
+        }
+    }
+    return false;
+}

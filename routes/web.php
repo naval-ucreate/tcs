@@ -31,8 +31,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/register-web-hook','HookController@registerHook')->name('register_hook');
     Route::delete('/register-web-hook','HookController@removeHook')->name('register_hook');
     Route::post('/delete_hook','HookController@deleteHook')->name('delete_hook');
-    Route::put('/disable_check_list/{list_id}','ListController@updateListcheckList')->name('disable_check_list');
-    Route::put('/enable_check_list/{list_id}','ListController@updateListcheckList')->name('enable_check_list');
+    Route::put('/disable_config/{list_id}','ListController@updateListcheckList')->name('disable_config');
+    Route::put('/config_enable/{list_id}','ListController@updateListcheckList')->name('config_enable');
     Route::delete('/disable_hook/{board_id}','HookController@removeHook')->name('disable_hook');
     Route::put('/enable_report/{board_id}','HookController@registerHook')->name('enable_report');
     Route::put('/update_bug_list/{board_id}','ListController@enableBug')->name('update_bug_list');

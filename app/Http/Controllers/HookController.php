@@ -116,15 +116,18 @@ class HookController extends Controller
         
         $this->saveCard($card_information);
 
-        if(isset($list_info) && $list_info->type == 1) {
+        if(isset($list_info) && $list_info->type == 1 && $list_info->status) {
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
         
-        $list_info = $this->list->findByListId($befor_list_id);
-        
-        if($list_info->bug_enable) {
-            $this->addBugInCard($card_id, $list_info->board->owner_token);
-            $this->addRevertCount($card_id, $befor_list_id, $after_list_id);
+        $board_config = $this->board_config->boardConfigByTypeArray($card_information['board_id'], [2,3]);
+        if($board_config){
+            foreach($board_config as $value):
+                if($value->list_id == $befor_list_id && $value->status ) {
+                    $this->addBugInCard($card_id, $list_info->board->owner_token);
+                    $this->addRevertCount($card_id, $befor_list_id, $after_list_id);
+                }
+            endforeach;    
         }
         return 0;
     }
@@ -161,15 +164,13 @@ class HookController extends Controller
         return 1;
     }
 
-    private function addRevertCount($card_id, $befor_list_id, $after_list_id){
-
-        $after = $this->list->findByListId($after_list_id);
-        $befor = $this->list->findByListId($befor_list_id);
-        // if($after->id > $befor->id) {
+    private function addRevertCount($card_id, $after_list_id){
+        $check_config = $this->board_config->getConfigByListId($after_list_id, 4);
+        if($check_config && $check_config->status ) {
             $card_info = $this->card->findByCardId($card_id);
             $card_info->total_return = $card_info->total_return + 1;
             $card_info->save();
-        //}
+        }
         return 1;
     }
 

@@ -93,7 +93,7 @@ class ListController extends Controller
 
     public function updateListcheckList($list_id){
         $data = request()->toArray();
-        $board_config = $this->board_config->boardConfigByType($data['board_id'], 1);
+        $board_config = $this->board_config->boardConfigByType($data['board_id'], $data['type']);
         
         if(isset($board_config)) {
             $board_config->status = $data['status'];
@@ -105,7 +105,7 @@ class ListController extends Controller
         $attribute = [
             'list_id' => $list_id,
             'board_id' => $data['board_id'],
-            'type' => 1,
+            'type' => $data['type'],
             'status' => $data['status']
         ];
 
@@ -120,13 +120,49 @@ class ListController extends Controller
        $data = request()->toArray();
        $list_id = $data['list_ids'];
        $list_id = explode(',', $list_id);
-       if(count($list_id) == 0) {
-        $this->list->disbaleAllBug($board_id);
-        return 1;
+       $board_config = $this->board_config->boardConfigByTypeAll($board_id, $data['type']);
+       if(!$board_config) {
+            $attributes = self::boardListArray($list_id, $board_id, $data['type']);   
+            $this->board_config->insert($attributes);
+            return 1;
        }
-       $this->list->disbaleAllBug($board_id);
-       if($this->list->updateListBug($list_id) ) return 1;
-       return 0;
+       foreach($board_config as $value):
+            if(in_array($value->list_id, $list_id)){
+                $value->status = true;
+                $value->save();
+            }else{
+                $value->status = false;
+                $value->save();
+            }         
+       endforeach;
+       $board_config = $board_config->toArray();
+       $db_list = array_column($board_config, 'list_id');
+       $new_list_ids = [];
+       foreach($list_id as $value):
+        if(!in_array($value, $db_list)){
+            $new_list_ids[] = $value;
+        }
+       endforeach;
+       if(count($new_list_ids)) {
+            $attributes = self::boardListArray($new_list_ids, $board_id, $data['type']);   
+            $this->board_config->insert($attributes);
+       } 
+       return 1;
+    }
+
+    static private function boardListArray(Array $list_ids, String $board_id, int $type) {
+        $final = [];
+        foreach($list_ids as $value):
+            $final[] = [
+                'list_id' => $value,
+                'board_id' => $board_id,
+                'type' => $type,
+                'status' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+        endforeach;
+        return $final;    
     }
 
     public function testWebHook(){
