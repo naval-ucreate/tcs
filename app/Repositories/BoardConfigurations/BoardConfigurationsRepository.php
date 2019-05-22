@@ -34,7 +34,7 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
     }
 
     public function getConfigByListId(String $list_id, int $type){
-        return $this->model->with('board:owner_token')
+        return $this->model->with('board')
         ->where([
             'list_id' => $list_id,
             'type' => $type
