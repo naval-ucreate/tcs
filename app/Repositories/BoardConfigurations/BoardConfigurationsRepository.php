@@ -24,7 +24,7 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
     }
 
     public function boardConfigByListId(string $list_id) {
-        $this->model->with('board:owner_token')
+        return $this->model->with('board:owner_token')
         ->where('list_id', '=', $list_id)
         ->first();
     }
@@ -34,7 +34,8 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
     }
 
     public function getConfigByListId(String $list_id, int $type){
-        return $this->model->where([
+        return $this->model->with('board:owner_token')
+        ->where([
             'list_id' => $list_id,
             'type' => $type
         ])

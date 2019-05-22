@@ -112,11 +112,10 @@ class HookController extends Controller
     
     
     private function checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, Array $card_information){
-        $list_info = $this->board_config->boardConfigByListId($after_list_id);
-        
+        $list_info = $this->board_config->getConfigByListId($after_list_id, 1);
         $this->saveCard($card_information);
-
-        if(isset($list_info) && $list_info->type == 1 && $list_info->status) {
+        
+        if(isset($list_info)  && $list_info->status && !is_null($list_info->board->owner_token)) {
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
         
