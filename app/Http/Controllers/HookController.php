@@ -115,7 +115,7 @@ class HookController extends Controller
         $list_info = $this->board_config->getConfigByListId($after_list_id, 1);
         $this->saveCard($card_information);
         
-        if(isset($list_info)  && $list_info->status && !is_null($list_info->board->owner_token)) {
+        if(isset($list_info)  && $list_info->status ) {
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
         
