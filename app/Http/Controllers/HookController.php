@@ -118,7 +118,7 @@ class HookController extends Controller
         $attribute = [
             'trello_board_id' => $board_id,
             'trello_list_id' => $listInfo['id'],
-            'name' => $listInfo['name']
+            'name' => $listInfo['text']
         ];
         $this->list->create($attribute);
         return 1;
