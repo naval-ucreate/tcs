@@ -124,7 +124,7 @@ class HookController extends Controller
         $api_data = app('trello')->GetBoardList($board_id);
         $db_data = $this->list->findByTrelloBoardId($board_id);
         $api_data = self::makeArrayList($api_data, $board_id);
-        $db_data = array_column($board_list, 'trello_list_id');
+        $db_data = array_column($db_data, 'trello_list_id');
         if(count($api_data)) {
             $new_list_id = newArrayElement($db_data, $api_data);
             if(count($new_list_id)) {
