@@ -77,7 +77,7 @@ class ListController extends Controller
         return false;
     }
 
-    private static function makeArrayList(array $list_data, $id){
+    static private function makeArrayList(array $list_data, $id){
         $insert_data = [];
         foreach($list_data['lists'] as $list_val) {
             $insert_data[] = [

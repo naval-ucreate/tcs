@@ -26,7 +26,7 @@ class HookController extends Controller
         $this->board_config = $board_config;
     }
     
-    public function registerHook($board_id,BoardRepository $board){
+    public function registerHook($board_id, BoardRepository $board){
         $data = $board->getBoardId($board_id);
         if(!$data->web_hook_enable && $data->web_hook_id=='') {
             $hook_id = $this->saveHook($board_id);
@@ -36,6 +36,8 @@ class HookController extends Controller
                 $data->web_hook_enable = true;
                 $data->owner_token = $user_info['token'];
                 $board->update($board_id, $data->toArray());
+                $this->addMembers($board_id);
+                $this->updateBoardList($board_id);
                 return 1;
             }
         }
@@ -112,6 +114,23 @@ class HookController extends Controller
         }
 
         return 0;
+    }
+
+    private function addMembers($board_id):void {
+        
+    }
+
+    private function updateBoardList($board_id): void {
+        $api_data = app('trello')->GetBoardList($board_id);
+        $db_data = $this->list->findByTrelloBoardId($board_id);
+        $api_data = self::makeArrayList($api_data, $board_id);
+        
+        if(count($api_data)) {
+            $new_list_id = newArrayElement($db_data, $api_data);
+            if(count($new_list_id)) {
+                $this->list->insertMany($new_list_id);
+            }
+        }
     }
     
    private function addNewList(string $board_id, Array $listInfo){
@@ -250,5 +269,19 @@ class HookController extends Controller
         app('trello')->moveCard($card_id, $old_list_id, $owner_token);
         app('trello')->addLable($card_id,$owner_token,'Checklist missing');
         return 1; 
+    }
+
+    static private function makeArrayList(array $list_data, $id){
+        $insert_data = [];
+        foreach($list_data['lists'] as $list_val) {
+            $insert_data[] = [
+                'trello_board_id' => $id,
+                'trello_list_id' => $list_val['id'],
+                'name' => $list_val['name'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+        }
+        return $insert_data;
     }
 }
