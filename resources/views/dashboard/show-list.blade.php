@@ -15,13 +15,14 @@
               
                             <div class="col-md-4" style="padding-top:50px"></div>
                             <div class="col-md-4" style="padding-top: 50px;">
-                                <div class="configration">    
+                                <div class="configration">
+                                <div class="config-alert"> Configrations </div>    
                                     <ul class="nav nav-tabs nav-justified">
-                                        <li class="active config"><a href="#tab8" data-toggle="tab" rel = "checklist" aria-expanded="false"> Checklist configration </a></li>
-                                        <li class="config"><a href="#tab9" data-toggle="tab" rel = "bugs" aria-expanded="false"> Pm Configration </a></li>
-                                        <li class="config"><a href="#tab9" data-toggle="tab" rel = "Qa" aria-expanded="false"> Qa Configration </a></li>
-                                        <li class="config"><a href="#tab9" data-toggle="tab" rel = "Dev" aria-expanded="false"> Dev Configration </a></li>
-                                        <li class="config"><a href="#tab9" data-toggle="tab" rel = "production" aria-expanded="false"> Production Configration </a></li>
+                                        <li class="active config"><a href="#tab8" data-toggle="tab" rel = "checklist" aria-expanded="false"> Checklist  </a></li>
+                                        <li class="config"><a href="#tab9" data-toggle="tab" rel = "bugs" aria-expanded="false"> PM  </a></li>
+                                        <li class="config"><a href="#tab9" data-toggle="tab" rel = "Qa" aria-expanded="false"> QA </a></li>
+                                        <li class="config"><a href="#tab9" data-toggle="tab" rel = "Dev" aria-expanded="false"> Dev  </a></li>
+                                        <li class="config"><a href="#tab9" data-toggle="tab" rel = "production" aria-expanded="false"> Production </a></li>
                                     </ul>
                                 </div>  
 

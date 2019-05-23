@@ -7334,6 +7334,15 @@ display:none;
   display: none ;
   background-color: rgba(0,0,0,0.6);
 }
+
+.config-alert{
+  text-align: center;
+  font-size: 30px;
+  color:white;
+  margin-bottom: 51px;
+  background-color: rgba(0,0,0,0.7);
+}
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;
