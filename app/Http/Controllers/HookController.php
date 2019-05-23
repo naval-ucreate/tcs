@@ -99,7 +99,7 @@ class HookController extends Controller
         $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
         $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
         $borad_id = $data['action']['id'];
-        $user_id = $befor_list_id = $data['action']['display']['entities']['memberCreator']['id'];
+        $user_id = $data['action']['display']['entities']['memberCreator']['id'];
         $card_id = $data['action']['display']['entities']['card']['id'];
         $card_information = $data['action']['display']['entities']['card'];
         $card_information['board_id'] = $borad_id;
@@ -114,11 +114,9 @@ class HookController extends Controller
     private function checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, Array $card_information){
         $list_info = $this->board_config->getConfigByListId($after_list_id, 1);
         $this->saveCard($card_information);
-        
         if(isset($list_info)  && $list_info->status ) {
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
-        
         $board_config = $this->board_config->boardConfigByTypeArray($card_information['board_id'], [2,3]);
         if($board_config){
             foreach($board_config as $value):
