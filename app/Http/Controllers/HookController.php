@@ -96,21 +96,35 @@ class HookController extends Controller
     public function listenTrigger(WebhookCallLog $webhook_calllog){
         $data = json_decode(request()->getContent(), true);
         $webhook_calllog->create(['body' => json_encode($data)]);
-        $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
-        $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
         $borad_id = $data['action']['id'];
-        $user_id = $data['action']['display']['entities']['memberCreator']['id'];
-        $card_id = $data['action']['display']['entities']['card']['id'];
-        $card_information = $data['action']['display']['entities']['card'];
-        $card_information['board_id'] = $borad_id;
         if($data['action']['type'] == 'updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
+            $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
+            $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
+            $card_id = $data['action']['display']['entities']['card']['id'];
+            $card_information = $data['action']['display']['entities']['card'];
+            $user_id = $data['action']['display']['entities']['memberCreator']['id'];
+            $card_information['board_id'] = $borad_id;
             $this->saveActivity($befor_list_id, $after_list_id, $card_id, $borad_id, $user_id); 
             $this->checkCheckList($after_list_id, $befor_list_id, $card_id, $card_information);
         }
+        if($data['action']['type'] == 'createList' && $data['action']['display']['translationKey'] == 'action_added_list_to_board') {
+            $this->addNewList($borad_id, $data['action']['display']['entities']['list']);
+        }
+
         return 0;
     }
     
-    
+   private function addNewList(string $board_id, Array $listInfo){
+        $attribute = [
+            'trello_board_id' => $board_id,
+            'trello_list_id' => $listInfo['id'],
+            'name' => $listInfo['name']
+        ];
+        $this->list->create($attribute);
+        return 1;
+   }      
+
+
     private function checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, Array $card_information){
         $list_info = $this->board_config->getConfigByListId($after_list_id, 1);
         $this->saveCard($card_information);
