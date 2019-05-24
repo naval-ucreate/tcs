@@ -121,10 +121,10 @@ class HookController extends Controller
     public function addMembers($board_id) {
         $members = app('trello')->getBoardMembers($board_id);
         $db_members = $this->board_member->findMembers($board_id);
-        
-        if(!$db_members) {
-            $attribute = self::makeMemberArray($members);
-            $this->$this->board_member->insert($attribute);
+        if(!isset($db_members)) {
+            $attribute = self::makeMemberArray($members, $board_id);
+            dd($attribute);
+            $this->board_member->insert($attribute);
             return 1;            
         }
         
@@ -132,8 +132,8 @@ class HookController extends Controller
         $new_members = checkNewMember($db_members, $members);
         
         if(count($new_members) > 0) {
-            $attribute = self::makeMemberArray($new_members);
-            $this->$this->board_member->insert($attribute);
+            $attribute = self::makeMemberArray($new_members, $board_id);
+            $this->board_member->insert($attribute);
             return 1;
         }
         return 0;
@@ -304,7 +304,7 @@ class HookController extends Controller
         return $insert_data;
     }
 
-    static private function makeMemberArray(Array $members){
+    static private function makeMemberArray(Array $members, String $board_id){
         $final = [];
         foreach($members as $value):
             $final[] = [
