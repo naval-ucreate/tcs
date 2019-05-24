@@ -12,18 +12,20 @@ use App\Repositories\Lists\ListRepository;
 use App\Repositories\Cards\CardRepository;
 use App\Repositories\BoardConfigurations\BoardConfigurationsRepository as BoardConfig;
 use App\Repositories\BoardActivities\BoardActivitiesRepository as BoardActivity;
+use App\Repositories\BoardMembers\BoardMemberRepository as BoardMember;
 use App\Models\WebhookCallLog;
 
 class HookController extends Controller
 {
 
-    private $list, $card, $board_activity, $board_config;
+    private $list, $card, $board_activity, $board_config, $board_member;
 
-    public function  __construct(BoardConfig $board_config, ListRepository $list, CardRepository $card, BoardActivity $board_activity){
+    public function  __construct(BoardConfig $board_config, ListRepository $list, CardRepository $card, BoardActivity $board_activity, BoardMember $board_member){
         $this->list = $list;
         $this->card = $card;
         $this->board_activity = $board_activity;
         $this->board_config = $board_config;
+        $this->board_member = $board_member;
     }
     
     public function registerHook($board_id, BoardRepository $board){
@@ -116,8 +118,25 @@ class HookController extends Controller
         return 0;
     }
 
-    private function addMembers($board_id):void {
-
+    public function addMembers($board_id) {
+        $members = app('trello')->getBoardMembers($board_id);
+        $db_members = $this->board_member->findMembers($board_id);
+        
+        if(!$db_members) {
+            $attribute = self::makeMemberArray($members);
+            $this->$this->board_member->insert($attribute);
+            return 1;            
+        }
+        
+        $db_members =  array_column($db_members->toArray(), 'user_id');
+        $new_members = checkNewMember($db_members, $members);
+        
+        if(count($new_members) > 0) {
+            $attribute = self::makeMemberArray($new_members);
+            $this->$this->board_member->insert($attribute);
+            return 1;
+        }
+        return 0;
     }
 
     private function updateBoardList($board_id): void {
@@ -283,5 +302,21 @@ class HookController extends Controller
             ];
         }
         return $insert_data;
+    }
+
+    static private function makeMemberArray(Array $members){
+        $final = [];
+        foreach($members as $value):
+            $final[] = [
+                'user_id' => $value['idMember'],
+                'board_id' => $board_id,
+                'name' =>  $value['member']['fullName'],
+                'username' => $value['member']['username'],
+                'image' => $value['member']['avatarUrl'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+        endforeach;
+        return $final;    
     }
 }

@@ -83,9 +83,7 @@ class ListController extends Controller
             $insert_data[] = [
             'trello_board_id'=>$id,
             'trello_list_id'=>$list_val['id'],
-            'name'=> $list_val['name'],
-            'web_hook_enable'=>0,
-            'checklist_enable' => 0
+            'name'=> $list_val['name']
             ];
         }
         return $insert_data;

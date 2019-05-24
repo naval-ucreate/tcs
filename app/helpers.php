@@ -55,3 +55,14 @@ function config_enable(Array $array, string $list_id, int $type ){
     }
     return false;
 }
+
+
+function checkNewMember(Array $db_memners, Array $api_members){
+    $final = [];
+    foreach($api_members as $value):
+        if(!in_array($value['idMember'], $db_memners)) {
+            $final[] = $value; 
+        } 
+    endforeach;    
+    return $final;
+}

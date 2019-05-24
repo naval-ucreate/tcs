@@ -18,8 +18,6 @@ class BoardListsTable extends Migration
             $table->string('trello_board_id',50);     
             $table->string('trello_list_id',50);
             $table->string('name');
-            $table->string('web_hook_id')->nullable();
-            $table->boolean('web_hook_enable')->nullable();
             $table->timestamps();
         });
     }

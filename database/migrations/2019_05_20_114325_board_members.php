@@ -19,6 +19,7 @@ class BoardMembers extends Migration
             $table->string('user_id',50)->nullable();
             $table->string('username')->nullable();
             $table->string('name')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

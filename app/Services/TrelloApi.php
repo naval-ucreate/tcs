@@ -53,7 +53,7 @@ class TrelloApi {
     }
 
     public function getBoardMembers(String $board_id, Array $option=[]){
-        $url = config("app.trello_api_end_point").'boards/'. $board_id .'memberships/?key='.$this->api_key.'&token='.$this->token;
+        $url = config("app.trello_api_end_point").'boards/'. $board_id .'/memberships/?key='.$this->api_key.'&token='.$this->token;
         $url .= "&orgMemberType=true&member=true&member_fields=all";
         $response = $this->client->request('GET',$url);
         if($response->getStatusCode()==200){

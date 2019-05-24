@@ -9,7 +9,7 @@ class BoardList extends Model
     //
     protected $table = 'board_lists';
 
-    protected $fillable = ['trello_board_id','trello_list_id','name','web_hook_id','web_hook_enable'];
+    protected $fillable = ['trello_board_id','trello_list_id','name'];
 
     public function board()
     {
