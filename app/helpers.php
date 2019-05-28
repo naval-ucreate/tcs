@@ -34,10 +34,13 @@ function array_exists($array ,$niddle){
 }
 
 function newArrayElement($old, $new){
-    $new_array = [];
-    foreach($new as $value){
-        if(!in_array($value['trello_list_id'], $old)){
-            $new_array[] = $value;
+    $new_array['new_list'] = [];
+    $new_array['old_list'] = [];
+    foreach($new as $value) {
+        if(!in_array($value['trello_list_id'], $old)) {
+            $new_array['new_list'][] = $value;
+        } else{
+            $new_array['old_list'][] = $value;
         }
     }
     return $new_array;

@@ -48,7 +48,7 @@ class HookController extends Controller
 
     public function removeHook($board_id, BoardRepository $board){
         $data = $board->getBoardId($board_id);
-        if($data->web_hook_enable && $data->web_hook_id!='') {
+        if($data->web_hook_enable && $data->web_hook_id != '') {
             if($this->deleteHook($data->web_hook_id)) {
                 $data->web_hook_id = '';
                 $data->web_hook_enable = false;
@@ -61,8 +61,8 @@ class HookController extends Controller
     }
 
 
-    public function UpdateHook(string $hook_id,string $list_id,string $board_id){
-        if($response=app('trello')->UpdateHook($list_id,$hook_id)) {
+    public function UpdateHook(string $hook_id,string $list_id, string $board_id){
+        if($response=app('trello')->UpdateHook($list_id, $hook_id)) {
             if(BoardList::where([
                 'trello_list_id' => $list_id,
                 'trello_board_id' => $board_id   
@@ -91,10 +91,8 @@ class HookController extends Controller
     }
 
     public function deleteHook(string $board_id){
-        if(app('trello')->deleteHook($board_id)) {
-            return 1;
-        }
-        return 0;
+        return app('trello')->deleteHook($board_id) ? 1 : 0;
+
     }
 
     public function listenTrigger(WebhookCallLog $webhook_calllog){
@@ -123,7 +121,6 @@ class HookController extends Controller
         $db_members = $this->board_member->findMembers($board_id);
         if(!isset($db_members)) {
             $attribute = self::makeMemberArray($members, $board_id);
-            dd($attribute);
             $this->board_member->insert($attribute);
             return 1;            
         }
@@ -146,9 +143,11 @@ class HookController extends Controller
         $db_data = array_column($db_data, 'trello_list_id');
         if(count($api_data)) {
             $new_list_id = newArrayElement($db_data, $api_data);
-            if(count($new_list_id)) {
-                $this->list->insertMany($new_list_id);
+            if(count($new_list_id['new_list'])) {
+                $this->list->insertMany($new_list_id['new_list']);
             }
+            $update_list_id = array_column($new_list_id['old_list'], 'trello_list_id');
+            $this->list->updateMany($new_list_id['old_list'], $update_list_id);   
         }
     }
     
@@ -278,7 +277,7 @@ class HookController extends Controller
                 foreach($value as $checklist){
                     if($checklist['state'] == 'incomplete') {
                         app('trello')->moveCard($card_id, $old_list_id, $owner_token);
-                        app('trello')->addLable($card_id,$owner_token,'Checklist incomplete');
+                        app('trello')->addLable($card_id, $owner_token, 'Checklist incomplete');
                         break;
                     }
                 }

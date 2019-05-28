@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/disable_hook/{board_id}','HookController@removeHook')->name('disable_hook');
     Route::put('/enable_report/{board_id}','HookController@registerHook')->name('enable_report');
     Route::put('/update_bug_list/{board_id}','ListController@enableBug')->name('update_bug_list');
+    Route::get('/activity/{board_id}','ReportController@getActivies')->name('activity');
     Route::get('/test/{board_id}','HookController@addMembers')->name('test');
     Route::get('/logout','LoginController@logout' )->name('logout');
 });

@@ -1,6 +1,5 @@
 <?php 
 namespace App\Repositories\Lists;
-use DB;
 use App\Models\BoardList;
 
 abstract class ListClass {

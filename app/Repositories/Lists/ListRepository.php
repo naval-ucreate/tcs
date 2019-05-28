@@ -42,4 +42,9 @@ class ListRepository extends ListClass
         ->update(['bug_enable' => true]);
     }
 
+    public function updateMany(Array $attributes, Array $list_ids){
+        return $this->model->whereIn('trello_list_id' , $list_ids)
+        ->update($attributes);
+    }
+
 }

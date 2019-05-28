@@ -30,19 +30,19 @@
                         ?>
                         <?php $user_admin .= '<div class="col-md-3">       
                                                         <div class="panel  '.$admin_class.'"  >
-                                                                <div class="panel-body" style="height:100px;'. $background .'" >
+                                                            <div class="panel-body" style="height:100px;'. $background .'" >
                                                                 <h3 style="color:white"> <center> '. $board_name .' </center> </h3>
-                                                                </div>
-                                                                <div class="panel-footer footer-info" style="'.$background.'">
-                                                                        <!-- <button class="btn btn-danger pull-right delete_data" 
-                                                                        rel="{{$user_boards_val->id}}" model="Board" >Delete</button> -->
-                                                                        <a href="'.route("lists",[$user_boards_val->trello_board_id]).'" class="btn btn-primary pull-right" >Settings </a> 
-                                                                        <a href="#" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>
-                                                                        <a href="javascript:void(0)" class="btn '.$report_class.' btn-sm pull-left _register" 
-                                                                        status = "'.$user_boards_val->boards->web_hook_enable.'" 
-                                                                        data="'.$user_boards_val->trello_board_id.'">'.$report_enable.' 
-                                                                        <i class="fa fa-spinner fa-spin icon_show" style="display:none;" aria-hidden="true"></i></a>
-                                                                </div> 
+                                                            </div>
+                                                            <div class="panel-footer footer-info" style="'.$background.'">
+                                                                <!-- <button class="btn btn-danger pull-right delete_data" 
+                                                                rel="{{$user_boards_val->id}}" model="Board" >Delete</button> -->
+                                                                <a href="'.route("lists",[$user_boards_val->trello_board_id]).'" class="btn btn-primary pull-right" >Settings </a> 
+                                                                <a href="'.route('activity',[$user_boards_val->trello_board_id]).'" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>
+                                                                <a href="javascript:void(0)" class="btn '.$report_class.' btn-sm pull-left _register" 
+                                                                status = "'.$user_boards_val->boards->web_hook_enable.'" 
+                                                                data="'.$user_boards_val->trello_board_id.'">'.$report_enable.' 
+                                                                <i class="fa fa-spinner fa-spin icon_show" style="display:none;" aria-hidden="true"></i></a>
+                                                            </div> 
                                                         </div>
                                                 </div>' 
                         ?>
@@ -51,12 +51,12 @@
 
                         <?php $only_member .= '<div class="col-md-3 ">       
                                                         <div class="panel  '.$admin_class.'"  >
-                                                                    <div class="panel-body" style="height:100px;'. $background .'" >
-                                                                        <h3 style="color:white"> <center> '. $board_name .' </center> </h3>
-                                                                    </div>
-                                                                    <div class="panel-footer footer-info" style="'.$background.'">
-                                                                                <a href="#" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>     
-                                                                    </div> 
+                                                            <div class="panel-body" style="height:100px;'. $background .'" >
+                                                                <h3 style="color:white"> <center> '. $board_name .' </center> </h3>
+                                                            </div>
+                                                            <div class="panel-footer footer-info" style="'.$background.'">
+                                                                <a href="'.route('activity',[$user_boards_val->trello_board_id]).'" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>     
+                                                            </div> 
                                                         </div>
                                                 </div>'  
                         ?>

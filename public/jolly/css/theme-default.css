@@ -7409,3 +7409,9 @@ input:checked + .slider:before {
   margin-top: 30px;
   margin-bottom: 30px;
 }
+.move_arrow {
+  font-size: 83px;
+  padding-top: 27px;
+  padding-left: 92px;
+
+}

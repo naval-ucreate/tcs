@@ -52,8 +52,8 @@ class ListController extends Controller
         $db_data = array_column($board_list, 'trello_list_id');
         if(count($api_data)) {
             $new_list_id = newArrayElement($db_data, $api_data);
-            if(count($new_list_id)) {
-                return $this->store($new_list_id, $board_id);
+            if(count($new_list_id['new_list'])) {
+                return $this->store($new_list_id['new_list'], $board_id);
             }
         }
         if($this->deleteList($api_data, $db_data)) {
