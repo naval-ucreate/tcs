@@ -112,8 +112,8 @@ class HookController extends Controller
             $card_information['trello_before_id'] = $befor_list_id;
             $card_information['trello_after_id'] = $after_list_id;
             $db_card_id = $this->saveCard($card_information);
-            $this->checkCheckList($db_lists_ids[0], $db_lists_ids[1], $db_card_id, $card_information);
             $this->saveActivity($db_lists_ids[0], $db_lists_ids[1], $db_card_id, $board_id, $user_id); 
+            $this->checkCheckList($db_lists_ids[0], $db_lists_ids[1], $db_card_id, $card_information);
         }
         if($data['action']['type'] == 'createList' && $data['action']['display']['translationKey'] == 'action_added_list_to_board') {
             $this->addNewList($board_id, $data['action']['display']['entities']['list']);
@@ -179,8 +179,13 @@ class HookController extends Controller
    }
    
      private function dbListId(string $after_list_id, string $befor_list_id){
-       $data = $this->list->getMultipuleList([$after_list_id, $befor_list_id]);
-       return [$data[0]->id, $data[1]->id];     
+        $data = $this->list->getMultipuleList([$after_list_id, $befor_list_id]);
+        $after = ($data[0]->trello_list_id == $after_list_id)? $data[0]->id: $data[1]->id ;       
+        $before = ($data[0]->trello_list_id == $befor_list_id)? $data[0]->id : $data[1]->id ; 
+        return [
+            $after,
+            $before
+        ];     
    }
 
 
@@ -290,7 +295,7 @@ class HookController extends Controller
     }
 
     private function addLable($card_id, $owner_token, $old_list_id){
-        $response=app('trello')->getCardChecklists($card_id,$owner_token);
+        $response = app('trello')->getCardChecklists($card_id, $owner_token);
         if(count($response)>0) {
             $checklist_array = array_column($response, 'checkItems');
             foreach($checklist_array as $k => $value) {

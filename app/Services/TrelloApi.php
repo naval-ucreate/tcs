@@ -62,14 +62,14 @@ class TrelloApi {
         throw new Exception("Api end Error");        
     }
 
-    public function getCardChecklists(string $card_id,string $token=''){
-        if(strlen($token)==0){
-            $token=$this->token;
+    public function getCardChecklists(string $card_id, $token=''){
+        if(strlen($token)==0) {
+            $token = $this->token;
         }
         $url = config("app.trello_api_end_point").'cards/'.$card_id.'/checklists?key='.$this->api_key.'&token='.$token;
         $url.="&checkItems=all";
         $response   = $this->client->request('GET',$url);
-        if($response->getStatusCode()==200){
+        if($response->getStatusCode()==200) {
             return  json_decode($response->getBody(), true);
         }
         throw new Exception("Api end Error");
