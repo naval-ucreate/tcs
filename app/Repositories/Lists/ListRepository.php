@@ -10,7 +10,9 @@ class ListRepository extends ListClass
     public function findByTrelloBoardId($board_id){
         return $this->model->with('board')
         ->with('boardConfig')
-        ->where('trello_board_id','=',$board_id)->get()->toArray();
+        ->where('board_id', '=', $board_id)
+        ->orderBy('position', 'asc')
+        ->get()->toArray();
     }
     
     public function insertMany($data){
@@ -42,9 +44,13 @@ class ListRepository extends ListClass
         ->update(['bug_enable' => true]);
     }
 
-    public function updateMany(Array $attributes, Array $list_ids){
+    public function getMultipuleList(Array $list_ids){
         return $this->model->whereIn('trello_list_id' , $list_ids)
-        ->update($attributes);
+        ->get();
+    }
+
+    public function updateMany(string $query){
+        \DB::select(\DB::raw($query));
     }
 
 }

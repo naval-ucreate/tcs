@@ -13,11 +13,11 @@ class BoardList extends Model
 
     public function board()
     {
-        return $this->belongsTo('App\Models\Board','trello_board_id','trello_board_id');
+        return $this->belongsTo('App\Models\Board', 'board_id', 'id');
     }
 
     public function boardConfig() {
-        return $this->hasMany('App\Models\BoardConfiguration','list_id','trello_list_id');
+        return $this->hasMany('App\Models\BoardConfiguration', 'list_id', 'id');
     }
 
 }

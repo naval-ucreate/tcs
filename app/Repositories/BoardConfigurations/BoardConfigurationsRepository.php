@@ -7,7 +7,7 @@ use App\Repositories\BoardConfigurations\BoardConfigurationsClass;
 class BoardConfigurationsRepository extends BoardConfigurationsClass
 {
 
-    public function boardConfigByType(string $board_id, int $type){
+    public function boardConfigByType(int $board_id, int $type){
         return $this->model->where([
                 'board_id' => $board_id,
                 'type' => $type
@@ -15,7 +15,7 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
             ->first();
     }
 
-    public function boardConfigByTypeAll(string $board_id, int $type){
+    public function boardConfigByTypeAll(int $board_id, int $type){
         return $this->model->where([
             'board_id' => $board_id,
             'type' => $type
@@ -23,7 +23,7 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
         ->get();
     }
 
-    public function boardConfigByListId(string $list_id) {
+    public function boardConfigByListId(int $list_id) {
         return $this->model->with('board:owner_token')
         ->where('list_id', '=', $list_id)
         ->first();
@@ -33,7 +33,7 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
         return $this->model->insert($attributes);
     }
 
-    public function getConfigByListId(String $list_id, int $type){
+    public function getConfigByListId(int $list_id, int $type){
         return $this->model->with('board')
         ->where([
             'list_id' => $list_id,
@@ -42,7 +42,7 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
         ->first();
     }
 
-    public function boardConfigByTypeArray(String $board_id, Array $type){
+    public function boardConfigByTypeArray(int $board_id, Array $type){
         return $this->model->where('board_id', '=', $board_id)
         ->whereIn('type', $type)
         ->get();

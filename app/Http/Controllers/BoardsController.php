@@ -23,7 +23,7 @@ class BoardsController extends Controller
     }
 
     public function checkBoards(Array $user_boards_data){         
-            $trello_board_ids = array_column($user_boards_data,'board_id');
+            $trello_board_ids = array_column($user_boards_data, 'board_id');
             $trello_boards = app('trello')->getUserBoards();
 
             if(count($trello_boards)>0) {
@@ -40,7 +40,8 @@ class BoardsController extends Controller
             if(count($del_old_board)>0){
                $this->board->deleteMany($del_old_board);
                $this->user_board_repository->deleteMany($del_old_board);
-            }    
+            } 
+               
             $this->login_user['last_api_hit'] = strtotime("+24 hour",time()); 
             $this->login_user['total_board'] = count($trello_boards);
 

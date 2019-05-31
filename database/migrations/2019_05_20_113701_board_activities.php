@@ -15,11 +15,11 @@ class BoardActivities extends Migration
     {
         Schema::create('board_activities', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('board_id',50)->nullable();
-            $table->string('to_list_id',50)->nullable();
-            $table->string('from_list_id',50)->nullable();
-            $table->string('card_id',50)->nullable();
-            $table->string('user_id',50)->nullable();
+            $table->unsignedInteger('board_id')->nullable();
+            $table->unsignedInteger('to_list_id')->nullable();
+            $table->unsignedInteger('from_list_id')->nullable();
+            $table->unsignedInteger('card_id')->nullable();
+            $table->unsignedInteger('member_id')->nullable();
             $table->timestamps();
         });
     }

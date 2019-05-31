@@ -38,12 +38,12 @@
                                             @foreach($board_list as $list)   
                                             
                                                 <?php 
-                                                    $is_enable = config_enable($list['board_config'], $list['trello_list_id'], 1);
+                                                    $is_enable = config_enable($list['board_config'], $list['id'], 1);
                                                 ?> 
                                                                                                                                     
                                                 <a href="javascript:void(0)" class="list-group-item {{ $is_enable ? 'active':''}}">
                                                     <span class="enable_report" rel="1">
-                                                        <div id="_{{$list['trello_list_id']}}" class="list-group-status status-checklist status-{{ ( $is_enable ? 'online':'offline') }}"></div>
+                                                        <div id="_{{$list['id']}}" class="list-group-status status-checklist status-{{ ( $is_enable ? 'online':'offline') }}"></div>
                                                             <h2 class="contacts-title" style="margin-top: 10px;"> {{$list['name']}}
                                                             
                                                             </h2>
@@ -52,10 +52,10 @@
                                                                 <i  class="fa fa-check checklist" aria-hidden="true"></i> 
                                                                 <input type="hidden" value="1" name="hook_checked"/>
                                                             @endif   
-                                                            <input style="display:none;" type="radio"   {{( $is_enable  ? 'checked':'')}} name="list_id" value="{{$list['trello_list_id']}}">
+                                                            <input style="display:none;" type="radio"   {{ $is_enable  ? 'checked':'' }} name="list_id" value="{{$list['id']}}">
                                                         </div>
                                                     </span>
-                                                    <span class="list-group-controls"  id="{{$list['trello_list_id']}}">
+                                                    <span class="list-group-controls"  id="{{$list['id']}}">
                                                                 @if($is_enable)
                                                                     <button class="btn btn-danger btn-sm delete-hook _checklist" data = "1" rel="something"> Remove </button>
                                                                 @endif
@@ -73,12 +73,12 @@
                                         <div class="panel-body list-group list-group-contacts"> 
                                             @foreach($board_list as $list)
                                                 <?php 
-                                                     $is_enable = config_enable($list['board_config'], $list['trello_list_id'], 2); 
+                                                     $is_enable = config_enable($list['board_config'], $list['id'], 2); 
                                                 ?>  
                                                 <span class="add_config">                                                                                       
                                                     <a href="javascript:void(0)" class="list-group-item {{$is_enable ? 'active':''}}">
                                                         
-                                                        <div id="_{{$list['trello_list_id']}}" class="list-group-status  status-{{ ( $is_enable ? 'online':'offline') }}"></div>
+                                                        <div id="_{{$list['id']}}" class="list-group-status  status-{{ ( $is_enable ? 'online':'offline') }}"></div>
                                                             <h2 class="contacts-title" style="margin-top: 10px;"> 
                                                                 {{$list['name']}}
                                                             </h2>
@@ -87,7 +87,7 @@
                                                                 <i  class="fa fa-check" aria-hidden="true"></i> 
                                                                 <input type="hidden" value="1" name="hook_checked"/>
                                                             @endif   
-                                                            <input  type="checkbox"   {{( $is_enable  ? 'checked':'')}} name="list_id[]" value="{{$list['trello_list_id']}}">
+                                                            <input  type="checkbox"   {{ $is_enable  ? 'checked':''}} name="list_id[]" value="{{$list['id']}}">
                                                         </div>
                                                     </a>
                                                 </span>
@@ -106,12 +106,12 @@
                                         <div class="panel-body list-group list-group-contacts"> 
                                             @foreach($board_list as $list)
                                                 <?php 
-                                                     $is_enable = config_enable($list['board_config'], $list['trello_list_id'], 3);
+                                                     $is_enable = config_enable($list['board_config'], $list['id'], 3);
                                                 ?>
 
                                                 <a href="javascript:void(0)" class="list-group-item {{ $is_enable ? 'active':''}}">
                                                         <span class="enable_report" rel="3">
-                                                            <div id="_qa_{{$list['trello_list_id']}}" class="list-group-status status-qa status-{{ ( $is_enable ? 'online':'offline') }}"></div>
+                                                            <div id="_qa_{{$list['id']}}" class="list-group-status status-qa status-{{ ( $is_enable ? 'online':'offline') }}"></div>
                                                                 <h2 class="contacts-title" style="margin-top: 10px;"> {{$list['name']}}
                                                                 
                                                                 </h2>
@@ -120,10 +120,10 @@
                                                                     <i  class="fa fa-check qa" aria-hidden="true"></i> 
                                                                     <input type="hidden" value="1" name="hook_checked"/>
                                                                 @endif   
-                                                                <input style="display:none;" type="radio" {{( $is_enable ? 'checked':'')}} name="list_id" value="{{$list['trello_list_id']}}">
+                                                                <input style="display:none;" type="radio" {{( $is_enable ? 'checked':'')}} name="list_id" value="{{$list['id']}}">
                                                             </div>
                                                         </span>
-                                                        <span class="list-group-controls"  id="qa_{{$list['trello_list_id']}}">
+                                                        <span class="list-group-controls"  id="qa_{{$list['id']}}">
                                                                 @if($is_enable)
                                                                     <button class="btn btn-danger btn-sm delete-hook _qa" data = "3" rel="something"> Remove </button>
                                                                 @endif
@@ -145,12 +145,12 @@
                                         <div class="panel-body list-group list-group-contacts"> 
                                             @foreach($board_list as $list)
                                                 <?php 
-                                                     $is_enable = config_enable($list['board_config'], $list['trello_list_id'], 4);
+                                                     $is_enable = config_enable($list['board_config'], $list['id'], 4);
                                                 ?> 
                                                 <span class="add_config">                                                                                       
                                                     <a href="javascript:void(0)" class="list-group-item {{ $is_enable ? 'active':''}}">
                                                         
-                                                        <div id="_{{$list['trello_list_id']}}" class="list-group-status  status-{{ ( $is_enable ? 'online':'offline') }}"></div>
+                                                        <div id="_{{$list['id']}}" class="list-group-status  status-{{ ( $is_enable ? 'online':'offline') }}"></div>
                                                             <h2 class="contacts-title" style="margin-top: 10px;"> 
                                                                 {{$list['name']}}
                                                             </h2>
@@ -159,7 +159,7 @@
                                                                 <i  class="fa fa-check" aria-hidden="true"></i> 
                                                                 <input type="hidden" value="1" name="hook_checked"/>
                                                             @endif   
-                                                            <input  type="checkbox"   {{( $is_enable  ? 'checked' :'' )}} name="list_id[]" value="{{$list['trello_list_id']}}">
+                                                            <input  type="checkbox"   {{ $is_enable  ? 'checked' :'' }} name="list_id[]" value="{{$list['id']}}">
                                                         </div>
                                                     </a>
                                                 </span>
@@ -178,11 +178,11 @@
                                         <div class="panel-body list-group list-group-contacts"> 
                                             @foreach($board_list as $list) 
                                                 <?php 
-                                                     $is_enable = config_enable($list['board_config'], $list['trello_list_id'], 5); 
+                                                     $is_enable = config_enable($list['board_config'], $list['id'], 5); 
                                                 ?>
                                                 <a href="javascript:void(0)" class="list-group-item {{ $is_enable ? 'active':''}}">
                                                             <span class="enable_report" rel="5">
-                                                                <div id="_pro_{{$list['trello_list_id']}}" class="list-group-status status-production  status-{{ $is_enable ? 'online':'offline' }}"></div>
+                                                                <div id="_pro_{{$list['id']}}" class="list-group-status status-production  status-{{ $is_enable ? 'online':'offline' }}"></div>
                                                                     <h2 class="contacts-title" style="margin-top: 10px;"> 
                                                                         {{$list['name']}}
                                                                     </h2>
@@ -191,10 +191,10 @@
                                                                         <i  class="fa fa-check production" aria-hidden="true"></i> 
                                                                         <input type="hidden" value="1" name="hook_checked"/>
                                                                     @endif   
-                                                                    <input style="display:none;" type="radio" {{( $is_enable  ? 'checked' : '' )}} name="list_id" value="{{$list['trello_list_id']}}">
+                                                                    <input style="display:none;" type="radio" {{( $is_enable  ? 'checked' : '' )}} name="list_id" value="{{$list['id']}}">
                                                                 </div>
                                                             </span>
-                                                            <span class="list-group-controls"  id="pro_{{$list['trello_list_id']}}">
+                                                            <span class="list-group-controls"  id="pro_{{$list['id']}}">
                                                                     @if($is_enable)
                                                                         <button class="btn btn-danger btn-sm delete-hook _production" data = "5" rel="something"> Remove </button>
                                                                     @endif

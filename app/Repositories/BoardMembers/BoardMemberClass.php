@@ -27,7 +27,7 @@ abstract class BoardMemberClass {
         return $this->model->where('board_id', '=', $id)->delete();
     }
 
-    public function findMembers(string $board_id){
+    public function findMembers(int $board_id){
         return $this->model->where('board_id', '=', $board_id)
         ->get();
     }

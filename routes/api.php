@@ -19,5 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::any('/test-web-hook','TrelloListController@testWebHook')->name('test_web_hook');
 Route::post('/list-trigger','HookController@listenTrigger')->name('list_trigger');
-Route::get('/list-trigger','HookController@ok')->name('list_trigger');
-Route::post('/register-web-hook','HookController@RegisterHook')->name('register_hook');
+Route::get('/list-trigger/{board_id}','HookController@ok')->name('list_trigger');
+Route::post('/register-web-hook/{board_id}','HookController@RegisterHook')->name('register_hook');

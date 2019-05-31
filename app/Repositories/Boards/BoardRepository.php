@@ -21,8 +21,8 @@ class BoardRepository extends BoardClass
         ->delete();
     }
 
-    public function getBoardId(string $board_id){
-        return $this->model->where('trello_board_id' ,'=', $board_id)
+    public function getBoardId(int $board_id) {
+        return $this->model->where('id' ,'=', $board_id)
         ->first();
     }
 

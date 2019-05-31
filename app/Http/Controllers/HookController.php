@@ -18,42 +18,43 @@ use App\Models\WebhookCallLog;
 class HookController extends Controller
 {
 
-    private $list, $card, $board_activity, $board_config, $board_member;
+    private $list, $card, $board_activity, $board_config, $board_member, $board;
 
-    public function  __construct(BoardConfig $board_config, ListRepository $list, CardRepository $card, BoardActivity $board_activity, BoardMember $board_member){
+    public function  __construct(BoardConfig $board_config, ListRepository $list, CardRepository $card, BoardActivity $board_activity, BoardMember $board_member, BoardRepository $board){
         $this->list = $list;
         $this->card = $card;
         $this->board_activity = $board_activity;
         $this->board_config = $board_config;
         $this->board_member = $board_member;
+        $this->board = $board;
     }
     
-    public function registerHook($board_id, BoardRepository $board){
-        $data = $board->getBoardId($board_id);
-        if(!$data->web_hook_enable && $data->web_hook_id=='') {
-            $hook_id = $this->saveHook($board_id);
+    public function registerHook($board_id){
+        $data = $this->board->getBoardId($board_id);
+        if(!$data->web_hook_enable && $data->web_hook_id == '') {
+            $hook_id = $this->saveHook($data->trello_board_id, $board_id);
             if($hook_id) {
                 $user_info = Auth::user()->toArray();
                 $data->web_hook_id = $hook_id;
                 $data->web_hook_enable = true;
                 $data->owner_token = $user_info['token'];
-                $board->update($board_id, $data->toArray());
-                $this->addMembers($board_id);
-                $this->updateBoardList($board_id);
+                $data->save();
+                $this->addMembers($data->trello_board_id, $board_id);
+                $this->updateBoardList($data->trello_board_id, $board_id);
                 return 1;
             }
         }
         return 0;
     }
 
-    public function removeHook($board_id, BoardRepository $board){
-        $data = $board->getBoardId($board_id);
+    public function removeHook($board_id){
+        $data = $this->board->getBoardId($board_id);
         if($data->web_hook_enable && $data->web_hook_id != '') {
             if($this->deleteHook($data->web_hook_id)) {
                 $data->web_hook_id = '';
                 $data->web_hook_enable = false;
                 $data->owner_token = '';
-                $board->update($board_id, $data->toArray());
+                $data->save();
                 return 1;
             }
         }
@@ -77,8 +78,8 @@ class HookController extends Controller
         return 0;
     }
 
-    public function saveHook(string $borad_id){
-        $response = app('trello')->RegisterHookList($borad_id);
+    public function saveHook(string $trello_borad_id, int $board_id){
+        $response = app('trello')->RegisterHookList($trello_borad_id, $board_id);
         $hook_data = json_validator($response);
         if(count($hook_data) > 0 &&  $hook_data) {
             return $hook_data['id'];
@@ -86,38 +87,41 @@ class HookController extends Controller
         return 0;
     }
     
-    public function ok(){
+    public function ok($board_id){
         return 1;
     }
 
     public function deleteHook(string $board_id){
         return app('trello')->deleteHook($board_id) ? 1 : 0;
-
     }
 
-    public function listenTrigger(WebhookCallLog $webhook_calllog){
+    public function listenTrigger($board_id, WebhookCallLog $webhook_calllog){
         $data = json_decode(request()->getContent(), true);
         $webhook_calllog->create(['body' => json_encode($data)]);
-        $borad_id = $data['model']['id'];
+        $trello_borad_id = $data['model']['id'];
         if($data['action']['type'] == 'updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
-            $after_list_id = $data['action']['display']['entities']['listAfter']['id'];
-            $befor_list_id = $data['action']['display']['entities']['listBefore']['id'];
-            $card_id = $data['action']['display']['entities']['card']['id'];
-            $card_information = $data['action']['display']['entities']['card'];
-            $user_id = $data['action']['display']['entities']['memberCreator']['id'];
-            $card_information['board_id'] = $borad_id;
-            $this->saveActivity($befor_list_id, $after_list_id, $card_id, $borad_id, $user_id); 
-            $this->checkCheckList($after_list_id, $befor_list_id, $card_id, $card_information);
+            $trello_entities = $data['action']['display']['entities'];
+            $after_list_id = $trello_entities['listAfter']['id'];
+            $befor_list_id = $trello_entities['listBefore']['id'];
+            $db_lists_ids = self::dbListIds($after_list_id, $befor_list_id);
+            $trello_card_id = $trello_entities['card']['id'];
+            $card_information = $trello_entities['card'];
+            $user_id = $trello_entities['memberCreator']['id'];
+            $card_information['board_id'] = $board_id;
+            $card_information['list_id'] = $db_lists_ids[0];
+            $this->checkCheckList($db_lists_ids[0], $db_lists_ids[1], $card_id);
+            $db_card_id = $this->saveCard($card_information);
+            $this->saveActivity($db_lists_ids[0], $db_lists_ids[1], $db_card_id, $board_id, $user_id); 
         }
         if($data['action']['type'] == 'createList' && $data['action']['display']['translationKey'] == 'action_added_list_to_board') {
-            $this->addNewList($borad_id, $data['action']['display']['entities']['list']);
+            $this->addNewList($board_id, $data['action']['display']['entities']['list']);
         }
 
         return 0;
     }
 
-    public function addMembers($board_id) {
-        $members = app('trello')->getBoardMembers($board_id);
+    public function addMembers($trello_board_id, int $board_id) {
+        $members = app('trello')->getBoardMembers($trello_board_id);
         $db_members = $this->board_member->findMembers($board_id);
         if(!isset($db_members)) {
             $attribute = self::makeMemberArray($members, $board_id);
@@ -136,18 +140,29 @@ class HookController extends Controller
         return 0;
     }
 
-    private function updateBoardList($board_id): void {
-        $api_data = app('trello')->GetBoardList($board_id);
+    private function updateBoardList($trello_board_id, $board_id): void {
+        $api_data = app('trello')->GetBoardList($trello_board_id);
         $db_data = $this->list->findByTrelloBoardId($board_id);
         $api_data = self::makeArrayList($api_data, $board_id);
-        $db_data = array_column($db_data, 'trello_list_id');
+        $trello_list_id = array_column($db_data, 'trello_list_id');
         if(count($api_data)) {
-            $new_list_id = newArrayElement($db_data, $api_data);
+            $new_list_id = newArrayElement($trello_list_id, $api_data);
             if(count($new_list_id['new_list'])) {
                 $this->list->insertMany($new_list_id['new_list']);
             }
-            $update_list_id = array_column($new_list_id['old_list'], 'trello_list_id');
-            $this->list->updateMany($new_list_id['old_list'], $update_list_id);   
+            
+            $new_list_id['old_list'] = addIdList($new_list_id['old_list'], $db_data);
+            $ids = array_column($new_list_id['old_list'], 'id');
+            $query = "update board_lists set name = case ";
+            foreach($new_list_id['old_list'] as $key => $value) {
+                $query.= " when id='".$value['id']."' then '".$value['name']."'";
+            }
+            $query.= ' end , position = case';
+            foreach($new_list_id['old_list'] as $key => $value) {
+                $query.= " when id='".$value['id']."' then ".$value['position']."";
+            }
+            $query .= " end where id in ( ". Implode(',', $ids ). " ) ";
+            $this->list->updateMany($query);   
         }
     }
     
@@ -159,12 +174,17 @@ class HookController extends Controller
         ];
         $this->list->create($attribute);
         return 1;
-   }      
+   }
+   
+   static private function dbListId(string $after_list_id, string $befor_list_id){
+       $data = $this->list->getMultipuleList([$after_list_id, $befor_list_id]);
+       return [$data[0]->id, $data[1]->id];     
+   }
 
 
     private function checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, Array $card_information){
         $list_info = $this->board_config->getConfigByListId($after_list_id, 1);
-        $this->saveCard($card_information);
+       
         if(isset($list_info)  && $list_info->status ) {
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
@@ -186,7 +206,7 @@ class HookController extends Controller
             'to_list_id' => $after_list_id,
             'from_list_id' => $befor_list_id,
             'card_id' => $card_id,
-            'user_id' => $user_id
+            'member_id' => $user_id
         ];
         $this->board_activity->create($attribute);
         return 1;
@@ -225,8 +245,8 @@ class HookController extends Controller
     private function saveCard(array $card_information){
         
         $attribute = [
-            'trello_board_id' => $card_information['board_id'],
-            'trello_list_id' => $card_information['idList'],
+            'board_id' => $card_information['board_id'],
+            'list_id' => $card_information['list_id'],
             'trello_card_id' => $card_information['id'],
             'name' => $card_information['text'],
             'description' => 'not found',
@@ -240,11 +260,11 @@ class HookController extends Controller
             unset( $attribute['total_bugs']);
             unset( $attribute['total_return']);
             $this->card->updateByCard($card_information['id'], $attribute);
-            return 1;
+            return $this->card->findByCardId($card_information['id'])->id;
         }
         
         $this->card->create($attribute);
-        return 1;
+        return $this->card->findByCardId($card_information['id'])->id;
     }
 
     public function after(){
@@ -293,9 +313,10 @@ class HookController extends Controller
         $insert_data = [];
         foreach($list_data['lists'] as $list_val) {
             $insert_data[] = [
-                'trello_board_id' => $id,
+                'board_id' => $id,
                 'trello_list_id' => $list_val['id'],
                 'name' => $list_val['name'],
+                'position' => $list_val['pos'],
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ];
@@ -303,7 +324,7 @@ class HookController extends Controller
         return $insert_data;
     }
 
-    static private function makeMemberArray(Array $members, String $board_id){
+    static private function makeMemberArray(Array $members, int $board_id){
         $final = [];
         foreach($members as $value):
             $final[] = [

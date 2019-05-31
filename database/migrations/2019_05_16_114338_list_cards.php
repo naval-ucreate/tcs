@@ -15,12 +15,13 @@ class ListCards extends Migration
     {
         Schema::create('list_cards', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('trello_board_id',50);     
-            $table->string('trello_list_id',50);
+            $table->unsignedInteger('board_id');     
+            $table->unsignedInteger('list_id');
             $table->string('trello_card_id',50);
             $table->string('name');
             $table->text('description');
             $table->unsignedInteger('total_bugs')->nullable();
+            $table->unsignedInteger('total_return')->nullable();
             $table->boolean('is_complete')->nullable();
             $table->timestamps();
         });

@@ -15,8 +15,6 @@ Route::get('/game', function () {
     dd(config("app.trello_api_end_point"));
 });
 
-
-
 Route::get('/','LoginController@trelloLogin' )->name('login');
 Route::post('/login','LoginController@checkTrelloLogin' )->name('check-trello-login');
 Route::post('/ajax_login','LoginController@ajax_login' );

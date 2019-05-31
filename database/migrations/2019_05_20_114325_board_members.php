@@ -15,7 +15,7 @@ class BoardMembers extends Migration
     {
         Schema::create('board_members', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('board_id',50)->nullable();
+            $table->unsignedInteger('board_id')->nullable();
             $table->string('user_id',50)->nullable();
             $table->string('username')->nullable();
             $table->string('name')->nullable();

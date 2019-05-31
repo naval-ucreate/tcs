@@ -8,15 +8,17 @@ use App\Models\TestingHook;
 use App\Repositories\Lists\ListRepository;
 use App\Repositories\BoardConfigurations\BoardConfigurationsRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\Boards\BoardRepository;
 
 class ListController extends Controller
 {
     
-    private $list, $login_user, $board_config;
+    private $list, $login_user, $board_config, $board;
 
-    public function __construct(ListRepository $list, BoardConfigurationsRepository $board_config){
+    public function __construct(ListRepository $list, BoardConfigurationsRepository $board_config, BoardRepository $board){
         $this->list = $list;
         $this->board_config = $board_config;
+        $this->board = $board;
     }
 
     public function store(array $data,$id){
@@ -27,9 +29,11 @@ class ListController extends Controller
 
     public function trelloList(String $id){
         $this->login_user = Auth::user()->toArray();       
+        $baord_info = $this->board->getBoardId($id);
         $board_list = $this->list->findByTrelloBoardId($id);
+        
         if(count($board_list)==0) {
-            $list_data = app('trello')->GetBoardList($id);
+            $list_data = app('trello')->GetBoardList($baord_info->trello_board_id);
             if(count($list_data)) {
                 $insert_data = self::makeArrayList($list_data, $id);
                 if(count($insert_data)) {
@@ -40,24 +44,24 @@ class ListController extends Controller
         }
 
         if( strtotime('+7 hour', time()) > $this->login_user['last_api_hit'] ) {
-            $board_list = $this->checkNewList($id, $board_list);
+            $board_list = $this->checkNewList($baord_info->trello_board_id, $board_list, $id);
         }
         return view('dashboard/show-list',compact('board_list'));         
     }
 
 
-    private function checkNewList(string $board_id, array $board_list){
+    private function checkNewList(string $board_id, array $board_list, int $id){
         $api_data = app('trello')->GetBoardList($board_id);
-        $api_data = self::makeArrayList($api_data, $board_id);
+        $api_data = self::makeArrayList($api_data, $id);
         $db_data = array_column($board_list, 'trello_list_id');
         if(count($api_data)) {
             $new_list_id = newArrayElement($db_data, $api_data);
             if(count($new_list_id['new_list'])) {
-                return $this->store($new_list_id['new_list'], $board_id);
+                return $this->store($new_list_id['new_list'], $id);
             }
         }
         if($this->deleteList($api_data, $db_data)) {
-            $board_list = $this->list->findByTrelloBoardId($board_id);
+            $board_list = $this->list->findByTrelloBoardId($id);
         }
         return $board_list;
     }
@@ -81,15 +85,16 @@ class ListController extends Controller
         $insert_data = [];
         foreach($list_data['lists'] as $list_val) {
             $insert_data[] = [
-            'trello_board_id'=>$id,
-            'trello_list_id'=>$list_val['id'],
-            'name'=> $list_val['name']
+                'board_id' => $id,
+                'trello_list_id'=>$list_val['id'],
+                'name'=> $list_val['name'],
+                'position' => $list_val['pos'],
             ];
         }
         return $insert_data;
     }
 
-    public function updateListcheckList($list_id){
+    public function updateListcheckList($list_id) {
         $data = request()->toArray();
         $board_config = $this->board_config->boardConfigByType($data['board_id'], $data['type']);
         

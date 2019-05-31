@@ -18,7 +18,6 @@
         $only_member = ''; 
    ?>     
         @foreach ($user_boards as $user_boards_val)
-                
                 <?php $background = ($user_boards_val->boards->background_image) ?  "background-image:url(".$user_boards_val->boards->background_image.")"  : "background-color: rgb(0, 121, 191);" ?>
                 <?php $admin_class = $user_boards_val->is_admin ? 'panel-info':'panel-danger'; ?>
                 <?php $board_name = $user_boards_val->boards->name; ?>
@@ -36,11 +35,11 @@
                                                             <div class="panel-footer footer-info" style="'.$background.'">
                                                                 <!-- <button class="btn btn-danger pull-right delete_data" 
                                                                 rel="{{$user_boards_val->id}}" model="Board" >Delete</button> -->
-                                                                <a href="'.route("lists",[$user_boards_val->trello_board_id]).'" class="btn btn-primary pull-right" >Settings </a> 
-                                                                <a href="'.route('activity',[$user_boards_val->trello_board_id]).'" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>
+                                                                <a href="'.route("lists",[$user_boards_val->boards->id]).'" class="btn btn-primary pull-right" >Settings </a> 
+                                                                <a href="'.route('activity',[$user_boards_val->boards->id]).'" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>
                                                                 <a href="javascript:void(0)" class="btn '.$report_class.' btn-sm pull-left _register" 
                                                                 status = "'.$user_boards_val->boards->web_hook_enable.'" 
-                                                                data="'.$user_boards_val->trello_board_id.'">'.$report_enable.' 
+                                                                data="'.$user_boards_val->boards->id.'">'.$report_enable.' 
                                                                 <i class="fa fa-spinner fa-spin icon_show" style="display:none;" aria-hidden="true"></i></a>
                                                             </div> 
                                                         </div>
@@ -55,7 +54,7 @@
                                                                 <h3 style="color:white"> <center> '. $board_name .' </center> </h3>
                                                             </div>
                                                             <div class="panel-footer footer-info" style="'.$background.'">
-                                                                <a href="'.route('activity',[$user_boards_val->trello_board_id]).'" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>     
+                                                                <a href="'.route('activity',[$user_boards_val->boards->id]).'" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>     
                                                             </div> 
                                                         </div>
                                                 </div>'  

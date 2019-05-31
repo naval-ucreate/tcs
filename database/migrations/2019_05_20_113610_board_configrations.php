@@ -15,8 +15,8 @@ class BoardConfigrations extends Migration
     {
         Schema::create('board_configurations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('board_id',50)->nullable();
-            $table->string('list_id',50)->nullable();
+            $table->unsignedInteger('board_id')->nullable();
+            $table->unsignedInteger('list_id')->nullable();
             $table->unsignedInteger('type')->nullable();
             $table->boolean('status')->nullable();
             $table->timestamps();

@@ -33,13 +33,31 @@ function array_exists($array ,$niddle){
     return false;
 }
 
+
+function addIdList($update_array, $db_array){
+    foreach($update_array as $key => $value):
+        $update_array[$key]['id'] = findId($value['trello_list_id'], $db_array);
+    endforeach;
+    return $update_array;
+}
+
+function findId($trello_list_id, $db_array){
+    foreach($db_array as $value):
+        if($value['trello_list_id'] == $trello_list_id) {
+            return $value['id'];
+        }
+    endforeach;   
+}
+
 function newArrayElement($old, $new){
     $new_array['new_list'] = [];
     $new_array['old_list'] = [];
     foreach($new as $value) {
         if(!in_array($value['trello_list_id'], $old)) {
             $new_array['new_list'][] = $value;
-        } else{
+        } else {
+            unset($value['created_at']);
+            unset($value['updated_at']);
             $new_array['old_list'][] = $value;
         }
     }
