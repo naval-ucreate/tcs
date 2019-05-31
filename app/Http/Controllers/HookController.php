@@ -103,7 +103,7 @@ class HookController extends Controller
             $trello_entities = $data['action']['display']['entities'];
             $after_list_id = $trello_entities['listAfter']['id'];
             $befor_list_id = $trello_entities['listBefore']['id'];
-            $db_lists_ids = self::dbListIds($after_list_id, $befor_list_id);
+            $db_lists_ids = self::dbListId($after_list_id, $befor_list_id);
             $trello_card_id = $trello_entities['card']['id'];
             $card_information = $trello_entities['card'];
             $user_id = $trello_entities['memberCreator']['id'];
@@ -168,7 +168,7 @@ class HookController extends Controller
     
    private function addNewList(string $board_id, Array $listInfo){
         $attribute = [
-            'trello_board_id' => $board_id,
+            'board_id' => $board_id,
             'trello_list_id' => $listInfo['id'],
             'name' => $listInfo['text']
         ];
@@ -184,7 +184,6 @@ class HookController extends Controller
 
     private function checkCheckList(String $after_list_id, string $befor_list_id,  String $card_id, Array $card_information){
         $list_info = $this->board_config->getConfigByListId($after_list_id, 1);
-       
         if(isset($list_info)  && $list_info->status ) {
             $this->addLable($card_id, $list_info->board->owner_token,  $befor_list_id);
         }
