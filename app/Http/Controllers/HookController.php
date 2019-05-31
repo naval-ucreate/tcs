@@ -98,7 +98,7 @@ class HookController extends Controller
     public function listenTrigger($board_id, WebhookCallLog $webhook_calllog){
         $data = json_decode(request()->getContent(), true);
         $webhook_calllog->create(['body' => json_encode($data)]);
-        $trello_borad_id = $data['model']['id'];
+        $trello_board_id = $data['model']['id'];
         if($data['action']['type'] == 'updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
             $trello_entities = $data['action']['display']['entities'];
             $after_list_id = $trello_entities['listAfter']['id'];
@@ -109,8 +109,10 @@ class HookController extends Controller
             $user_id = $trello_entities['memberCreator']['id'];
             $card_information['board_id'] = $board_id;
             $card_information['list_id'] = $db_lists_ids[0];
+            $card_information['trello_before_id'] = $befor_list_id;
+            $card_information['trello_after_id'] = $after_list_id;
             $db_card_id = $this->saveCard($card_information);
-            $this->checkCheckList($db_lists_ids[0], $db_lists_ids[1], $db_card_id);
+            $this->checkCheckList($db_lists_ids[0], $db_lists_ids[1], $db_card_id, $card_information);
             $this->saveActivity($db_lists_ids[0], $db_lists_ids[1], $db_card_id, $board_id, $user_id); 
         }
         if($data['action']['type'] == 'createList' && $data['action']['display']['translationKey'] == 'action_added_list_to_board') {
@@ -182,10 +184,10 @@ class HookController extends Controller
    }
 
 
-    private function checkCheckList(String $after_list_id, string $befor_list_id,  int $card_id, Array $card_information){
+    private function checkCheckList(int $after_list_id, int $befor_list_id,  int $card_id, Array $card_information){
         $list_info = $this->board_config->getConfigByListId($after_list_id, 1);
         if(isset($list_info)  && $list_info->status ) {
-            $this->addLable($card_information['trello_card_id'], $list_info->board->owner_token,  $befor_list_id);
+            $this->addLable($card_information['id'], $list_info->board->owner_token,  $card_information['trello_before_id']);
         }
         $board_config = $this->board_config->boardConfigByTypeArray($card_information['board_id'], [2,3]);
         if($board_config){
