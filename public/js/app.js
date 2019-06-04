@@ -1842,6 +1842,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1858,10 +1860,11 @@ __webpack_require__.r(__webpack_exports__);
       show_model: false,
       lable_name: "",
       is_loading: true,
-      color_code: "#e53333",
+      color_code: "red",
       check_list_type: " ",
       image: "",
-      board_name: ""
+      board_name: "",
+      trello_labales: ["green", "yellow", "orange", "red", "purple", "blue", "sky", "lime", "pink", "black"]
     };
   },
   components: {
@@ -3595,27 +3598,43 @@ var render = function() {
                   _vm._v("Lable Color")
                 ]),
                 _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.color_code,
-                      expression: "color_code"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "color", placeholder: "Choice color" },
-                  domProps: { value: _vm.color_code },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.color_code,
+                        expression: "color_code"
                       }
-                      _vm.color_code = $event.target.value
+                    ],
+                    staticClass: "form-control",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.color_code = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
                     }
-                  }
-                }),
+                  },
+                  _vm._l(_vm.trello_labales, function(color) {
+                    return _c(
+                      "option",
+                      { key: color, domProps: { value: color } },
+                      [_vm._v(_vm._s(color))]
+                    )
+                  }),
+                  0
+                ),
                 _vm._v(" "),
                 _c("hr"),
                 _vm._v(" "),

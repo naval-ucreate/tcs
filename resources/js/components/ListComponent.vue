@@ -74,7 +74,9 @@
         >
         <hr>
         <label for="email">Lable Color</label>
-        <input type="color" class="form-control" placeholder="Choice color" v-model="color_code">
+        <select class="form-control" v-model="color_code">
+          <option v-for="color in trello_labales" :value="color" :key="color">{{color}}</option>
+        </select>
         <hr>
         <label for="email">Check ListType:</label>
         <select class="form-control" v-model="check_list_type">
@@ -109,10 +111,22 @@ export default {
       show_model: false,
       lable_name: "",
       is_loading: true,
-      color_code: "#e53333",
+      color_code: "red",
       check_list_type: " ",
       image: "",
-      board_name: ""
+      board_name: "",
+      trello_labales: [
+        "green",
+        "yellow",
+        "orange",
+        "red",
+        "purple",
+        "blue",
+        "sky",
+        "lime",
+        "pink",
+        "black"
+      ]
     };
   },
   components: {
