@@ -16,6 +16,6 @@
 
 <script type="text/javascript" src="{{ URL::asset('jolly/js/plugins.js') }}"></script>        
  <script type="text/javascript" src="{{ URL::asset('jolly/js/actions.js') }}"></script>  
-   
+    <script type="text/javascript" src="{{ URL::asset('js/app.js') }}"></script>  
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   

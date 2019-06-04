@@ -30,6 +30,12 @@ class ListController extends Controller
     public function trelloList(String $id){
         $this->login_user = Auth::user()->toArray();       
         $baord_info = $this->board->getBoardId($id);
+        return view('dashboard/show-list', compact('baord_info'));         
+    }
+
+    public function listJson(String $id){
+        $this->login_user = Auth::user()->toArray();       
+        $baord_info = $this->board->getBoardId($id);
         $board_list = $this->list->findByTrelloBoardId($id);
         
         if(count($board_list)==0) {
@@ -38,7 +44,7 @@ class ListController extends Controller
                 $insert_data = self::makeArrayList($list_data, $id);
                 if(count($insert_data)) {
                     $board_list  = $this->store($insert_data,$id); 
-                    return view('dashboard/show-list',compact('board_list'));
+                    return $board_list;   
                 }
             } 
         }
@@ -46,9 +52,8 @@ class ListController extends Controller
         if( strtotime('+7 hour', time()) > $this->login_user['last_api_hit'] ) {
             $board_list = $this->checkNewList($baord_info->trello_board_id, $board_list, $id);
         }
-        return view('dashboard/show-list',compact('board_list'));         
+        return $board_list;         
     }
-
 
     private function checkNewList(string $board_id, array $board_list, int $id){
         $api_data = app('trello')->GetBoardList($board_id);
@@ -96,24 +101,32 @@ class ListController extends Controller
 
     public function updateListcheckList($list_id) {
         $data = request()->toArray();
-        $board_config = $this->board_config->boardConfigByType($data['board_id'], $data['type']);
+        $board_config = $this->board_config->boardConfigByTypeAndList($data['board_id'], $data['type'], $list_id);
         
         if(isset($board_config)) {
             $board_config->status = $data['status'];
             $board_config->list_id = $list_id;
+            if($data['type'] == 1 && $data['status']) {
+                $board_config->lable_name = $data['lable_name'];
+                $board_config->lable_color = $data['lable_color'];
+                $board_config->checklist_type = $data['checklist_type'];
+            }
             $board_config->save();
-            return 1;
+            return $board_config->toArray();
         }
-
         $attribute = [
             'list_id' => $list_id,
             'board_id' => $data['board_id'],
             'type' => $data['type'],
             'status' => $data['status']
         ];
-
+        if($data['type'] == 1) {
+            $attribute['lable_name'] = $data['lable_name'];
+            $attribute['lable_color'] = $data['lable_color'];
+            $attribute['checklist_type'] = $data['checklist_type'];
+        }
         if($this->board_config->create($attribute)) {
-            return 1;
+            return $this->board_config->boardConfigByTypeAndList($data['board_id'], $data['type'], $list_id)->toArray();
         }
         return 0;
     }

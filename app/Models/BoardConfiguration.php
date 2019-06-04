@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BoardConfiguration extends Model
 {
-    protected $fillable = ['board_id', 'list_id', 'type', 'status'];
+    protected $fillable = ['board_id', 'list_id', 'type', 'status', 'lable_name', 'lable_color', 'checklist_type'];
 
     public function board() {
         return $this->belongsTo('App\Models\Board','board_id','id');

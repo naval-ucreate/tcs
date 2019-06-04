@@ -15,6 +15,15 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
             ->first();
     }
 
+     public function boardConfigByTypeAndList(int $board_id, int $type, int $list_id){
+        return $this->model->where([
+                'board_id' => $board_id,
+                'type' => $type,
+                'list_id' => $list_id
+            ])
+            ->first();
+    }
+
     public function boardConfigByTypeAll(int $board_id, int $type){
         return $this->model->where([
             'board_id' => $board_id,

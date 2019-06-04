@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/save-boards','BoardsController@saveBoards' )->name('save-board');
     Route::get('/update-board','BoardsController@updateBoard' )->name('update-board');
     Route::get('/lists/{id}','ListController@trelloList')->name('lists');
+    Route::get('/listapi/{id}','ListController@listJson')->name('listapi');
     Route::post('/register-web-hook','HookController@registerHook')->name('register_hook');
     Route::delete('/register-web-hook','HookController@removeHook')->name('register_hook');
     Route::post('/delete_hook','HookController@deleteHook')->name('delete_hook');

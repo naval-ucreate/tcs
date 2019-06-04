@@ -1,5 +1,5 @@
 @include('includes.head')
-<body>
+<body >
     <div class="page-container page-navigation-top fixed">            
         <div class="page-content" id="_contest_">
              @include('includes.sidebar')
@@ -11,7 +11,7 @@
                     <h2><span class="fa fa-arrow-circle-o-left" onclick="window.history.back()" ></span> @yield('pageTitle')</h2>
             </div>
            
-            <div class="page-content-wrap animated slideInUp">      
+            <div class="page-content-wrap animated slideInUp" id="app">      
                        
                 @yield('content') 
             </div>

@@ -192,7 +192,13 @@ class HookController extends Controller
     private function checkCheckList(int $after_list_id, int $befor_list_id,  int $card_id, Array $card_information){
         $list_info = $this->board_config->getConfigByListId($after_list_id, 1);
         if(isset($list_info)  && $list_info->status ) {
-            $this->addLable($card_information['id'], $list_info->board->owner_token,  $card_information['trello_before_id']);
+            $this->addLable($card_information['id'], 
+            $list_info->board->owner_token,  
+            $card_information['trello_before_id'], 
+            $list_info->lable_name,
+            $list_info->lable_color
+        );
+
         }
         $board_config = $this->board_config->boardConfigByTypeArray($card_information['board_id'], [2,3]);
         if($board_config){
@@ -203,6 +209,8 @@ class HookController extends Controller
                 }
             endforeach;    
         }
+        unset($board_config);
+        unset($list_info);
         return 0;
     }
 
@@ -294,7 +302,7 @@ class HookController extends Controller
         return 0;
     }
 
-    private function addLable($card_id, $owner_token, $old_list_id){
+    private function addLable($card_id, $owner_token, $old_list_id, $message, $color){
         $response = app('trello')->getCardChecklists($card_id, $owner_token);
         if(count($response)>0) {
             $checklist_array = array_column($response, 'checkItems');
@@ -302,7 +310,7 @@ class HookController extends Controller
                 foreach($value as $checklist){
                     if($checklist['state'] == 'incomplete') {
                         app('trello')->moveCard($card_id, $old_list_id, $owner_token);
-                        app('trello')->addLable($card_id, $owner_token, 'Checklist incomplete');
+                        app('trello')->addLable($card_id, $owner_token, $message, $color);
                         break;
                     }
                 }
@@ -310,7 +318,7 @@ class HookController extends Controller
             return 1;
         }
         app('trello')->moveCard($card_id, $old_list_id, $owner_token);
-        app('trello')->addLable($card_id,$owner_token,'Checklist missing');
+        app('trello')->addLable($card_id, $owner_token, $message, $color);
         return 1; 
     }
 
