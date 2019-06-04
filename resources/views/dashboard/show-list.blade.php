@@ -8,10 +8,9 @@
     <List></List>         
 @endsection
 
-<script>
-    window.addEventListener("load", function() {
-        setTimeout(() => {
-                $(".listing_view").css("background", "url( <?= $backgroud_image ?> )");
-        }, 1000);
-    });
-</script>
+
+        
+               
+        
+
+

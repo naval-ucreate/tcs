@@ -1859,7 +1859,9 @@ __webpack_require__.r(__webpack_exports__);
       lable_name: "",
       is_loading: true,
       color_code: "#e53333",
-      check_list_type: " "
+      check_list_type: " ",
+      image: "",
+      board_name: ""
     };
   },
   components: {
@@ -1875,6 +1877,9 @@ __webpack_require__.r(__webpack_exports__);
       _this.lists = data.data;
 
       _this.refecterList(1);
+
+      _this.image = _this.lists[0].board["background_image"];
+      _this.board_name = _this.lists[0].board["name"];
     })["catch"](function (err) {
       _this.is_loading = false;
       console.log("some thing went wrong");
@@ -3414,7 +3419,15 @@ var render = function() {
                 attrs: { id: "checklist" }
               },
               [
-                _vm._m(0),
+                _c(
+                  "div",
+                  { staticClass: "panel-heading ui-draggable-handle" },
+                  [
+                    _c("h3", { staticClass: "panel-title text-center" }, [
+                      _vm._v(_vm._s(_vm.board_name))
+                    ])
+                  ]
+                ),
                 _vm._v(" "),
                 _vm._l(_vm.lists, function(list) {
                   return _c(
@@ -3689,16 +3702,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-heading ui-draggable-handle" }, [
-      _c("h3", { staticClass: "panel-title text-center" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -23,7 +23,7 @@
 
         <div class="panel panel-default" id="checklist">
           <div class="panel-heading ui-draggable-handle">
-            <h3 class="panel-title text-center"></h3>
+            <h3 class="panel-title text-center">{{board_name}}</h3>
           </div>
 
           <div
@@ -110,7 +110,9 @@ export default {
       lable_name: "",
       is_loading: true,
       color_code: "#e53333",
-      check_list_type: " "
+      check_list_type: " ",
+      image: "",
+      board_name: ""
     };
   },
   components: {
@@ -125,6 +127,8 @@ export default {
         this.final_list = data.data;
         this.lists = data.data;
         this.refecterList(1);
+        this.image = this.lists[0].board["background_image"];
+        this.board_name = this.lists[0].board["name"];
       })
       .catch(err => {
         this.is_loading = false;
