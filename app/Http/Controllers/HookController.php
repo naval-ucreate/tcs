@@ -196,7 +196,8 @@ class HookController extends Controller
             $list_info->board->owner_token,  
             $card_information['trello_before_id'], 
             $list_info->lable_name,
-            $list_info->lable_color
+            $list_info->lable_color,
+            $list_info->checklist_type
         );
 
         }
@@ -302,9 +303,9 @@ class HookController extends Controller
         return 0;
     }
 
-    private function addLable($card_id, $owner_token, $old_list_id, $message, $color){
+    private function addLable($card_id, $owner_token, $old_list_id, $message, $color, $type){
         $response = app('trello')->getCardChecklists($card_id, $owner_token);
-        if(count($response)>0) {
+        if(count($response)>0 && $type == 1 ) {
             $checklist_array = array_column($response, 'checkItems');
             foreach($checklist_array as $k => $value) {
                 foreach($value as $checklist){
