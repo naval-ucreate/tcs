@@ -189,7 +189,7 @@ class HookController extends Controller
    }
 
 
-    private function checkCheckList(int $after_list_id, int $befor_list_id,  int $card_id, Array $card_information){
+    private function checkCheckList(int $after_list_id, int $befor_list_id,  int $card_id, Array $card_information):void {
         $list_info = $this->board_config->getConfigByListId($after_list_id, 1);
         if(isset($list_info)  && $list_info->status ) {
             $this->addLable($card_information['id'], 
@@ -205,14 +205,13 @@ class HookController extends Controller
         if($board_config){
             foreach($board_config as $value):
                 if($value->list_id == $befor_list_id && $value->status ) {
-                    $this->addBugInCard($card_id, $list_info->board->owner_token);
-                    $this->addRevertCount($card_id, $befor_list_id, $after_list_id);
+                    $this->addRevertCount($card_id);
+                    $this->addBugInCard($card_id, $list_info->board->owner_token, $card_information['id']);
                 }
             endforeach;    
         }
         unset($board_config);
         unset($list_info);
-        return 0;
     }
 
     private function saveActivity($befor_list_id, $after_list_id, $card_id, $borad_id, $user_id){
@@ -227,9 +226,9 @@ class HookController extends Controller
         return 1;
     }
 
-    private function addBugInCard($card_id, $token){
+    private function addBugInCard(int $card_id, string $token, string $trello_card_id){
 
-        $response = app('trello')->getCardChecklists($card_id, $token);
+        $response = app('trello')->getCardChecklists($trello_card_id, $token);
         if(count($response)>0) {
             $checklist_array = array_column($response, 'checkItems');
             $i = 0;
@@ -240,21 +239,17 @@ class HookController extends Controller
                     }
                 }
             }
-            $card_info = $this->card->findByCardId($card_id);
+            $card_info = $this->card->findByCardIdNemuric($card_id);
             $card_info->total_bugs = $i;
             $card_info->save();
         }
         return 1;
     }
 
-    private function addRevertCount($card_id, $after_list_id){
-        $check_config = $this->board_config->getConfigByListId($after_list_id, 4);
-        if($check_config && $check_config->status ) {
-            $card_info = $this->card->findByCardId($card_id);
-            $card_info->total_return = $card_info->total_return + 1;
-            $card_info->save();
-        }
-        return 1;
+    private function addRevertCount(int $card_id):void {
+        $card_info = $this->card->findByCardIdNemuric($card_id);
+        $card_info->total_return = $card_info->total_return + 1;
+        $card_info->save();
     }
 
     private function saveCard(array $card_information){
