@@ -305,22 +305,23 @@ class HookController extends Controller
 
     private function addLable($card_id, $owner_token, $old_list_id, $message, $color, $type){
         $response = app('trello')->getCardChecklists($card_id, $owner_token);
-        if(count($response)>0 && $type == 1 ) {
-            $checklist_array = array_column($response, 'checkItems');
-            foreach($checklist_array as $k => $value) {
-                foreach($value as $checklist){
-                    if($checklist['state'] == 'incomplete') {
-                        app('trello')->moveCard($card_id, $old_list_id, $owner_token);
-                        app('trello')->addLable($card_id, $owner_token, $message, $color);
-                        break;
-                    }
+        if(count($response) == 0) {
+            app('trello')->moveCard($card_id, $old_list_id, $owner_token);
+            app('trello')->addLable($card_id, $owner_token, $message, $color);
+            return 1; 
+        }
+        
+        $checklist_array = array_column($response, 'checkItems');
+        foreach($checklist_array as $k => $value) {
+            foreach($value as $checklist) {
+                if($checklist['state'] == 'incomplete') {
+                    app('trello')->moveCard($card_id, $old_list_id, $owner_token);
+                    app('trello')->addLable($card_id, $owner_token, $message, $color);
+                    break;
                 }
             }
-            return 1;
         }
-        app('trello')->moveCard($card_id, $old_list_id, $owner_token);
-        app('trello')->addLable($card_id, $owner_token, $message, $color);
-        return 1; 
+        return 1;
     }
 
     static private function makeArrayList(array $list_data, $id){
