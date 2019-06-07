@@ -9,7 +9,7 @@ class BoardList extends Model
     //
     protected $table = 'board_lists';
 
-    protected $fillable = ['trello_board_id','trello_list_id','name'];
+    protected $fillable = ['board_id','trello_list_id','name', 'is_archived'];
 
     public function board()
     {

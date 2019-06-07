@@ -184,8 +184,6 @@ class HookController extends Controller
             'name' => $listInfo['text'],
             'is_archived' => false
         ];
-        $webhook_calllog = new WebhookCallLog();
-        $webhook_calllog->create(['body' => json_encode($attribute)]);
         $this->list->create($attribute);
         return 1;
    }
