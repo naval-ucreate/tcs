@@ -86,7 +86,7 @@ class ListController extends Controller
         return false;
     }
 
-    static private function makeArrayList(array $list_data, $id){
+    static private function makeArrayList(array $list_data, $id) {
         $insert_data = [];
         foreach($list_data['lists'] as $list_val) {
             $insert_data[] = [
@@ -94,6 +94,9 @@ class ListController extends Controller
                 'trello_list_id'=>$list_val['id'],
                 'name'=> $list_val['name'],
                 'position' => $list_val['pos'],
+                'is_archived' => $list_val['closed'],
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
             ];
         }
         return $insert_data;

@@ -119,6 +119,10 @@ class HookController extends Controller
             $this->addNewList($board_id, $data['action']['display']['entities']['list']);
         }
 
+        if($data['action']['type'] == 'updateList') {
+            $this->updareList($data['action']['display']['entities']['list']);
+        }
+
         return 0;
     }
 
@@ -163,16 +167,21 @@ class HookController extends Controller
             foreach($new_list_id['old_list'] as $key => $value) {
                 $query.= " when id='".$value['id']."' then ".$value['position']."";
             }
+            $query.= ' end , is_archived = case';
+            foreach($new_list_id['old_list'] as $key => $value) {
+                $query.= " when id='".$value['id']."' then ".$value['closed']."";
+            }
             $query .= " end where id in ( ". Implode(',', $ids ). " ) ";
             $this->list->updateMany($query);   
         }
     }
     
-   private function addNewList(string $board_id, Array $listInfo){
+   private function addNewList(int $board_id, Array $listInfo){
         $attribute = [
             'board_id' => $board_id,
             'trello_list_id' => $listInfo['id'],
-            'name' => $listInfo['text']
+            'name' => $listInfo['text'],
+            'is_archived' => false
         ];
         $this->list->create($attribute);
         return 1;
@@ -212,6 +221,19 @@ class HookController extends Controller
         }
         unset($board_config);
         unset($list_info);
+    }
+
+    private function updareList(Array $list):void {
+        $db_list = $this->list->findByListId($list['id']);
+        $db_list->name = $list['text'];
+        
+        if(isset($list['pos'])) {
+            $db_list->position = $list['pos'];
+        }
+        if(isset($list['closed'])){
+            $db_list->is_archived = $list['closed'];
+        }
+        $db_list->save();
     }
 
     private function saveActivity($befor_list_id, $after_list_id, $card_id, $borad_id, $user_id){
@@ -326,6 +348,7 @@ class HookController extends Controller
                 'trello_list_id' => $list_val['id'],
                 'name' => $list_val['name'],
                 'position' => $list_val['pos'],
+                'is_archived' => $list_val['closed'],
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ];
