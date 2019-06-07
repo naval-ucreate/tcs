@@ -177,13 +177,14 @@ class HookController extends Controller
         }
     }
     
-   private function addNewList(int $board_id, Array $listInfo, WebhookCallLog $webhook_calllog){
+   private function addNewList(int $board_id, Array $listInfo){
         $attribute = [
             'board_id' => $board_id,
             'trello_list_id' => $listInfo['id'],
             'name' => $listInfo['text'],
             'is_archived' => false
         ];
+        $webhook_calllog = new WebhookCallLog();
         $webhook_calllog->create(['body' => json_encode($attribute)]);
         $this->list->create($attribute);
         return 1;
