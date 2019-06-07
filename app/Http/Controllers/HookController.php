@@ -167,10 +167,10 @@ class HookController extends Controller
             foreach($new_list_id['old_list'] as $key => $value) {
                 $query.= " when id='".$value['id']."' then ".$value['position']."";
             }
-            $query.= ' end , is_archived = case';
-            foreach($new_list_id['old_list'] as $key => $value) {
-                $query.= " when id='".$value['id']."' then ".$value['closed']."";
-            }
+            // $query.= ' end , is_archived = case';
+            // foreach($new_list_id['old_list'] as $key => $value) {
+            //     $query.= " when id='".$value['id']."' then ".$value['closed']."";
+            // }
             $query .= " end where id in ( ". Implode(',', $ids ). " ) ";
             $this->list->updateMany($query);   
         }
