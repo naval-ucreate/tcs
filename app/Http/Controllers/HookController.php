@@ -97,6 +97,7 @@ class HookController extends Controller
 
     public function listenTrigger($board_id, WebhookCallLog $webhook_calllog){
         $data = json_decode(request()->getContent(), true);
+        $data['board_int_id'] = $board_id;
         $webhook_calllog->create(['body' => json_encode($data)]);
         $trello_board_id = $data['model']['id'];
         if($data['action']['type'] == 'updateCard' && $data['action']['display']['translationKey'] == 'action_move_card_from_list_to_list'){
