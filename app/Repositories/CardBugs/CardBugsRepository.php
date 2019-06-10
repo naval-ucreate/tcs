@@ -1,9 +1,9 @@
 <?php 
 
-namespace app\Repositories\CardBugs;
+namespace App\Repositories\CardBugs;
 
-use app\Repositories\CardBugs\CardBugsClass;
+use App\Repositories\CardBugs\CardBugClass;
 
-class CardBugsRepository extends CardBugsClass {
+class CardBugsRepository extends CardBugClass {
 
 }
