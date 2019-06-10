@@ -285,7 +285,7 @@ class HookController extends Controller
         }
     }
 
-    private function addRevertCount(int $card_id, int $board_id):void {
+    private function addRevertCount(int $card_id, int $board_id) {
         $card_info = $this->card->findByCardIdNemuric($card_id);
         $card_info->total_return = $card_info->total_return + 1;
         $card_info->save();
@@ -294,10 +294,11 @@ class HookController extends Controller
             'card_id' => $card_id,
             'board_id' => $board_id,
             'type' => 1,
-            'total' => 0
+            'total' => 1
         ];
 
         $this->card_bugs->create($attribute);
+        return 1;
     }
 
     private function saveCard(array $card_information){
