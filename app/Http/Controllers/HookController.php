@@ -13,20 +13,30 @@ use App\Repositories\Cards\CardRepository;
 use App\Repositories\BoardConfigurations\BoardConfigurationsRepository as BoardConfig;
 use App\Repositories\BoardActivities\BoardActivitiesRepository as BoardActivity;
 use App\Repositories\BoardMembers\BoardMemberRepository as BoardMember;
+use App\Repositories\CardBugs\CardBugsRepository;
 use App\Models\WebhookCallLog;
 
 class HookController extends Controller
 {
 
-    private $list, $card, $board_activity, $board_config, $board_member, $board;
+    private $list, $card, $board_activity, $board_config, $board_member, $board, $card_bugs;
 
-    public function  __construct(BoardConfig $board_config, ListRepository $list, CardRepository $card, BoardActivity $board_activity, BoardMember $board_member, BoardRepository $board){
+    public function  __construct(
+        BoardConfig $board_config, 
+        ListRepository $list, 
+        CardRepository $card, 
+        BoardActivity $board_activity, 
+        BoardMember $board_member, 
+        BoardRepository $board, 
+        CardBugsRepository $card_bugs
+    ){
         $this->list = $list;
         $this->card = $card;
         $this->board_activity = $board_activity;
         $this->board_config = $board_config;
         $this->board_member = $board_member;
         $this->board = $board;
+        $this->card_bugs = $card_bugs;
     }
     
     public function registerHook($board_id){
@@ -211,12 +221,12 @@ class HookController extends Controller
         );
 
         }
-        $board_config = $this->board_config->boardConfigByTypeArray($card_information['board_id'], [2,3]);
+        $board_config = $this->board_config->boardConfigByTypeArray($card_information['board_id'], [2, 3]);
         if($board_config){
             foreach($board_config as $value):
                 if($value->list_id == $befor_list_id && $value->status ) {
-                    $this->addRevertCount($card_id);
-                    $this->addBugInCard($card_id, $list_info->board->owner_token, $card_information['id']);
+                    $this->addRevertCount($card_id, $card_information['board_id']);
+                    $this->addBugInCard($card_id, $list_info->board->owner_token, $card_information['id'], $card_information['board_id']);
                 }
             endforeach;    
         }
@@ -249,7 +259,7 @@ class HookController extends Controller
         return 1;
     }
 
-    private function addBugInCard(int $card_id, string $token, string $trello_card_id){
+    private function addBugInCard(int $card_id, string $token, string $trello_card_id, int $board_id):void{
 
         $response = app('trello')->getCardChecklists($trello_card_id, $token);
         if(count($response)>0) {
@@ -263,16 +273,31 @@ class HookController extends Controller
                 }
             }
             $card_info = $this->card->findByCardIdNemuric($card_id);
-            $card_info->total_bugs = $i;
+            $card_info->total_bugs = $i + $card_info->total_bugs;
             $card_info->save();
+            $attibute = [
+                'card_id' => $card_id,
+                'board_id' => $board_id,
+                'type' => 2,
+                'total' => $i
+            ];
+            $this->card_bugs->create($attibute);
         }
-        return 1;
     }
 
-    private function addRevertCount(int $card_id):void {
+    private function addRevertCount(int $card_id, int $board_id):void {
         $card_info = $this->card->findByCardIdNemuric($card_id);
         $card_info->total_return = $card_info->total_return + 1;
         $card_info->save();
+        
+        $attribute = [
+            'card_id' => $card_id,
+            'board_id' => $board_id,
+            'type' => 1,
+            'total' => 0
+        ];
+
+        $this->card_bugs->create($attribute);
     }
 
     private function saveCard(array $card_information){
