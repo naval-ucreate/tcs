@@ -275,13 +275,17 @@ class HookController extends Controller
             $card_info = $this->card->findByCardIdNemuric($card_id);
             $card_info->total_bugs = $i + $card_info->total_bugs;
             $card_info->save();
-            $attibute = [
-                'card_id' => $card_id,
-                'board_id' => $board_id,
-                'type' => 2,
-                'total' => $i
-            ];
-            $this->card_bugs->create($attibute);
+            
+            if( $i > 0 ) {
+                $attibute = [
+                    'card_id' => $card_id,
+                    'board_id' => $board_id,
+                    'type' => 2,
+                    'total' => $i
+                ];
+                $this->card_bugs->create($attibute);
+            }
+            
         }
     }
 
