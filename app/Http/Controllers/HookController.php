@@ -222,11 +222,11 @@ class HookController extends Controller
 
         }
         $board_config = $this->board_config->boardConfigByTypeArray($card_information['board_id'], [2, 3]);
-        if($board_config){
+        if($board_config) {
             foreach($board_config as $value):
                 if($value->list_id == $befor_list_id && $value->status ) {
-                    //$this->addRevertCount($card_id, $card_information['board_id']);
-                    $this->addBugInCard($card_id, $list_info->board->owner_token, $card_information['id'], $card_information['board_id']);
+                    $this->addRevertCount($card_id, $card_information['board_id']);
+                    $this->addBugInCard($card_id, $value->board->owner_token, $card_information['id'], $card_information['board_id']);
                 }
             endforeach;    
         }
