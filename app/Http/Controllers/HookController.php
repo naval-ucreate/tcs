@@ -127,7 +127,8 @@ class HookController extends Controller
             $this->checkCheckList($db_lists_ids[0], $db_lists_ids[1], $db_card_id, $card_information);
         }
         if($data['action']['type'] == 'createList' && $data['action']['display']['translationKey'] == 'action_added_list_to_board') {
-            $this->addNewList($board_id, $data['action']['display']['entities']['list']);
+            $board_info = $this->board->getBoardId($board_id);
+            $this->addNewList($board_id, $data['action']['display']['entities']['list'], $board_info->owner_token);
         }
 
         if($data['action']['type'] == 'updateList') {
@@ -187,12 +188,14 @@ class HookController extends Controller
         }
     }
     
-   private function addNewList(int $board_id, Array $listInfo){
+   private function addNewList(int $board_id, Array $listInfo, string $token) {
+        $list_position = app('trello')->getListPos($listInfo['id'],  $token);
         $attribute = [
             'board_id' => $board_id,
             'trello_list_id' => $listInfo['id'],
             'name' => $listInfo['text'],
-            'is_archived' => false
+            'is_archived' => false,
+            'position' => $list_position['pos']
         ];
         $this->list->create($attribute);
         return 1;
@@ -225,8 +228,11 @@ class HookController extends Controller
         if($board_config) {
             foreach($board_config as $value):
                 if($value->list_id == $befor_list_id && $value->status ) {
-                    $this->addRevertCount($card_id, $card_information['board_id']);
-                    $this->addBugInCard($card_id, $value->board->owner_token, $card_information['id'], $card_information['board_id']);
+                    $after_list_info = $this->list->find($after_list_id);
+                    if( $value->list->position > $after_list_info->position ) {
+                        $this->addRevertCount($card_id, $card_information['board_id']);
+                        $this->addBugInCard($card_id, $value->board->owner_token, $card_information['id'], $card_information['board_id']);
+                    }
                 }
             endforeach;    
         }
@@ -275,7 +281,7 @@ class HookController extends Controller
             $card_info = $this->card->findByCardIdNemuric($card_id);
             $card_info->total_bugs = $i + $card_info->total_bugs;
             $card_info->save();
-            
+
             if( $i > 0 ) {
                 $attibute = [
                     'card_id' => $card_id,

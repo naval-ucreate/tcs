@@ -52,7 +52,9 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
     }
 
     public function boardConfigByTypeArray(int $board_id, Array $type){
-        return $this->model->where('board_id', '=', $board_id)
+        return $this->model->with('list:id, position')
+        ->with('board')
+        ->where('board_id', '=', $board_id)
         ->whereIn('type', $type)
         ->get();
     }
