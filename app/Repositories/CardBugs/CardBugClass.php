@@ -27,5 +27,8 @@ abstract class CardBugClass {
         return $this->model->where('id', '=', $id)->delete();
     }
 
+    abstract public function getBugCount(int $borad_id, string $date);
+    abstract public function getRevertCount(int $borad_id, string $date);
+    abstract public function getCardCount(int $borad_id, string $date);
 
 }
