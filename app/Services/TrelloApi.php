@@ -87,6 +87,26 @@ class TrelloApi {
         }
         throw new Exception("Api end Error");
     }
+
+    public function createCard(string $list_id, string $token= '', array $card_info = [] ){
+        if(strlen($token)==0) {
+            $token=$this->token;
+        }
+        
+        $url = config("app.trello_api_end_point").'cards/?idList='.$list_id.'&key='.$this->api_key.'&token='.$token;
+        if (count($card_info)) {
+            foreach($card_info as $key => $value) {
+              $url .= "&".$key."=".$value;  
+            }
+        }   
+        $response   = $this->client->request('post', $url);
+        
+        if($response->getStatusCode()==200){
+            return  json_decode($response->getBody(), true);
+        }
+
+        throw new Exception("Api end Error");
+    }
 }
 
  

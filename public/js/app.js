@@ -1844,6 +1844,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1851,7 +1854,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       lists: [],
-      list_item: ["Checklist", "Pm", "Qa", "Dev", "Production"],
+      list_item: ["Checklist", "Pm", "Qa", "Dev", "Production", "Performance"],
       active_list: 0,
       is_config: true,
       active_url: window.location.pathname.split("/"),
@@ -2190,7 +2193,7 @@ __webpack_require__.r(__webpack_exports__);
         }, 2]);
         var options = {
           title: "Report of Project",
-          width: 700,
+          width: "100%",
           height: 500,
           bar: {
             groupWidth: "95%"
@@ -3511,7 +3514,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "content-frame-body listing_view" },
+    {
+      staticClass: "content-frame-body listing_view",
+      style: { "background-image": "url(" + _vm.image + ")" }
+    },
     [
       _c(
         "div",

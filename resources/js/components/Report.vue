@@ -133,7 +133,7 @@ export default {
 
         var options = {
           title: "Report of Project",
-          width: 700,
+          width: "100%",
           height: 500,
           bar: { groupWidth: "95%" },
           legend: { position: "none" }

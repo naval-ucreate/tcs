@@ -1,7 +1,7 @@
 @include('includes.head')
 <body >
     <div class="page-container page-navigation-top fixed">            
-        <div class="page-content" id="_contest_">
+        <div class="page-content" id="_contest_" style="height: 100% !important;">
              @include('includes.sidebar')
             <ul class="breadcrumb">
                     <li><a href="{{ route('main-dashboard') }}">Home</a></li>

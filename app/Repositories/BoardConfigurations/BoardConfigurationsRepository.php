@@ -59,6 +59,19 @@ class BoardConfigurationsRepository extends BoardConfigurationsClass
         ->get();
     }
 
+    public function getperformancelist() {
+        return $this->model
+        ->with(['board' => function($query) {
+            $query->where('owner_token', '!=', '');
+        }])
+        ->with('list')
+        ->where([
+            'type' => 6,
+            'status' => true
+        ])
+        ->get();
+    }
+
 
 
 }

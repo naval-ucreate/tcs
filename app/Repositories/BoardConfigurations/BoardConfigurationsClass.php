@@ -28,7 +28,5 @@ abstract class BoardConfigurationsClass {
         return $this->model->where('id', '=', $id)->delete();
     }
 
-    
-
-
+    abstract public function getperformancelist();    
 }

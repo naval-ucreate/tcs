@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        //$schedule->command('create:PerformanceCard')->weeklyOn(5, '10:00');
+        $schedule->command('create:PerformanceCard')->everyFiveMinutes();
     }
 
     /**

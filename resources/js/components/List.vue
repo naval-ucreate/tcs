@@ -1,5 +1,8 @@
 <template>
-  <div class="content-frame-body listing_view">
+  <div
+    class="content-frame-body listing_view"
+    v-bind:style="{ 'background-image': 'url(' + image + ')' }"
+  >
     <div v-show="is_config" class="hook-alert">No Configurations set for {{list_item[active_list]}}</div>
 
     <div class="row">
@@ -102,7 +105,7 @@ export default {
   data: function() {
     return {
       lists: [],
-      list_item: ["Checklist", "Pm", "Qa", "Dev", "Production"],
+      list_item: ["Checklist", "Pm", "Qa", "Dev", "Production", "Performance"],
       active_list: 0,
       is_config: true,
       active_url: window.location.pathname.split("/"),
