@@ -24,7 +24,7 @@
                 
                 @if($user_boards_val->is_admin)
                         <?php 
-                                $report_enable = (!$user_boards_val->boards->web_hook_enable)?'Enabled Report':'Disabled Report';
+                                $report_enable = (!$user_boards_val->boards->web_hook_enable)?'Enable Report':'Disable Report';
                                 $report_class =  (!$user_boards_val->boards->web_hook_enable)?'btn-info':'btn-danger';
                         ?>
                         <?php $user_admin .= '<div class="col-md-3">       
@@ -35,8 +35,8 @@
                                                             <div class="panel-footer footer-info" style="'.$background.'">
                                                                 <!-- <button class="btn btn-danger pull-right delete_data" 
                                                                 rel="{{$user_boards_val->id}}" model="Board" >Delete</button> -->
-                                                                <a href="'.route("lists",[$user_boards_val->boards->id]).'" class="btn btn-primary pull-right" >Settings </a> 
-                                                                <a href="'.route('activity',[$user_boards_val->boards->id]).'" class="btn btn-info pull-right" style="margin-right:10px" >View Report</a>
+                                                                <a href="'.route("lists",[$user_boards_val->boards->id]).'" class="btn btn-primary btn-sm pull-right" >Settings </a> 
+                                                                <a href="'.route('activity',[$user_boards_val->boards->id]).'" class="btn btn-info btn-sm pull-right" style="margin-right:10px" >View Report</a>
                                                                 <a href="javascript:void(0)" class="btn '.$report_class.' btn-sm pull-left _register" 
                                                                 status = "'.$user_boards_val->boards->web_hook_enable.'" 
                                                                 data="'.$user_boards_val->boards->id.'">'.$report_enable.' 
