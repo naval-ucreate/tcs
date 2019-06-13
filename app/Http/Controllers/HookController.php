@@ -136,7 +136,7 @@ class HookController extends Controller
         }
         
         if($data['action']['type'] == 'addMemberToBoard') {
-            $this->addNewmember($data['action']['display']['entities']['member'], $board_id);
+            $this->addNewmember($data['action']['member'], $board_id);
         }
 
         return 0;
@@ -246,11 +246,11 @@ class HookController extends Controller
 
     private function addNewmember(array $member_info, int $board_id):void  {
         $attribute = [
-            'user_id' => $member_info['idMember'],
+            'user_id' => $member_info['id'],
             'board_id' => $board_id,
-            'name' =>  $member_info['text'],
+            'name' =>  $member_info['fullName'],
             'username' => $member_info['username'],
-            'image' => ""
+            'image' => $member_info['avatarUrl']
         ];
         $this->board_member->create($attribute);
     }
