@@ -71,7 +71,6 @@ class HookController extends Controller
         return 0;
     }
 
-
     public function UpdateHook(string $hook_id,string $list_id, string $board_id){
         if($response=app('trello')->UpdateHook($list_id, $hook_id)) {
             if(BoardList::where([
@@ -150,7 +149,6 @@ class HookController extends Controller
             $this->board_member->insert($attribute);
             return 1;            
         }
-        
         $db_members =  array_column($db_members->toArray(), 'user_id');
         $new_members = checkNewMember($db_members, $members);
         
